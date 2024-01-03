@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PATIENT PAGE</title>
+    <script src="staff.js"></script>
+    <script src="patient.js"></script>
+    <script src="use-for-all.js"></script>
+
+    <link rel="stylesheet" href="patient.css">
+
+</head>
+<body>
+    <h1>PATIENT PAGE</h1>
+
+    <button id="getPatientInfoButton">Personal information</button>
+    <div id="getPatientInfo"></div>
+
+    
+    <!-- Form đặt lịch hẹn -->
+    <h2>Schedule appointment</h2>
+    <form id="appointmentForm">
+        <label for="appointmentDate">Appointment date:</label>
+        <input type="date" id="appointmentDate" name="appointmentDate" required><br><br>
+
+        <label for="appointmentTime">Appointment time:</label>
+        <input type="time" id="appointmentTime" name="appointmentTime" required><br><br>
+        
+        <label for="clinicName">Clinic name:</label>
+        <input type="time" id="clinicName" name="clinicName" required><br><br>
+
+        <input id="checkAvailableDentist" type="submit" value="Check available dentists">
+    </form>
+
+    <select id="displayAvailableDentist" name="displayAvailableDentist" required></select><br><br>
+
+    <button id="confirmButton"> Confirm </button>
+
+    <!-- Kết quả đặt lịch hẹn -->
+    <div id="scheduleAppointmentResult"></div>
+
+    <!-- Thông tin lịch hẹn -->
+    <h2>All appointments information</h2>
+    <button id="getAllAppointmentsInfoButton">Get all appointments info</button>
+    <div id="getAllAppointmentsInfoResult"></div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Confirm schedule appointment</h2>
+        <p id="confirmationInfo">Appointment infomation:</p>
+        <button id="confirmScheduleAppointmentButton">Confirm</button>
+        <button id="backButton">Back</button>
+        </div>
+    </div>
+  
+    <script> 
+        const getPatientInfoButton = document.getElementById('getPatientInfoButton');
+        getPatientInfoButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            getPatientInfo(sessionStorage.getItem('loggedInUser'));
+        });
+
+        const appointmentForm = document.getElementById('appointmentForm');
+        appointmentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('displayAvailableDentist').style.display = 'block';
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const appointmentTime = document.getElementById('appointmentTime').value;
+            const clinicName = document.getElementById('clinicName').value;
+            displayAvailableDentist(appointmentDate, appointmentTime, clinicName);
+        });
+
+        const modal = document.getElementById('myModal');
+        const closeButton = document.getElementsByClassName('close')[0];
+        const backButton = document.getElementById('backButton');
+        const confirmationInfo = document.getElementById('confirmationInfo');
+
+        function showModal() {
+        modal.style.display = 'block';
+        }
+
+        function hideModal() {
+        modal.style.display = 'none';
+        }
+
+        const confirmButton = document.getElementById('confirmButton');
+        confirmButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const patientPhoneNumber = sessionStorage.getItem('loggedInUser');
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const appointmentTime = document.getElementById('appointmentTime').value;
+            const clinicName = document.getElementById('clinicName').value;
+
+            const allTextContents = document.getElementById('displayAvailableDentist');
+            const indexOfSelectedOption = allTextContents.selectedIndex;
+            const dentistFullName = allTextContents.options[indexOfSelectedOption].textContent;
+            
+            if (patientPhoneNumber && appointmentDate && appointmentTime && clinicName && (dentistFullName !== ' '))
+            confirmationInfo.innerHTML =  `
+            Appointment date: ${appointmentDate} <br> 
+            Appointment time: ${appointmentTime} <br> 
+            Clinic: ${clinicName} <br>
+            Dentist full name: ${dentistFullName}`;
+            showModal();
+        });
+
+        const confirmScheduleAppointmentButton = document.getElementById('confirmScheduleAppointmentButton');
+        confirmScheduleAppointmentButton.addEventListener('click', function() {
+            const patientPhoneNumber = sessionStorage.getItem('loggedInUser');
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const appointmentTime = document.getElementById('appointmentTime').value;
+            const clinicName = document.getElementById('clinicName').value;
+            const dentistUserName = document.getElementById('displayAvailableDentist').value;
+            scheduleAppointment(patientPhoneNumber, appointmentDate, appointmentTime, clinicName, dentistUserName);
+            hideModal(); 
+        });
+
+        backButton.addEventListener('click', function() {
+        hideModal(); 
+        });
+
+        closeButton.addEventListener('click', function() {
+        hideModal(); 
+        });
+
+        getAllAppointmentsInfoButton = document.getElementById('getAllAppointmentsInfoButton');
+        getAllAppointmentsInfoButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            getAllAppointmentsInfo(sessionStorage.getItem('loggedInUser'));
+        });
+
+    </script>
+  
+</body>
+</html>

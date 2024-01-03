@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STAFF PAGE</title>
+
+    <script src = "staff.js"> </script>
+    <script src = "share.js"> </script>
+
+    
+    <link rel="stylesheet" href="staff.css">
+</head>
+<body>
+
+    <!-- Manage patient -->
+    <h2>Get, Update, Add, Delete patient information</h2>
+    <button onclick="getAllPatientsInfo()">Get all patients information</button>
+    <div id="allPatientsInfo"></div>
+  
+    <h2>Get patient info</h2>
+    <form id="getPatientInfoForm">
+      <label for="patientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="patientPhoneNumber" name="patientPhoneNumber" required><br><br>
+      <input type="submit" value="Get patient information">
+    </form>
+    <div id="getPatientInfo"></div>    
+    
+    <h2>Update patient information</h2>
+    <class id="updatePatientInfo">
+      <form id="updatePatient">
+        <label for="updatePatientPhoneNumber">Enter patient phone number:</label>
+        <input type="text" id="updatePatientPhoneNumber" name="updatePatientPhoneNumber" required><br><br>
+        <input type="submit" value="Update">
+      </form>
+      <form id="confirmUpdatePatient"> 
+        <label for="updatePatientFullName">New patient full name:</label>
+        <input type="text" id="updatePatientFullName" name="updatePatientFullName" required><br><br>
+
+        <label for="updatePatientEmail">New patient email:</label>
+        <input type="email" id="updatePatientEmail" name="updatePatientEmail" required><br><br>
+
+        <label for="updatePatientAddress">New patient address:</label>
+        <input type="text" id="updatePatientAddress" name="updatePatientAddress" required><br><br>
+
+        <label for="updatePatientAge">New patient age:</label>
+        <input type="number" id="updatePatientAge" name="updatePatientAge" min="1" required><br><br>
+
+        <label for="updatePatientGender">New patient gender:</label>
+        <select id="updatePatientGender" name="updatePatientGender" required>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select><br><br>
+
+        <input type="submit" value="Confirm update patient information">
+      </form>
+
+    </class>
+    <div id="patientUpdateResult"></div>
+    
+    <h2>Add patient information</h2>
+    <form id="addPatientInfoForm">
+      <label for="addPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="addPatientPhoneNumber" name="addPatientPhoneNumber" required><br><br>
+          
+      <label for="addPatientFullName">Patient full name:</label>
+      <input type="text" id="addPatientFullName" name="addPatientFullName" required><br><br>
+
+      <label for="addPatientEmail">Patient email:</label>
+      <input type="email" id="addPatientEmail" name="addPatientEmail" required><br><br>
+
+      <label for="addPatientAddress">Patient address:</label>
+      <input type="text" id="addPatientAddress" name="addPatientAddress" required><br><br>
+
+      <label for="addPatientAge">Patient age:</label>
+      <input type="number" id="addPatientAge" name="addPatientAge" required><br><br>
+
+      <label for="addPatientGender">Patient gender:</label>
+      <select id="addPatientGender" name="addPatientGender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select><br><br>
+    
+      <input type="submit" value="Confirm add patient information">   
+    </form>
+    <div id="patientAddResult"></div>
+    
+    <h2>Delete patient information</h2>
+    <form id="deletePatientInfoForm">
+      <label for="deletePatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="deletePatientPhoneNumber" name="deletePatientPhoneNumber" required><br><br>
+    
+      <input type="submit" value="Delete patient information">
+    </form>
+    <div id="patientDeleteResult"></div>
+
+    
+    <h2>Add patient medical record</h2>
+    <form id="addPatientMedicalRecordForm">
+      <label for="addMedicalPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="addMedicalPatientPhoneNumber" name="addMedicalPatientPhoneNumber" required><br><br>
+    
+      <label for="addExaminationDate">Examination date:</label>
+      <input type="date" id="addExaminationDate" name="addExaminationDate" required><br><br>
+
+      <label for="addExaminationTime">Examination time:</label>
+      <input type="time" id="addExaminationTime" name="addExaminationTime" required><br><br>
+
+      <label for="addOralHealth">Oral health</label>
+      <input type="text" id="addOralHealth" name="addOralHealth" required><br><br>
+
+      <label for="addAllergies">Allergies:</label>
+      <input type="text" id="addAllergies" name="addAllergies" value="None"><br><br>
+
+      <input type="submit" value="Add treatment plan">
+    </form>
+    
+    <form id="createTreatmentPlanForm" class="hiddenForAddTreatmentPlan">
+      <label for="createTreatmentPlanDate">Treatment plan date:</label>
+      <input type="date" id="createTreatmentPlanDate" name="createTreatmentPlanDate" required><br><br>
+
+      <label for="createTreatmentPlanTime">Treatment plan time:</label>
+      <input type="time" id="createTreatmentPlanTime" name="createTreatmentPlanTime" required><br><br>
+    
+      <label for="createClinicName">Clinic name:</label>
+      <select id="createClinicName" name="createClinicName" required>
+        <option value="A">Clinic A</option>
+        <option value="B">Clinic B</option>
+        <option value="C">Clinic C</option>
+      </select><br><br>
+
+      <label for="createTreatmentId">Treatment category:</label>
+      <select id="createTreatmentId" name="createTreatmentId" required>
+        <optgroup label="Category 1">
+          <option value="1">Treatment A</option>
+          <option value="2">Treatment B</option>
+          <option value="3">Treatment C</option>
+        </optgroup>
+        <optgroup label="Category 2">
+          <option value="4">Treatment D</option>
+          <option value="5">Treatment E</option>
+          <option value="6">Treatment F</option>
+        </optgroup>
+        <optgroup label="Category 3">
+          <option value="7">Treatment G</option>
+          <option value="8">Treatment H</option>
+          <option value="9">Treatment I</option>
+        </optgroup>
+      </select><br><br>
+
+      <label for="createDescription">Description:</label>
+      <input type="text" id="createDescription" name="createDescription" required><br><br>
+
+      <label for="createNote">Note:</label>
+      <input type="text" id="createNote" name="createNote" value="None" ><br><br>
+
+      <input id="checkDentistsForMedical" type="submit" value="Check dentists">
+    </form>
+    <select id="displayDentistsForMedical" name="displayDentistsForMedical" class="hiddenForAddTreatmentPlan" required></select><br><br>
+
+    <button id="createTreatmentPlanAddMoreInfoFormButton">Add details</button>
+
+    <form id="searchToothForm" class="hiddenForAddTreatmentPlan">
+      <label for="toothId">Tooth id:</label>
+      <input type="number" id="toothId" name="toothId" min="1" max="36" required>
+      <input type="submit" value="Tooth">
+    </form> 
+    <div id="searchToothResult"></div>
+    <div id="addToothResult"></div>
+    <div id="toothsList"></div>
+
+    <form id="searchDrugForm" class="hiddenForAddTreatmentPlan">
+      <label for="drugName">Drug name:</label>
+      <input type="text" id="drugName" name="drugName" required>
+      <input type="submit" value="Drug">
+    </form>
+    <div id="searchDrugResult"></div>
+    <div id="addDrugResult"></div>
+    <div id="drugsList"></div>
+
+    <button id="addDrugContraindicationButton" class="hiddenForAddTreatmentPlan">Add drug contraindication</button><br>
+    <form id="searchDrugContraindicationForm" class="hiddenForAddTreatmentPlan">
+      <label for="drugContraindicationName">Drug contraindication name:</label>
+      <input type="text" id="drugContraindicationName" name="drugContraindicationName">
+      <input type="submit" value="Drug contraindication">
+    </form>
+    <div id="searchDrugContraindicationResult"></div>
+    <div id="addDrugContraindicationResult"></div>
+    <div id="drugsContraindicationList"></div>
+
+    <button id="addTreatmentPlanButton">Add treatment plan</button>
+    <div id="treatmentPlanAddResult"></div>
+
+    <button id="checkButton" class="hiddenForAddMedicalRecord">Check</button>
+    <div id="patientMedicalRecordAddResult"></div>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="medicalRecordInfo"></p>
+      <button id="confirmAddMedicalRecordButton">Confirm</button>
+      <button id="backButton">Back</button>
+      </div>
+    </div>
+
+    <h2>Get patient medical record infomation</h2>
+    <form id="getPatientMedicalRecordInfoForm">
+      <label for="patientMedicalRecordPhoneNumber">Patient phone number:</label>
+      <input type="text" id="patientMedicalRecordPhoneNumber" name="patientMedicalRecordPhoneNumber" required><br><br>
+      <input type="submit" value="Get patient medical record information">
+    </form>
+    <div id="getPatientMedicalRecordInfoResult"></div>
+    <!-- end of manage patient -->
+
+    <!-- Manage appointments  -->
+    <h2>Get appointments by patient phone number</h2>
+    <form id="getAppointmentsByPatientPhoneNumberForm">
+      <label for="selectedDatePatient">Choose date:</label>
+      <input type="date" id="selectedDatePatient" name="selectedDatePatient" required><br><br> 
+
+      <label for="getAppointmentsByPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="getAppointmentsByPatientPhoneNumber" name="getAppointmentsByPatientPhoneNumber" required><br><br>
+
+      <input type="submit" value="Get appointments info">
+    </form>
+    <div id="getAppointmentsByPatientPhoneNumberResult"></div>
+
+    <h2>Get appointments by clinic name</h2>
+    <form id="getAppointmentsByClinicNameForm"> 
+      <label for="selectedDateClinic">Choose date:</label>
+      <input type="date" id="selectedDateClinic" name="selectedDateClinic" required><br><br> 
+
+      <label for="getAppointmentsByClinicName">Clinic name:</label>
+      <select id="getAppointmentsByClinicName" name="getAppointmentsByClinicName" required><br><br> 
+        <option value="A">Clinic A</option>
+        <option value="B">Clinic B</option>
+        <option value="C">Clinic C</option>
+      </select><br><br>
+
+      <input type="submit" value="Get appointments info">
+    </form>
+    <div id="getAppointmentsByClinicNameResult"></div>
+
+    <h2>Get appointments by dentist username</h2>
+    <form id="getAppointmentsByDentistUserNameForm"> 
+      <label for="selectedDateDentist">Choose date:</label>
+      <input type="date" id="selectedDateDentist" name="selectedDateDentist" required><br><br> 
+
+      <label for="getAppointmentsByDentistUserName">Dentist username:</label>
+      <input type="text" id="getAppointmentsByDentistUserName" name="getAppointmentsByDentistUserName" required><br><br>
+
+      <input type="submit" value="Get appointments info">
+    </form>
+    <div id="getAppointmentsByDentistUserNameResult"></div>
+    <!-- end of manage appointments -->
+
+
+    <!-- manage appointment -->
+    <h2>Get appointment info</h2>
+    <form id="getAppointmentForm">
+      <label for="getAppointmentPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="getAppointmentPatientPhoneNumber" name="getAppointmentPatientPhoneNumber" required><br><br> 
+
+      <label for="getAppointmentDate">Appointment date:</label>
+      <input type="date" id="getAppointmentDate" name="getAppointmentDate" required><br><br> 
+
+      <label for="getAppointmentTime">Appointment time:</label>
+      <select id="getAppointmentTime" name="getAppointmentTime" required><br><br> 
+        <option value="06-08">06:00 - 08:00</option>
+        <option value="08-10">08:00 - 10:00</option>
+        <option value="13-15">13:00 - 15:00</option>
+        <option value="15-17">15:00 - 17:00</option>
+      </select><br><br>
+
+      <label for="getAppointmentClinicName">Clinic name:</label>
+      <select id="getAppointmentClinicName" name="getAppointmentClinicName" required><br><br> 
+        <option value="A">Clinic A</option>
+        <option value="B">Clinic B</option>
+        <option value="C">Clinic C</option>
+      </select><br><br>
+
+      <input type="submit" value="Get appointment info">
+    </form>
+    <div id="getAppointmentResult"></div>
+
+    <h2>Add appointment info</h2>
+    <form id="addAppointmentForm">
+      <label for="addAppointmentPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="addAppointmentPatientPhoneNumber" name="addAppointmentPatientPhoneNumber" required><br><br>
+
+      <label for="addAppointmentPatientFullName">Patient full name:</label>
+      <input type="text" id="addAppointmentPatientFullName" name="addAppointmentPatientFullName" required><br><br>
+  
+      <label for="addAppointmentPatientEmail">Patient email:</label>
+      <input type="email" id="addAppointmentPatientEmail" name="addAppointmentPatientEmail" required><br><br>
+
+      <label for="addAppointmentPatientAddress">Patient address:</label>
+      <input type="text" id="addAppointmentPatientAddress" name="addAppointmentPatientAddress" required><br><br>
+      
+      <label for="addAppointmentPatientAge">Patient age:</label>
+      <input type="number" id="addAppointmentPatientAge" name="addAppointmentPatientAge" min="1" required><br><br>
+
+      <label for="addAppointmentPatientGender">Patient gender:</label>
+      <select id="addAppointmentPatientGender" name="addAppointmentPatientGender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select><br><br>
+
+      <label for="addAppointmentDate">Appointment date:</label>
+      <input type="date" id="addAppointmentDate" name="addAppointmentDate" required><br><br>
+
+      <label for="addAppointmentTime">Appointment time:</label>
+      <input type="time" id="addAppointmentTime" name="addAppointmentTime" required><br><br>
+      
+      <label for="addAppointmentClinicName">Clinic name:</label>
+      <select id="addAppointmentClinicName" name="addAppointmentClinicName" required>
+        <option value="A">Clinic A</option>
+        <option value="B">Clinic B</option>
+        <option value="C">Clinic C</option>
+      </select><br><br>
+
+      <input id="checkDentistsForAppointment" type="submit" value="Check dentists">
+    </form>
+    <select id="displayDentistsForAddAppointment" name="displayDentistsForAddAppointment" class="hidden"> </select><br><br>
+    <button id="confirmAddAppointmentButton">Add appointment</button>
+    <div id="addAppointmentResult"></div>
+
+    <h2>Update appointment info</h2>
+    <class id="updateAppointmentInfo">
+      <form id="findAppointment"> 
+        <label for="findAppointmentId">Appointment Id:</label>
+        <input type="text" id="findAppointmentId" name="findAppointmentId" required><br><br> 
+        <input type="submit" value="Update">
+      </form>
+
+      <form id="updateAppointmentForm" class="hidden">
+        <label for="updateAppointmentDate">Appointment date:</label>
+        <input type="date" id="updateAppointmentDate" name="updateAppointmentDate" required><br><br> 
+
+        <label for="updateAppointmentTime">Appointment time:</label>
+        <input type="date" id="updateAppointmentTime" name="updateAppointmentTime" required><br><br>
+
+        <label for="updateAppointmentClinicName">Clinic name:</label>
+        <select id="updateAppointmentClinicName" name="updateAppointmentClinicName" required>
+          <option value="A">Clinic A</option>
+          <option value="B">Clinic B</option>
+          <option value="C">Clinic C</option>
+        </select><br><br>
+
+        <input id="checkDentistsForAppointment" type="submit" value="Check dentists">
+      </form>
+    </class>
+    <select id="displayDentistsForUpdateAppointment" name="displayDentistsForUpdateAppointment" class="hidden" required> </select><br><br>
+    <button id="confirmUpdateAppointmentButton">Update appointment</button>
+    <div id="updateAppointmentResult"></div>
+
+    <h2>Delete appointment info</h2>
+    <form id="deleteAppointmentForm"> 
+      <label for="deleteAppointmentId">Appointment Id:</label>
+      <input type="text" id="deleteAppointmentId" name="deleteAppointmentId" required><br><br> 
+      <input type="submit" value="Delete appointment">
+    </form>
+    <div id="deleteAppointmentResult"></div>
+
+    <!-- end of manage appointment -->
+
+    <script>
+        const getPatientInfoForm = document.getElementById('getPatientInfoForm');
+        getPatientInfoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const patientPhoneNumber = document.getElementById('patientPhoneNumber').value;
+          getPatientInfo(patientPhoneNumber);
+        });
+  
+        const updatePatient = document.getElementById('updatePatient');
+        updatePatient.addEventListener('submit', function(event) {
+          event.preventDefault();
+          confirmUpdatePatient.style.display = 'block';
+        });
+  
+        const confirmUpdatePatient = document.getElementById('confirmUpdatePatient');
+        confirmUpdatePatient.addEventListener('submit', function(event) {
+          event.preventDefault();
+          updatePatientInfo();
+        });
+  
+        const addPatientInfoForm = document.getElementById('addPatientInfoForm');
+        addPatientInfoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const patientPhoneNumber = document.getElementById('addPatientPhoneNumber').value;
+          const patientFullName = document.getElementById('addPatientFullName').value;
+          const patientEmail = document.getElementById('addPatientEmail').value;
+          const patientAddress = document.getElementById('addPatientAddress').value;
+          const patientAge= document.getElementById('addPatientAge').value;
+          const patientGender = document.getElementById('addPatientGender').value;
+          addPatientInfo(patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender);
+        });
+          
+        const deletePatientInfoForm = document.getElementById('deletePatientInfoForm');
+        deletePatientInfoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          deletePatientInfo();
+        });
+    
+      const addPatientMedicalRecordForm = document.getElementById('addPatientMedicalRecordForm');
+      addPatientMedicalRecordForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const patientPhoneNumber = document.getElementById('addMedicalPatientPhoneNumber').value;
+        const examinationDate = document.getElementById('addExaminationDate').value;
+        const examinationTime = document.getElementById('addExaminationTime').value;
+        const oralHealth = document.getElementById('addOralHealth').value;
+        const allergies = document.getElementById('addAllergies').value;
+        const formattedDate = examinationDate.split('-').reverse().join('');
+        const formattedTime = examinationTime.split(':').join('');
+        const formattedId = `MR${patientPhoneNumber.toUpperCase()}${formattedDate}${formattedTime}`;
+        // const addPatientMedicalRecordResult = document.getElementById('addPatientMedicalRecordResult');
+        // addPatientMedicalRecordResult.innerHTML = `
+        //   Medical record infomation: <br>
+        //   Medical record ID: ${formattedId} <br>
+        //   Phone number: ${patientPhoneNumber} <br>
+        //   Examination date: ${examinationDate} <br>
+        //   Examination time: ${examinationTime} <br>
+        //   Oral health: ${oralHealth} <br>
+        //   Allergies: ${allergies} <br>`;
+        document.getElementById('createTreatmentPlanForm').style.display = 'block';
+      });
+
+      const createTreatmentPlanForm = document.getElementById('createTreatmentPlanForm');
+      createTreatmentPlanForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const treatmentPlanDate = document.getElementById('createTreatmentPlanDate').value;
+        const treatmentPlanTime = document.getElementById('createTreatmentPlanTime').value;
+        const treatmentPlanClinicName = document.getElementById('createClinicName').value;
+        document.getElementById('displayDentistsForMedical').style.display = 'block';
+        displayDentistsForMedical(treatmentPlanDate, treatmentPlanTime, treatmentPlanClinicName);
+      });
+
+      const createTreatmentPlanAddMoreInfoFormButton = document.getElementById('createTreatmentPlanAddMoreInfoFormButton');
+      createTreatmentPlanAddMoreInfoFormButton.addEventListener('click', function(event) {
+        const treatmentPlanDate = document.getElementById('createTreatmentPlanDate').value;
+        const treatmentPlanTime = document.getElementById('createTreatmentPlanTime').value;
+        const treatmentPlanClinicName = document.getElementById('createClinicName').value;
+        const treatmentPlanDentistUserName = document.getElementById('displayDentistsForMedical').value;
+        const treatmentPlanTreatmentId = document.getElementById('createTreatmentId').value;
+        const treatmentPlanDescription = document.getElementById('createDescription').value;
+        const treatmentPlanNote = document.getElementById('createNote').value;
+        if (treatmentPlanDate && treatmentPlanTime && treatmentPlanClinicName 
+        && treatmentPlanTreatmentId && treatmentPlanDescription 
+        && treatmentPlanNote && treatmentPlanDentistUserName !== '') {
+            event.preventDefault();
+
+            document.getElementById('searchToothForm').style.display = 'block';
+            document.getElementById('searchDrugForm').style.display = 'block';
+            document.getElementById('addDrugContraindicationButton').style.display = 'block';
+
+        } else {
+          alert('Please provide complete info');
+        }
+      });
+
+      const addDrugContraindicationButton = document.getElementById('addDrugContraindicationButton');
+      addDrugContraindicationButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        const confirmation = window.confirm(`Are you sure to add drug contraindication? 
+        (You must add drug contraindication if click 'Ok') `);
+        if (confirmation) {
+          document.getElementById('addDrugContraindicationButton').style.display = 'none';
+          document.getElementById('searchDrugContraindicationForm').style.display = 'block';
+        }
+      });
+
+      const searchToothForm = document.getElementById('searchToothForm');
+      searchToothForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const toothId = document.getElementById('toothId').value;
+        searchTooth(toothId);
+      });
+
+      const searchDrugForm = document.getElementById('searchDrugForm');
+      searchDrugForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const drugName = document.getElementById('drugName').value;
+        searchDrug(drugName);
+      });
+
+      
+      const searchDrugContraindicationForm = document.getElementById('searchDrugContraindicationForm');
+      searchDrugContraindicationForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const drugContraindicationName = document.getElementById('drugContraindicationName').value;
+        searchDrugContraindication(drugContraindicationName);
+      });
+
+      const addTreatmentPlanButton = document.getElementById('addTreatmentPlanButton');
+      addTreatmentPlanButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const treatmentPlanDate = document.getElementById('createTreatmentPlanDate').value;
+        const treatmentPlanTime = document.getElementById('createTreatmentPlanTime').value;
+        const treatmentPlanClinicName = document.getElementById('createClinicName').value;
+        const treatmentPlanDentistUserName = document.getElementById('displayDentistsForMedical').value;
+        const treatmentPlanTreatmentId = document.getElementById('createTreatmentId').value;       
+        const treatmentPlanDescription = document.getElementById('createDescription').value;
+        const treatmentPlanNote = document.getElementById('createNote').value;
+
+        const toothsId = selectedToothsId;
+        const toothsFaceName = selectedToothsFaceName;
+        const drugsId = selectedDrugsId;
+        const drugsName = selectedDrugsName;
+        const drugsQuantity = selectedDrugsQuantity;
+        const drugsContraindicationId = selectedDrugsContraindicationId;
+        const drugsContraindicationName = selectedDrugsContraindicationName;
+
+      
+        if (treatmentPlanDate && treatmentPlanTime && (treatmentPlanDentistUserName !== '')  && treatmentPlanClinicName 
+        && treatmentPlanTreatmentId && treatmentPlanDescription && treatmentPlanNote && selectedToothsId.length !== 0 && selectedToothsFaceName.length !== 0
+        && selectedDrugsId.length !== 0 && selectedDrugsQuantity.length !== 0) {
+          const allDentistFullNames = document.getElementById('displayDentistsForMedical');
+          const indexOfSelectedDentistOption = allDentistFullNames.selectedIndex;
+          const treatmentPlanDentistFullName = allDentistFullNames.options[indexOfSelectedDentistOption].textContent;
+
+          const allTreatmentNames = document.getElementById('createTreatmentId');
+          const indexOfSelectedTreatmentOption = allTreatmentNames.selectedIndex;
+          const treatmentPlanTreatmentName = allTreatmentNames.options[indexOfSelectedTreatmentOption].textContent;
+
+          addTreatmentPlan(treatmentPlanDate, treatmentPlanTime, treatmentPlanClinicName, treatmentPlanDentistUserName, treatmentPlanDentistFullName, 
+          treatmentPlanTreatmentId, treatmentPlanTreatmentName, treatmentPlanDescription, treatmentPlanNote,
+          toothsId, toothsFaceName, drugsId, drugsName, drugsQuantity, drugsContraindicationId, drugsContraindicationName);
+
+          
+
+        } else {
+          alert('Please provide complete info');
+        }
+        
+      });
+
+      const modal = document.getElementById('myModal');
+      const closeButton = document.getElementsByClassName('close')[0];        
+      const backButton = document.getElementById('backButton');
+
+      function showModal() {
+        modal.style.display = 'block';
+      }
+
+      function hideModal() {
+        modal.style.display = 'none';
+      }
+
+      backButton.addEventListener('click', function() {
+        hideModal(); 
+      });
+
+      closeButton.addEventListener('click', function() {
+        hideModal();
+      });
+
+      const checkButton = document.getElementById('checkButton');
+      checkButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const patientPhoneNumber = document.getElementById('addMedicalPatientPhoneNumber').value;
+        const examinationDate = document.getElementById('addExaminationDate').value;
+        const examinationTime = document.getElementById('addExaminationTime').value;
+        const oralHealth = document.getElementById('addOralHealth').value;
+        const allergies = document.getElementById('addAllergies').value;
+        const treatmentPlansDate = selectedTreatmentPlansDate;
+        const treatmentPlansTime = selectedTreatmentPlansTime;
+        const treatmentPlansClinicName = selectedTreatmentPlansClinicName;
+        const treatmentPlansDentistFullName = selectedTreatmentPlansDentistFullName;
+        const treatmentPlansTreatmentName = selectedTreatmentPlansTreatmentName;
+        const treatmentPlansDescription = selectedTreatmentPlansDescription;
+        const treatmentPlansNote = selectedTreatmentPlansNote;
+        
+        const treatmentPlansToothsId = selectedTreatmentPlansToothsId;
+        const treatmentPlansToothsFaceName= selectedTreatmentPlansToothsFaceName;
+        const treatmentPlansDrugsName = selectedTreatmentPlansDrugsName;
+        const treatmentPlansDrugsQuantity = selectedTreatmentPlansDrugsQuantity;
+        const treatmentPlansDrugsContraindicationId = selectedTreatmentPlansDrugsContraindicationId;
+        const treatmentPlansDrugsContraindicationName = selectedTreatmentPlansDrugsContraindicationName;
+      
+        displayMedicalRecordInfo(patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies,
+        treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistFullName, treatmentPlansTreatmentName, 
+        treatmentPlansDescription, treatmentPlansNote, treatmentPlansToothsId, treatmentPlansToothsFaceName, 
+        treatmentPlansDrugsName, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationName);
+
+        showModal(); 
+      });
+       
+      const confirmAddMedicalRecordButton = document.getElementById('confirmAddMedicalRecordButton');
+      confirmAddMedicalRecordButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const patientPhoneNumber = document.getElementById('addMedicalPatientPhoneNumber').value;
+        const examinationDate = document.getElementById('addExaminationDate').value;
+        const examinationTime = document.getElementById('addExaminationTime').value;
+        const oralHealth = document.getElementById('addOralHealth').value;
+        const allergies = document.getElementById('addAllergies').value;
+        const treatmentPlansDate = selectedTreatmentPlansDate;
+        const treatmentPlansTime = selectedTreatmentPlansTime;
+        const treatmentPlansClinicName = selectedTreatmentPlansClinicName;
+        const treatmentPlansDentistUserName = selectedTreatmentPlansDentistUserName;
+        const treatmentPlansTreatmentId = selectedTreatmentPlansTreatmentId;
+        const treatmentPlansDescription = selectedTreatmentPlansDescription;
+        const treatmentPlansNote = selectedTreatmentPlansNote;
+
+        const treatmentPlansToothsId = selectedTreatmentPlansToothsId;
+        const treatmentPlansToothsFaceName = selectedTreatmentPlansToothsFaceName;
+        const treatmentPlansDrugsId = selectedTreatmentPlansDrugsId;
+        const treatmentPlansDrugsName = selectedTreatmentPlansDrugsName;
+        const treatmentPlansDrugsQuantity = selectedTreatmentPlansDrugsQuantity;
+        const treatmentPlansDrugsContraindicationId = selectedTreatmentPlansDrugsContraindicationId;
+        addPatientMedicalRecord(patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies, 
+        treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistUserName, 
+        treatmentPlansTreatmentId, treatmentPlansDescription, treatmentPlansNote, treatmentPlansToothsId, 
+        treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsName, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId);
+        hideModal();
+        
+      
+      });
+
+      const getPatientMedicalRecordInfoForm= document.getElementById('getPatientMedicalRecordInfoForm');
+      getPatientMedicalRecordInfoForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const patientMedicalRecordPhoneNumber = document.getElementById('patientMedicalRecordPhoneNumber').value;
+        getPatientMedicalRecordInfo(patientMedicalRecordPhoneNumber);
+      });
+
+      const getAppointmentsByPatientPhoneNumberForm= document.getElementById('getAppointmentsByPatientPhoneNumberForm');
+      getAppointmentsByPatientPhoneNumberForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedDatePatient = document.getElementById('selectedDatePatient').value;
+        const patientPhoneNumber = document.getElementById('getAppointmentsByPatientPhoneNumber').value;
+        getAppointmentsByPatientPhoneNumber(patientPhoneNumber, selectedDatePatient);
+      });
+
+      const getAppointmentsByClinicNameForm= document.getElementById('getAppointmentsByClinicNameForm');
+      getAppointmentsByClinicNameForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedDateClinic = document.getElementById('selectedDateClinic').value;
+        const clinicName = document.getElementById('getAppointmentsByClinicName').value;
+        getAppointmentsByClinicName(clinicName, selectedDateClinic);
+      });
+
+      const getAppointmentsByDentistUserNameForm= document.getElementById('getAppointmentsByDentistUserNameForm');
+      getAppointmentsByDentistUserNameForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedDateDentist = document.getElementById('selectedDateDentist').value;
+        const dentistUserName = document.getElementById('getAppointmentsByDentistUserName').value;
+        getAppointmentsByDentistUserName(dentistUserName, selectedDateDentist);
+      });
+
+      const getAppointmentForm= document.getElementById('getAppointmentForm');
+      getAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const getAppointmentPatientPhoneNumber = document.getElementById('getAppointmentPatientPhoneNumber').value;
+        const getAppointmentDate = document.getElementById('getAppointmentDate').value;
+        const getAppointmentTime = document.getElementById('getAppointmentTime').value;
+        const getAppointmentClinicName = document.getElementById('getAppointmentClinicName').value;
+        getAppointment(getAppointmentPatientPhoneNumber, getAppointmentDate, getAppointmentTime, getAppointmentClinicName );
+      });
+
+      const addAppointmentForm = document.getElementById('addAppointmentForm');
+      addAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('displayDentistsForAddAppointment').style.display = 'block';
+        const addAppointmentDate = document.getElementById('addAppointmentDate').value;
+        const addAppointmentTime = document.getElementById('addAppointmentTime').value;
+        const addAppointmentClinicName = document.getElementById('addAppointmentClinicName').value;
+        displayDentistsForAddAppointment(addAppointmentDate, addAppointmentTime, addAppointmentClinicName);
+      });
+
+      const confirmAddAppointmentButton = document.getElementById('confirmAddAppointmentButton');
+      confirmAddAppointmentButton.addEventListener('click', function() {
+        const addAppointmentPatientPhoneNumber = document.getElementById('addAppointmentPatientPhoneNumber').value;
+        const addAppointmentPatientFullName = document.getElementById('addAppointmentPatientFullName').value;
+        const addAppointmentPatientEmail = document.getElementById('addAppointmentPatientEmail').value;
+        const addAppointmentPatientAddress = document.getElementById('addAppointmentPatientAddress').value;
+        const addAppointmentPatientAge = document.getElementById('addAppointmentPatientAge').value;
+        const addAppointmentPatientGender = document.getElementById('addAppointmentPatientGender').value;
+        const addAppointmentDate = document.getElementById('addAppointmentDate').value;
+        const addAppointmentTime = document.getElementById('addAppointmentTime').value;
+        const addAppointmentClinicName = document.getElementById('addAppointmentClinicName').value;
+        const addAppointmentDentistUserName = document.getElementById('displayDentistsForAddAppointment').value;
+    
+        addAppointment(addAppointmentPatientPhoneNumber, addAppointmentPatientFullName, addAppointmentPatientEmail, 
+        addAppointmentPatientAddress, addAppointmentPatientAge, addAppointmentPatientGender, addAppointmentDate, 
+        addAppointmentTime, addAppointmentClinicName, addAppointmentDentistUserName);
+      });
+      
+      const findAppointment = document.getElementById('findAppointment');
+        findAppointment.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const findAppointmentId = document.getElementById('findAppointmentId').value;
+        findAppointment(findAppointmentId);
+      });
+
+      const updateAppointmentForm = document.getElementById('updateAppointmentForm');
+        updateAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('displayDentistsForAddAppointment').style.display = 'block';
+        const updateAppointmentDate = document.getElementById('updateAppointmentDate').value;
+        const updateAppointmentTime = document.getElementById('updateAppointmentTime').value;
+        const updateAppointmentClinicName = document.getElementById('updateAppointmentClinicName').value;
+        displayDentistsForUpdateAppointment(updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName);
+      });
+
+      const confirmUpdateAppointmentButton = document.getElementById('confirmUpdateAppointmentButton');
+        confirmUpdateAppointmentButton.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const updateAppointmentId = document.getElementById('updateAppointmentId').value;
+        const updateAppointmentDate = document.getElementById('updateAppointmentDate').value;
+        const updateAppointmentTime = document.getElementById('updateAppointmentTime').value;
+        const updateAppointmentClinicName = document.getElementById('updateAppointmentClinicName').value;
+        const updateAppointmentDentistUserName = document.getElementById('updateAppointmentDentistUserName').value;
+        updateAppointment(updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName);
+      });
+        
+      const deleteAppointmentForm = document.getElementById('deleteAppointmentForm');
+        deleteAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const deleteAppointmentId = document.getElementById('deleteAppointmentId').value;
+        deleteAppointment(deleteAppointmentId);
+      });   
+    
+    </script>
+
+</body>
+</html>
