@@ -21,18 +21,12 @@ async function getAllPatientsInfo() {
       const data = await response.json();
       if (response.status === 200) {            
           allPatientsInfo.innerHTML = ''; 
-          data.forEach(patient => {
-          const allPatientsDetails = document.createElement('p');
-          allPatientsDetails.textContent = `
-                                          Phone number: ${patient.patientPhoneNumber},
-                                          Full name: ${patient.patientFullName}, 
-                                          Email: ${patient.patientEmail},
-                                          Address: ${patient.patientAddress},
-                                          Age: ${patient.patientAge},
-                                          Gender: ${patient.patientGender}`; 
+          const table = `<table>
+          <thead><tr>${['Phone number', 'Full name', 'Email', 'Address', 'Age', 'Gender'].map(h => `<th>${h}</th>`).join('')}</tr></thead>
+          <tbody>${data.map(patient => `<tr>${Object.values(patient).map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+     </table>`;
 
-          allPatientsInfo.appendChild(allPatientsDetails);
-          });
+allPatientsInfo.innerHTML = table;
       } else {
           
           allPatientsInfo.innerHTML = data.message;
@@ -55,15 +49,15 @@ async function getPatientInfo(patientPhoneNumber) {
       })
       const data = await response.json();
       if (response.status === 200) {  
-          patientInfo.innerHTML = `  
-                                      <h3>Patient information</h3>
-                                      <p>Phone number: ${data.patientPhoneNumber}</p>
-                                      <p>Full name: ${data.patientFullName}</p>
-                                      <p>Email: ${data.patientEmail}</p>
-                                      <p>Address: ${data.patientAddress}</p>
-                                      <p>Age: ${data.patientAge}</p>
-                                      <p>Gender: ${data.patientGender}</p> 
-                                      `;
+        const table = `<table>
+                            <caption><h3>Patient information</h3></caption>
+                            <tbody>
+                                <tr>${Object.entries(data).map(([key, value]) => `<th>${key}</th>`).join('')}</tr>
+                                <tr>${Object.values(data).map(value => `<td>${value}</td>`).join('')}</tr>
+                            </tbody>
+                       </table>`;
+
+        patientInfo.innerHTML = table;
       } else {
           patientInfo.innerHTML = data.message;
       }
