@@ -435,83 +435,6 @@ async function addDrugContraindication(drugContraindicationId, drugContraindicat
 
 }
 
-async function calculateTotalAmount(treatmentPlansTreatmentId, treatmentPlansToothsFaceName, treatmentPlansDrugsName, treatmentPlansDrugsQuantity) {
-    let totalAmount = 0;
-    for (let i = 0; i < treatmentPlansTreatmentId.length; i++) {
-      const treatmentId = treatmentPlansTreatmentId[i];
-      try {
-          const response = await fetch('http://localhost:3000/getTreatmentPrice', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ treatmentId })
-          })
-          const data = await response.json();
-          console.log(data);
-          const treatmentPrice = data;
-          if (response.status === 200) { 
-              totalAmount += treatmentPrice;
-          } else {
-              console.log('Có lỗi khi tính tiền');
-          }
-      } catch (error) {
-          console.log('Có lỗi khi tính tiền');
-      }
-    }
-
-    for (let i = 0; i < treatmentPlansToothsFaceName.length; i++) {
-        for (let j = 0; j < treatmentPlansToothsFaceName[i].length; j++) {
-            const toothFaceName = treatmentPlansToothsFaceName[i][j];
-            try {
-                const response = await fetch('http://localhost:3000/getToothFacePrice', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ toothFaceName })
-                })
-                const data = await response.json();
-                const toothFacePrice = data;
-                if (response.status === 200) { 
-                    totalAmount += toothFacePrice;
-                } else {
-                    console.log('Có lỗi khi tính tiền');
-                }
-            } catch (error) {
-                console.log('Có lỗi khi tính tiền');
-            }
-        }
-    }
-
-    for (let i = 0; i < treatmentPlansDrugsName.length; i++) {
-        for (let j = 0; j < treatmentPlansDrugsName[i].length; j++) {
-            const drugName = treatmentPlansDrugsName[i][j];
-            const drugQuantity = parseInt(treatmentPlansDrugsQuantity[i][j]);
-            try {
-                const response = await fetch('http://localhost:3000/getDrugPrice', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ drugName })
-                })
-                const data = await response.json();
-                const drugPrice = data;
-                console.log(drugPrice);
-                if (response.status === 200) { 
-                    totalAmount += drugPrice * drugQuantity;
-                } else {
-                    console.log('Có lỗi khi tính tiền');
-                }
-            } catch (error) {
-                console.log('Có lỗi khi tính tiền');
-            }
-        }
-    }
-    console.log(totalAmount);
-    return totalAmount;
-}
 
 let selectedTreatmentPlansDate = [];
 let selectedTreatmentPlansTime = [];
@@ -535,7 +458,6 @@ async function addTreatmentPlan(treatmentPlanDate, treatmentPlanTime, clinicName
 
     let exists = selectedTreatmentPlansDate.some((date, index) => 
       date === treatmentPlanDate &&
-      selectedTreatmentPlansClinicName[index] === clinicName &&
 
       ((selectedTreatmentPlansTime[index] >= '06:00' && selectedTreatmentPlansTime[index] < '08:00' && 
       treatmentPlanTime >= '06:00' && treatmentPlanTime < '08:00') ||
@@ -597,7 +519,7 @@ async function addTreatmentPlan(treatmentPlanDate, treatmentPlanTime, clinicName
 
     } else {
       treatmentPlanAddResult.innerHTML = '';
-      treatmentPlanAddResult.innerHTML = 'Đã tồn tại kế hoạch điều trị'; 
+      treatmentPlanAddResult.innerHTML = 'Đã chọn kế hoạch điều trị và thời gian này'; 
       setTimeout(`treatmentPlanAddResult.style.display = 'none'`, 3000);
       setTimeout(`treatmentPlanAddResult.innerHTML = ''`, 3001);
       setTimeout(`treatmentPlanAddResult.style.display = 'block'`, 3002);
@@ -631,7 +553,7 @@ async function displayMedicalRecordInfo(patientPhoneNumber, examinationDate, exa
     const medicalRecordDiv = document.createElement('div');
     medicalRecordDiv.classList.add('medical-record');
     const generalMedicalInfoParagraph = document.createElement('p');
-    generalMedicalInfoParagraph.textContent = `Patient phone number: ${patientPhoneNumber} - Examination Date: ${examinationDate} - ExaminationTime: ${examinationTime} - Oral Health: ${oralHealth} - Allergies: ${allergies}`;
+    generalMedicalInfoParagraph.textContent = `Patient phone number: ${patientPhoneNumber}  -  Examination Date: ${examinationDate}  -  ExaminationTime: ${examinationTime}  -  Oral Health: ${oralHealth}  -  Allergies: ${allergies}`;
     medicalRecordDiv.appendChild(generalMedicalInfoParagraph);
 
     for (let i = 0; i < treatmentPlansDate.length; i++) {
@@ -641,20 +563,20 @@ async function displayMedicalRecordInfo(patientPhoneNumber, examinationDate, exa
         const treatmentPlanInfo = document.createElement('p');
         treatmentPlanInfo.textContent = `Treatment plan ${i+1}:`;
         const generalTreatmentPlanInfoParagraph = document.createElement('p');
-        generalTreatmentPlanInfoParagraph.textContent = `Date: ${treatmentPlansDate[i]} - Time: ${treatmentPlansTime[i]} - Clinic: ${treatmentPlansClinicName[i]} - Dentist: ${treatmentPlansDentistFullName[i]} - Treatment: ${treatmentPlansTreatmentName[i]} - Description: ${treatmentPlansDescription[i]} - Note: ${treatmentPlansNote[i]} - Status: 'Plan'`;
+        generalTreatmentPlanInfoParagraph.textContent = `Date: ${treatmentPlansDate[i]}  -  Time: ${treatmentPlansTime[i]}  -  Clinic: ${treatmentPlansClinicName[i]}  -  Dentist: ${treatmentPlansDentistFullName[i]}  -  Treatment: ${treatmentPlansTreatmentName[i]}  -  Description: ${treatmentPlansDescription[i]}  -  Note: ${treatmentPlansNote[i]}  -  Status: 'Plan'`;
         
         treatmentPlanDiv.appendChild(treatmentPlanInfo);
         treatmentPlanDiv.appendChild(generalTreatmentPlanInfoParagraph);
 
         for (let j = 0; j < treatmentPlansToothsId[i].length; j++) {
             const toothInfoParagraph = document.createElement('p');
-            toothInfoParagraph.textContent = `Tooth: ${treatmentPlansToothsId[i][j]} - Face: ${treatmentPlansToothsFaceName[i][j]}`;
+            toothInfoParagraph.textContent = `Tooth: ${treatmentPlansToothsId[i][j]}  -  Face: ${treatmentPlansToothsFaceName[i][j]}`;
             treatmentPlanDiv.appendChild(toothInfoParagraph);
         }
 
         for (let j = 0; j < treatmentPlansDrugsName[i].length; j++) {
             const drugInfoParagraph = document.createElement('p');
-            drugInfoParagraph.textContent = `Drug: ${treatmentPlansDrugsName[i][j]} - Quantity: ${treatmentPlansDrugsQuantity[i][j]}`;
+            drugInfoParagraph.textContent = `Drug: ${treatmentPlansDrugsName[i][j]}  -  Quantity: ${treatmentPlansDrugsQuantity[i][j]}`;
             treatmentPlanDiv.appendChild(drugInfoParagraph);
         }
 
@@ -673,7 +595,7 @@ async function displayMedicalRecordInfo(patientPhoneNumber, examinationDate, exa
 async function addPatientMedicalRecord(patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies, 
     treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistUserName, treatmentPlansTreatmentId, treatmentPlansDescription, treatmentPlansNote,
     treatmentPlansToothsId, treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsName, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId ) {
-    const totalAmount = await calculateTotalAmount(treatmentPlansTreatmentId, treatmentPlansToothsFaceName, treatmentPlansDrugsName, treatmentPlansDrugsQuantity);
+    // const totalAmount = await calculateTotalAmount(treatmentPlansTreatmentId, treatmentPlansToothsFaceName, treatmentPlansDrugsName, treatmentPlansDrugsQuantity);
     
     try {
         const response = await fetch('http://localhost:3000/addPatientMedicalRecord', {
@@ -683,9 +605,9 @@ async function addPatientMedicalRecord(patientPhoneNumber, examinationDate, exam
             },
             body: JSON.stringify({ patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies, 
                 treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistUserName, treatmentPlansTreatmentId,  treatmentPlansDescription, treatmentPlansNote, 
-                treatmentPlansToothsId, treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId,
-                totalAmount })
-        })
+                treatmentPlansToothsId, treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId
+                 })
+        }) // totalAmount
         const data = await response.json();
         const patientMedicalRecordAddResult = document.getElementById('patientMedicalRecordAddResult');
         if (response.status === 200) {
@@ -700,123 +622,183 @@ async function addPatientMedicalRecord(patientPhoneNumber, examinationDate, exam
     }  
 }
 
+function getColorByStatus(status) {
+  switch (status) {
+      case 'Plan':
+          return 'blue';
+      case 'Complete':
+          return 'green';
+      case 'Cancel':
+          return 'yellow';
+      default:
+          return 'inherit';
+  }
+}
+
 async function getPatientMedicalRecordInfo(patientPhoneNumber) {
-    try {
-        const response = await fetch('http://localhost:3000/getPatientMedicalRecordInfo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ patientPhoneNumber }) 
-        })
-        const data = await response.json();
-        const getPatientMedicalRecordInfoResult = document.getElementById('getPatientMedicalRecordInfoResult');
-        getPatientMedicalRecordInfoResult.innerHTML = '';
-        if (response.status === 200) {         
-            const patientDiv = document.createElement('div');
-            patientDiv.textContent = 'PATIENT MEDICAL RECORDS AND PAYMENT INFOMATION';
-            patientDiv.classList.add('patient-info');
+  try {
+      // Lấy dữ liệu từ server
+      const response = await fetch('http://localhost:3000/getPatientMedicalRecordInfo', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ patientPhoneNumber }) 
+      })
+      const data = await response.json();
+      const getPatientMedicalRecordInfoResult = document.getElementById('getPatientMedicalRecordInfoResult');
+      getPatientMedicalRecordInfoResult.innerHTML = '';
 
-            const patientGeneralInfoParagraph = document.createElement('p');
-            patientGeneralInfoParagraph.textContent = `Full name: ${data.patientInfo.patientFullName} - Age: ${data.patientInfo.patientAge} - Gender: ${data.patientInfo.patientGender}`;
-            patientDiv.appendChild(patientGeneralInfoParagraph);
+      if (response.status === 200) {
+          // Hiển thị thông tin bệnh nhân
+          const patientDiv = document.createElement('div');
+          patientDiv.textContent = 'PATIENT MEDICAL RECORDS AND PAYMENT INFOMATION';
+          patientDiv.classList.add('patient-info');
 
-            getPatientMedicalRecordInfoResult.appendChild(patientDiv);
+          const patientGeneralInfoParagraph = document.createElement('p');
+          patientGeneralInfoParagraph.textContent = `Full name: ${data.patientInfo.patientFullName}  -  Age: ${data.patientInfo.patientAge}  -  Gender: ${data.patientInfo.patientGender}`;
+          patientDiv.appendChild(patientGeneralInfoParagraph);
+          getPatientMedicalRecordInfoResult.appendChild(patientDiv);
 
-            for (let i = 0; i < data.medicalRecordsInfo.length; i++) {
-                const medicalRecordDiv = document.createElement('div');
-                medicalRecordDiv.textContent = `Medical record Id: ${data.medicalRecordsInfo[i].medicalRecordId}`;
-                medicalRecordDiv.classList.add('medical-record');
+          // Hiển thị thông tin hồ sơ bệnh án và kế hoạch điều trị
+          for (let i = 0; i < data.medicalRecordsInfo.length; i++) {
+              const medicalRecordDiv = document.createElement('div');
+              medicalRecordDiv.classList.add('medical-record');
 
-                const medicalRecordGeneralInfoParagraph = document.createElement('p');
-                const examDate = new Date(data.medicalRecordsInfo[i].examinationDate);
-                const formattedExamDate = `${examDate.getDate().toString().padStart(2, '0')}/${(examDate.getMonth() + 1).toString().padStart(2, '0')}/${examDate.getFullYear()}`;
-                const examTime = new Date(data.medicalRecordsInfo[i].examinationTime); 
-                const formattedExamTime = `${examTime.getUTCHours().toString().padStart(2, '0')}:${examTime.getUTCMinutes().toString().padStart(2, '0')}`;
-                medicalRecordGeneralInfoParagraph.textContent = `Examination date: ${formattedExamDate} - Examination time: ${formattedExamTime} - Oral health: ${data.medicalRecordsInfo[i].oralHealth} - Allergies: ${data.medicalRecordsInfo[i].allergies}`;
-                medicalRecordDiv.appendChild(medicalRecordGeneralInfoParagraph);
-            
-                for (let j = 0; j < data.treatmentPlansDate.length; j++) {
-                    const treatmentPlanDiv = document.createElement('div');
-                    treatmentPlanDiv.textContent = `Treatment plan ${j+1} ( Id: ${data.treatmentPlansId[j]} ):`;
-                    treatmentPlanDiv.classList.add('treatment-plan');
+              // Thêm nút mở rộng/ thu gọn cho medical record
+              const expandMedicalRecordBtn = document.createElement('span');
+              expandMedicalRecordBtn.classList.add('expand-btn');
+              expandMedicalRecordBtn.textContent = '+';
+              expandMedicalRecordBtn.addEventListener('click', () => {
+                  if (treatmentPlansDiv.style.display === 'none') {
+                      treatmentPlansDiv.style.display = 'block';
+                      expandMedicalRecordBtn.textContent = '-';
+                  } else {
+                      treatmentPlansDiv.style.display = 'none';
+                      expandMedicalRecordBtn.textContent = '+';
+                  }
+              });
+              medicalRecordDiv.appendChild(expandMedicalRecordBtn);
 
-                    const date = new Date(data.treatmentPlansDate[j]);
-                    const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-                    const time = new Date(data.treatmentPlansTime[j]); 
-                    const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
-                    const generalTreatmentPlanInfoParagraph = document.createElement('p');
-                    generalTreatmentPlanInfoParagraph.textContent = `Date: ${formattedDate} - Time: ${formattedTime} - Clinic: ${data.treatmentPlansClinicName[i]} - Dentist: ${data.treatmentPlansDentistFullName[i]} - Treatment: ${data.treatmentPlansTreatmentName[i]} - Description: ${data.treatmentPlansDescription[i]} - Note: ${data.treatmentPlansNote[i]} - Status: ${data.treatmentPlansStatus[i]}`;
-            
-                    treatmentPlanDiv.appendChild(generalTreatmentPlanInfoParagraph);
+              const medicalRecordHeader = document.createElement('span');
+              medicalRecordHeader.textContent = `Medical record ${i + 1} (Id: ${data.medicalRecordsInfo[i].medicalRecordId})`;
+              medicalRecordDiv.appendChild(medicalRecordHeader);
 
-                    for (let k = 0; k < data.treatmentPlansToothsId[j].length; k++) {
-                        const toothInfoParagraph = document.createElement('p');
-                        toothInfoParagraph.textContent = `Tooth: ${data.treatmentPlansToothsId[j][k]} - Face: ${data.treatmentPlansToothsFaceName[j][k]}`;
-                        treatmentPlanDiv.appendChild(toothInfoParagraph);
-                    }            
-                    for (let k = 0; k < data.treatmentPlansDrugsName[j].length; k++) {
-                        const drugInfoParagraph = document.createElement('p');
-                        drugInfoParagraph.textContent = `Drug: ${data.treatmentPlansDrugsName[j][k]} - Quantity: ${data.treatmentPlansDrugsQuantity[j][k]}`;
-                        treatmentPlanDiv.appendChild(drugInfoParagraph);
-                    }
-            
-                    for (let k = 0; k < data.treatmentPlansDrugsContraindicationName[j].length; k++) {
-                        const drugContraindicationInfoParagraph = document.createElement('p');
-                        drugContraindicationInfoParagraph.textContent = `Contraindication drug: ${data.treatmentPlansDrugsContraindicationName[j][k]}`;
-                        treatmentPlanDiv.appendChild(drugContraindicationInfoParagraph);
-                    }
-            
-                    medicalRecordDiv.appendChild(treatmentPlanDiv);
-                    getPatientMedicalRecordInfoResult.appendChild(medicalRecordDiv);
-                }
+              const treatmentPlansDiv = document.createElement('div');
+              treatmentPlansDiv.style.display = 'none';
 
-                const receiptDiv = document.createElement('div');
-                receiptDiv.textContent = `Payment information of medical record ${data.medicalRecordsInfo[i].medicalRecordId}:`;
-                receiptDiv.classList.add('receipt');
+              const medicalRecordGeneralInfoParagraph = document.createElement('p');
+              const examDate = new Date(data.medicalRecordsInfo[i].examinationDate);
+              const formattedExamDate = `${examDate.getDate().toString().padStart(2, '0')}/${(examDate.getMonth() + 1).toString().padStart(2, '0')}/${examDate.getFullYear()}`;
+              const examTime = new Date(data.medicalRecordsInfo[i].examinationTime); 
+              const formattedExamTime = `${examTime.getUTCHours().toString().padStart(2, '0')}:${examTime.getUTCMinutes().toString().padStart(2, '0')}`;
+              medicalRecordGeneralInfoParagraph.textContent = `Examination date: ${formattedExamDate}  -  Examination time: ${formattedExamTime}  -  Oral health: ${data.medicalRecordsInfo[i].oralHealth}  -  Allergies: ${data.medicalRecordsInfo[i].allergies}`;
+              medicalRecordDiv.appendChild(medicalRecordGeneralInfoParagraph);
 
-                const receiptInfoParagraph = document.createElement('p');
-                receiptInfoParagraph.textContent = `Receipt Id: ${data.receiptsInfo[i].receiptId} - Total amount: ${data.receiptsInfo[i].totalAmount} - Total paid amount: ${data.receiptsInfo[i].totalPaidAmount} - Change amount: ${data.receiptsInfo[i].changeAmount} - Status: ${data.receiptsInfo[i].paymentStatus}`;
-                receiptDiv.appendChild(receiptInfoParagraph);
-                getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
-                       
-                for (let j = 0; j < data.receiptsInfo[i].length; j++) {
-                    if (data.paymentReceiptsDate.length > 0) {
-                        console.log('toi day');
-                        const paymentReceiptDiv = document.createElement('div');
-                        paymentReceiptDiv.classList.add('payment-receipt');
+              // Hiển thị các kế hoạch điều trị trong từng hồ sơ bệnh án
+              for (let j = 0; j < data.medicalRecordsInfo[i].treatmentPlans.length; j++) {
+                  const treatmentPlanDiv = document.createElement('div');
+                  treatmentPlanDiv.classList.add('treatment-plan');
+                  treatmentPlanDiv.style.color = getColorByStatus(data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanStatus);
 
-                        const paymentReceiptInfo = document.createElement('p');
-                        paymentReceiptInfo.textContent = `Payment details ${j+1}:`;
-                        const paymentDate = new Date(data.paymentReceiptsDate[j]);
-                        const formattedPaymentDate = `${paymentDate.getDate().toString().padStart(2, '0')}/${(paymentDate.getMonth() + 1).toString().padStart(2, '0')}/${paymentDate.getFullYear()}`;
-                        const paymentTime = new Date(data.paymentReceiptsTime[j]); 
-                        const formattedPaymentTime = `${paymentTime.getUTCHours().toString().padStart(2, '0')}:${paymentTime.getUTCMinutes().toString().padStart(2, '0')}`;
-                        const paymentReceiptInfoParagraph = document.createElement('p');
-                        paymentReceiptInfoParagraph.textContent = `Payment date: ${formattedPaymentDate} - Payment time: ${formattedPaymentTime} - Staff full name: ${data.paymentReceiptsStaffFullName[j]} - Payment type: ${data.paymentReceiptsType[j]}`;
-                
-                        paymentReceiptDiv.appendChild(paymentReceiptInfoParagraph);
-                        receiptDiv.appendChild(paymentReceiptDiv);
-                        getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
-                    } else {
-                        const paymentReceiptDiv = document.createElement('div');
-                        paymentReceiptDiv.classList.add('payment-receipt');
+                  const expandTreatmentPlanBtn = document.createElement('span');
+                  expandTreatmentPlanBtn.classList.add('expand-btn');
+                  expandTreatmentPlanBtn.textContent = '+';
+                  expandTreatmentPlanBtn.addEventListener('click', () => {
+                      if (treatmentPlanDetailsDiv.style.display === 'none') {
+                          treatmentPlanDetailsDiv.style.display = 'block';
+                          expandTreatmentPlanBtn.textContent = '-';
+                      } else {
+                          treatmentPlanDetailsDiv.style.display = 'none';
+                          expandTreatmentPlanBtn.textContent = '+';
+                      }
+                  });
+                  treatmentPlanDiv.appendChild(expandTreatmentPlanBtn);
 
-                        const paymentReceiptInfoParagraph = document.createElement('p');
-                        paymentReceiptInfoParagraph.textContent = 'Chưa thực hiện thanh toán';
+                  const treatmentPlanHeader = document.createElement('span');
+                  treatmentPlanHeader.textContent = `Treatment plan ${j + 1} (Id: ${data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanId})`;
+                  treatmentPlanDiv.appendChild(treatmentPlanHeader);
 
-                        paymentReceiptDiv.appendChild(paymentReceiptInfoParagraph);
-                        receiptDiv.appendChild(paymentReceiptDiv);
-                        getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
-                    }
-                }
-            }
-        } else {
-            getPatientMedicalRecordInfoResult.innerHTML = data.message;
-        }
-    } catch (error) {
-        console.error('Có lỗi xảy ra khi lấy thông tin hồ sơ bệnh nhân', error);
-    };
+                  const treatmentPlanDetailsDiv = document.createElement('div');
+                  treatmentPlanDetailsDiv.style.display = 'none';
+
+                  const treatmentPlanInfoParagraph = document.createElement('p');
+                  const date = new Date(data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanDate);
+                  const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+                  const time = new Date(data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanTime); 
+                  const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
+                  treatmentPlanInfoParagraph.textContent = `Date: ${formattedDate}  -  Time: ${formattedTime}  -  Clinic: ${data.medicalRecordsInfo[i].treatmentPlans[j].clinicName}  -  Dentist: ${data.medicalRecordsInfo[i].treatmentPlans[j].dentistFullName}  -  Treatment: ${data.medicalRecordsInfo[i].treatmentPlans[j].treatmentName}  -  Description: ${data.medicalRecordsInfo[i].treatmentPlans[j].description}  -  Note: ${data.medicalRecordsInfo[i].treatmentPlans[j].note}  -  Status: ${data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanStatus}`;
+                  treatmentPlanDetailsDiv.appendChild(treatmentPlanInfoParagraph);
+
+                  // Hiển thị thông tin răng
+                  for (let k = 0; k < data.medicalRecordsInfo[i].treatmentPlans[j].teeth.length; k++) {
+                      const toothInfoParagraph = document.createElement('p');
+                      toothInfoParagraph.textContent = `Tooth: ${data.medicalRecordsInfo[i].treatmentPlans[j].teeth[k].toothId}  -  Face: ${data.medicalRecordsInfo[i].treatmentPlans[j].teeth[k].toothFaceName}`;
+                      treatmentPlanDetailsDiv.appendChild(toothInfoParagraph);
+                  }
+
+                  // Hiển thị thông tin thuốc
+                  for (let k = 0; k < data.medicalRecordsInfo[i].treatmentPlans[j].drugs.length; k++) {
+                      const drugInfoParagraph = document.createElement('p');
+                      drugInfoParagraph.textContent = `Drug: ${data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].drugName}  -  Quantity: ${data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].quantity}`;
+                      treatmentPlanDetailsDiv.appendChild(drugInfoParagraph);
+                  }
+
+                  // Hiển thị thông tin thuốc đối phó
+                  for (let k = 0; k < data.medicalRecordsInfo[i].treatmentPlans[j].drugsContraindication.length; k++) {
+                      const drugContraindicationInfoParagraph = document.createElement('p');
+                      drugContraindicationInfoParagraph.textContent = `Contraindication drug: ${data.medicalRecordsInfo[i].treatmentPlans[j].drugsContraindication[k].drugName}`;
+                      treatmentPlanDetailsDiv.appendChild(drugContraindicationInfoParagraph);
+                  }
+
+                  treatmentPlanDiv.appendChild(treatmentPlanDetailsDiv);
+                  treatmentPlansDiv.appendChild(treatmentPlanDiv);
+                  
+              }
+              medicalRecordDiv.appendChild(treatmentPlansDiv);
+              getPatientMedicalRecordInfoResult.appendChild(medicalRecordDiv);
+
+              // Hiển thị thông tin thanh toán
+              const receiptDiv = document.createElement('div');
+              receiptDiv.textContent = `Payment information of medical record ${data.medicalRecordsInfo[i].medicalRecordId}:`;
+              receiptDiv.classList.add('receipt');
+
+              if (data.receiptsInfo[i]) {
+                  const receiptInfoParagraph = document.createElement('p');
+                  receiptInfoParagraph.textContent = `Receipt Id: ${data.receiptsInfo[i].receiptId}  -  Total amount: ${data.receiptsInfo[i].totalAmount}  -  Total paid amount: ${data.receiptsInfo[i].totalPaidAmount}  -  Change amount: ${data.receiptsInfo[i].changeAmount}  -  Status: ${data.receiptsInfo[i].paymentStatus}`;
+                  receiptDiv.appendChild(receiptInfoParagraph);
+                  getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
+
+                  for (let j = 0; j < data.receiptsInfo[i].payments.length; j++) {
+                    const paymentReceiptDiv = document.createElement('div');
+                    paymentReceiptDiv.classList.add('payment-receipt');
+
+                    const paymentReceiptInfo = document.createElement('p');
+                    paymentReceiptInfo.textContent = `Payment details ${j + 1}:`;
+                    const paymentDate = new Date(data.receiptsInfo[i].payments[j].paymentDate);
+                    const formattedPaymentDate = `${paymentDate.getDate().toString().padStart(2, '0')}/${(paymentDate.getMonth() + 1).toString().padStart(2, '0')}/${paymentDate.getFullYear()}`;
+                    const paymentTime = new Date(data.receiptsInfo[i].payments[j].paymentTime);
+                    const formattedPaymentTime = `${paymentTime.getUTCHours().toString().padStart(2, '0')}:${paymentTime.getUTCMinutes().toString().padStart(2, '0')}:${paymentTime.getUTCSeconds().toString().padStart(2, '0')}`;
+                    const paymentReceiptInfoParagraph = document.createElement('p');
+                    paymentReceiptInfoParagraph.textContent = `Payment date: ${formattedPaymentDate}  -  Payment time: ${formattedPaymentTime}  -  Staff full name: ${data.receiptsInfo[i].payments[j].staffFullName}  -  Paid amount: ${data.receiptsInfo[i].payments[j].paidAmount} - Payment type: ${data.receiptsInfo[i].payments[j].paymentType}`;
+
+                    paymentReceiptDiv.appendChild(paymentReceiptInfoParagraph);
+                    receiptDiv.appendChild(paymentReceiptDiv);
+                    getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
+                  }  
+              } else {
+                  const receiptInfoParagraph = document.createElement('p');
+                  receiptInfoParagraph.textContent = `Payment has not been made`;
+                  receiptDiv.appendChild(receiptInfoParagraph);
+                  getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
+              }
+          }
+      } else {
+          getPatientMedicalRecordInfoResult.innerHTML = data.message;
+      }
+  } catch (error) {
+      console.error('Có lỗi xảy ra khi lấy thông tin hồ sơ bệnh nhân', error);
+  };
 }
 
 async function getAppointmentsByPatientPhoneNumber(patientPhoneNumber, selectedDatePatientPhoneNumber) {
@@ -1039,7 +1021,6 @@ async function findAppointment(findAppointmentId) {
   };     
 }
 
-
 async function updateAppointment(updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName) {
     const updateAppointmentResult = document.getElementById('updateAppointmentResult');
     try {
@@ -1071,8 +1052,10 @@ async function deleteAppointment(deleteAppointmentId) {
       })
       const data = await response.json();
       if (response.status === 200) {
+        deleteAppointmentResult.textContent = data.message;
+      } else if (response.status === 404 ) {
           deleteAppointmentResult.textContent = data.message;
-      } else {
+      } else if (response.status === 500) {
           deleteAppointmentResult.textContent = data.message;
       }
   } catch (error) {
@@ -1080,26 +1063,230 @@ async function deleteAppointment(deleteAppointmentId) {
   }
 }
 
-// async function getUnpaidReceiptInfo(patientPhoneNumber) {
-//   const getUnpaidReceiptInfoResult = document.getElementById('getUnpaidReceiptInfoResult');
-//   getUnpaidReceiptInfoResult.innerHTML = '';
+async function getReceiptInfo(patientPhoneNumber) {
+  try {
+      const response = await fetch('http://localhost:3000/getReceiptInfo', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ patientPhoneNumber }) 
+      })
+      const data = await response.json();
+      const getReceiptInfoResult = document.getElementById('getReceiptInfoResult');
+      getReceiptInfoResult.innerHTML = '';
+
+      if (response.status === 200) {         
+        const patientDiv = document.createElement('div');
+        patientDiv.textContent = 'PAYMENT INFOMATION';
+        patientDiv.classList.add('patient-info');
+
+        const patientGeneralInfoParagraph = document.createElement('p');
+        patientGeneralInfoParagraph.textContent = `Patient phone number: ${data.patientInfo.patientPhoneNumber}`;
+        patientDiv.appendChild(patientGeneralInfoParagraph);
+        getReceiptInfoResult.appendChild(patientDiv);
+
+        var totalAmount = 0;
+        var totalTreatmentsPrice = 0;
+        var totalToothsFacePrice = 0;
+        var totalDrugsPrice = 0;
+        for (let i = 0; i < data.medicalRecordsInfo.length; i++) {
+            const medicalRecordDiv = document.createElement('div');
+            medicalRecordDiv.textContent = `Medical record ${i+1} (Id: ${data.medicalRecordsInfo[i].medicalRecordId}):`;
+            medicalRecordDiv.classList.add('medical-record');
+
+            for (let j = 0; j < data.medicalRecordsInfo[i].treatmentPlans.length; j++) {
+                const treatmentPlanDiv = document.createElement('div');
+                treatmentPlanDiv.textContent = `Treatment plan ${j+1} (Id: ${data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanId}):`;
+                treatmentPlanDiv.classList.add('treatment-plan');
+
+                const treatmentPlanInfoParagraph = document.createElement('p');
+                treatmentPlanInfoParagraph.textContent = `Treatment: ${data.medicalRecordsInfo[i].treatmentPlans[j].treatmentName}  -  Price: ${data.medicalRecordsInfo[i].treatmentPlans[j].price}$`;
+                totalTreatmentsPrice += parseInt(data.medicalRecordsInfo[i].treatmentPlans[j].price);
+
+                treatmentPlanDiv.appendChild(treatmentPlanInfoParagraph);
+
+                for (let k = 0; k < data.medicalRecordsInfo[i].treatmentPlans[j].teeth.length; k++) {
+                    const toothInfoParagraph = document.createElement('p');
+                    toothInfoParagraph.textContent = `Tooth: ${data.medicalRecordsInfo[i].treatmentPlans[j].teeth[k].toothId}  -  Face: ${data.medicalRecordsInfo[i].treatmentPlans[j].teeth[k].toothFaceName}  -  Price: ${data.medicalRecordsInfo[i].treatmentPlans[j].teeth[k].price}$`;
+                    totalToothsFacePrice += parseInt(data.medicalRecordsInfo[i].treatmentPlans[j].teeth[k].price);
+
+                    treatmentPlanDiv.appendChild(toothInfoParagraph);
+                }            
+                for (let k = 0; k < data.medicalRecordsInfo[i].treatmentPlans[j].drugs.length; k++) {
+                    const drugInfoParagraph = document.createElement('p');
+                    drugInfoParagraph.textContent = `Drug: ${data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].drugName}  -  Price: ${data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].price}$  -  Quantity: ${data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].quantity}`;
+                    totalDrugsPrice += parseInt(data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].price) * parseInt(data.medicalRecordsInfo[i].treatmentPlans[j].drugs[k].quantity);
+
+                    treatmentPlanDiv.appendChild(drugInfoParagraph);
+                }      
+                
+                totalAmount = totalTreatmentsPrice + totalToothsFacePrice + totalDrugsPrice;
+                medicalRecordDiv.appendChild(treatmentPlanDiv);
+            }
+            getReceiptInfoResult.appendChild(medicalRecordDiv);
+
+            const receiptDiv = document.createElement('div');
+            receiptDiv.textContent = `Payment information of medical record ${data.medicalRecordsInfo[i].medicalRecordId}:`;
+            receiptDiv.classList.add('receipt');
+
+            const treatmentPriceParagraph = document.createElement('p');
+            treatmentPriceParagraph.textContent = `Total treatments price: ${totalTreatmentsPrice}$`;
+            const toothPriceParagraph = document.createElement('p');
+            toothPriceParagraph.textContent = `Total tooths price: ${totalToothsFacePrice}$`;
+            const drugPriceParagraph = document.createElement('p');
+            drugPriceParagraph.textContent = `Total drugs price: ${totalDrugsPrice}$`;
+            const receiptPriceParagraph = document.createElement('p');
+            receiptPriceParagraph.textContent = `Total amount: ${totalAmount}$`;
+
+            receiptDiv.appendChild(treatmentPriceParagraph);
+            receiptDiv.appendChild(toothPriceParagraph);
+            receiptDiv.appendChild(drugPriceParagraph);
+            receiptDiv.appendChild(receiptPriceParagraph);
+            getReceiptInfoResult.appendChild(receiptDiv);
+
+            // nếu có thông tin hóa đơn
+            if (data.receiptsInfo[i]) {
+              const receiptInfoParagraph = document.createElement('p');
+              receiptInfoParagraph.textContent = `Receipt Id: ${data.receiptsInfo[i].receiptId}  -  Total amount: ${data.receiptsInfo[i].totalAmount}  -  Total paid amount: ${data.receiptsInfo[i].totalPaidAmount}  -  Change amount: ${data.receiptsInfo[i].changeAmount}  -  Status: ${data.receiptsInfo[i].paymentStatus}`;
+              receiptDiv.appendChild(receiptInfoParagraph);
+              getReceiptInfoResult.appendChild(receiptDiv);
+
+              for (let j = 0; j < data.receiptsInfo[i].payments.length; j++) {
+                const paymentReceiptDiv = document.createElement('div');
+                paymentReceiptDiv.classList.add('payment-receipt');
+
+                const paymentReceiptInfo = document.createElement('p');
+                paymentReceiptInfo.textContent = `Payment details ${j + 1}:`;
+                const paymentDate = new Date(data.receiptsInfo[i].payments[j].paymentDate);
+                const formattedPaymentDate = `${paymentDate.getDate().toString().padStart(2, '0')}/${(paymentDate.getMonth() + 1).toString().padStart(2, '0')}/${paymentDate.getFullYear()}`;
+                const paymentTime = new Date(data.receiptsInfo[i].payments[j].paymentTime);
+                const formattedPaymentTime = `${paymentTime.getUTCHours().toString().padStart(2, '0')}:${paymentTime.getUTCMinutes().toString().padStart(2, '0')}:${paymentTime.getUTCSeconds().toString().padStart(2, '0')}`;
+                const paymentReceiptInfoParagraph = document.createElement('p');
+                paymentReceiptInfoParagraph.textContent = `Payment date: ${formattedPaymentDate}  -  Payment time: ${formattedPaymentTime}  -  Staff full name: ${data.receiptsInfo[i].payments[j].staffFullName}  -  Paid amount: ${data.receiptsInfo[i].payments[j].paidAmount} - Payment type: ${data.receiptsInfo[i].payments[j].paymentType}`;
+
+                paymentReceiptDiv.appendChild(paymentReceiptInfoParagraph);
+                receiptDiv.appendChild(paymentReceiptDiv);
+                getReceiptInfoResult.appendChild(receiptDiv);
+              }  
+            }
+
+            // nếu có hóa đơn và chưa thanh toán xong     hoặc    chưa có hóa đơn
+            if ((data.receiptsInfo[i] && (data.receiptsInfo[i].totalAmount > data.receiptsInfo[i].totalPaidAmount)) || (!data.receiptsInfo[i])) {
+              const paymentForm = document.createElement('form');
+              paymentForm.classList.add('payment-form');
+
+              const paymentInput = document.createElement('input');
+              paymentInput.setAttribute('type', 'number');
+              paymentInput.setAttribute('placeholder', 'Payment amount');
+              paymentInput.classList.add('payment-amount');
+
+              const paymentTypeSelect = document.createElement('select');
+              paymentTypeSelect.classList.add('payment-method');
+
+              const cashOption = document.createElement('option');
+              cashOption.value = 'cash';
+              cashOption.textContent = 'Cash';
+
+              const onlineOption = document.createElement('option');
+              onlineOption.value = 'online';
+              onlineOption.textContent = 'Online';
+
+              paymentTypeSelect.appendChild(cashOption);
+              paymentTypeSelect.appendChild(onlineOption);
+
+              const payButton = document.createElement('button');
+              payButton.setAttribute('id', `payButton_${data.medicalRecordsInfo[i].medicalRecordId}_${totalAmount}`);
+              payButton.textContent = 'Pay';
+              payButton.addEventListener('click', async function(event) {
+                  event.preventDefault();
+                  const paymentAmount = parseInt(paymentInput.value);
+                  const paymentType = paymentTypeSelect.value;
+                  const staffUserName = sessionStorage.getItem('loggedInUser');
+                  if (paymentAmount && paymentAmount !== 0) {
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().split('T')[0]; // Lấy ngày tháng
+                    const formattedTime = currentDate.toTimeString().split(' ')[0]; // Lấy giờ
+                    const receiptPriceId = payButton.getAttribute('id');
+                    const receiptInfo = receiptPriceId.split('_'); // Chia chuỗi ID thành mảng
+                    const medicalRecordId = receiptInfo[1];
+                    const totalAmount = receiptInfo[2];
+                    let paidAmount = paymentAmount;
+                    const response = await fetch('http://localhost:3000/payReceipt', {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({ medicalRecordId, totalAmount, formattedDate, formattedTime, staffUserName, paidAmount, paymentType,   }) 
+                    });
+                      const data = await response.json();
+                      if (response.status === 200) {
+                        // Lấy thông tin cập nhật từ phản hồi
+                        const { receiptId, totalPaidAmount, changeAmount, paymentStatus } = data;
+                        console.log('data: ' + data);
+                    
+                        const updatedReceiptDiv = document.createElement('div');
+                        updatedReceiptDiv.classList.add('updated-receipt');
+                    
+                        const updatedReceiptInfoParagraph = document.createElement('p');
+                        updatedReceiptInfoParagraph.textContent = `Receipt Id: ${receiptId} -  Total paid amount: ${totalPaidAmount}$  -  Change amount: ${changeAmount}$  -  Status: ${paymentStatus}`;
+                        
+                        updatedReceiptDiv.appendChild(updatedReceiptInfoParagraph);
+                    
+                        // Hiển thị thông tin cập nhật cho người dùng
+                        getReceiptInfoResult.appendChild(updatedReceiptDiv);
+                      } else {
+                          // Xử lý trường hợp không thành công khi thanh toán
+                          getReceiptInfoResult.innerHTML = data.message;
+                      }
+
+                  } else {
+                    alert('Please provide payment amount');
+                  }
+              });
+
+              paymentForm.appendChild(paymentInput);
+              paymentForm.appendChild(paymentTypeSelect);
+              paymentForm.appendChild(payButton);
+              receiptDiv.appendChild(paymentForm);
+
+              getReceiptInfoResult.appendChild(receiptDiv);
+            }
+
+            totalTreatmentsPrice = 0;
+            totalToothsFacePrice = 0;
+            totalDrugsPrice = 0;
+            totalAmount = 0;
+
+        }
+      } else {
+        getReceiptInfoResult.innerHTML = data.message;
+      }
+  } catch (error) {
+      console.error('Error when payment receipt', error);
+  };
+}
+
+// async function paymentReceipt(patientPhoneNumber, paymentDate, paymentTime, staffUserName, paidAmount, paymentType) {
+//   const paymentReceiptResult = document.getElementById('paymentReceiptResult');
 //   try {
-//       const response = await fetch('http://localhost:3000/getUnpaidReceiptInfo', {
+//       const response = await fetch('http://localhost:3000/paymentReceipt', {
 //           method: 'POST',
 //           headers: {
 //               'Content-Type': 'application/json'
 //           },
-//           body: JSON.stringify({ patientPhoneNumber }) 
+//           body: JSON.stringify({ patientPhoneNumber, paymentDate, paymentTime, staffUserName, paidAmount, paymentType }) 
 //       })
 //       const data = await response.json();
-//       if (response.status === 200) {  
-//           getUnpaidReceiptInfoResult.innerHTML = data.message;
-//       } else {
-//           getUnpaidReceiptInfoResult.innerHTML = data.message;
+//       if (response.status === 200) {
+//         paymentReceiptResult.textContent = data.message;
+//       } else if (response.status === 404 ) {
+//         paymentReceiptResult.textContent = data.message;
+//       } else if (response.status === 500) {
+//         paymentReceiptResult.textContent = data.message;
 //       }
 //   } catch (error) {
-//       getUnpaidReceiptInfoResult.innerHTML = data.message;
-//       console.error('Có lỗi xảy ra khi thnah toán', error);
+//       console.error('Error when payment receipt', error);
 //   };
 // }
 
@@ -1107,9 +1294,9 @@ module.exports = { restoreInitialTPDisplayState, restoreInitialMRDisplayState, r
 module.exports = { displayDentistsForAddAppointment, displayDentistsForUpdateAppointment, displayDentistsForMedical};
 module.exports = { getAppointmentsByPatientPhoneNumber, getAppointmentsByClinicName, getAppointmentsByDentistUserName};
 module.exports = { getAppointment, addAppointment, findAppointment, updateAppointment, deleteAppointment};
-module.exports = { addTreatmentPlan, displayMedicalRecordInfo, addPatientMedicalRecord, getPatientMedicalRecordInfo, 
-                  searchTooth, searchDrug, searchDrugContraindication, addTooth, addDrug, addDrugContraindication, calculateTotalAmount};
-// module.exports = { getUnpaidReceiptInfo };
+module.exports = { addTreatmentPlan, displayMedicalRecordInfo, addPatientMedicalRecord, getColorByStatus, getPatientMedicalRecordInfo, 
+                  searchTooth, searchDrug, searchDrugContraindication, addTooth, addDrug, addDrugContraindication};
+module.exports = { getReceiptInfo };
 module.exports = { selectedTreatmentPlansDate, selectedTreatmentPlansTime, selectedTreatmentPlansClinicName, selectedTreatmentPlansDentistUserName, selectedTreatmentPlansDentistFullName, 
                   selectedTreatmentPlansTreatmentId, selectedTreatmentPlansTreatmentName, selectedTreatmentPlansDescription, selectedTreatmentPlansNote,
                   selectedTreatmentPlansToothsId, selectedTreatmentPlansToothsFaceName, selectedTreatmentPlansDrugsId, selectedTreatmentPlansDrugsName, 

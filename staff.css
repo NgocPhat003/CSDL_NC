@@ -1,87 +1,82 @@
-/* Thiết lập font và màu chữ chung */
 body {
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
-  
-  /* Định dạng tiêu đề */
-  h1, h2 {
-    color: #009688;
-  }
-  
-  /* Định dạng form và input */
-  form {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
-  input[type="text"],
-  input[type="date"],
-  input[type="time"],
-  input[type="email"],
-  input[type="number"],
+  font-family: Arial, sans-serif;
+  color: #333;
+}
 
-  select {
-    padding: 8px;
-    margin-bottom: 10px;
-    width: 20%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  input[type="submit"],
-  button {
-    padding: 10px 20px;
-    background-color: #009688;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  input[type="submit"]:hover,
-  button:hover {
-    background-color: #00796b;
-  }
-  
-  .hiddenForAddTreatmentPlan,
-  .hiddenForAddMedicalRecord {
-    display: none;
-  }
-  
-  #confirmUpdatePatient,
-  #updateAppointmentForm {
-    display: none;
-  }
+h1,
+h2 {
+  color: #009688;
+}
 
-  #displayDentistsForAddAppointment,
-  #displayDentistsForUpdateAppointment {
-    display: none;
-  }
+form {
+  margin-bottom: 20px;
+}
 
-  #addPatientMedicalRecordResult {
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    }
-    
-    
-  
-    #addToothResult,
-    #addDrugResult,
-    #addDrugContraindicationResult {
-    color: rgb(217, 22, 22);
-    }
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
 
-  /* Style cho modal */
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="email"],
+input[type="number"],
+
+select {
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 20%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="submit"],
+button {
+  padding: 10px 20px;
+  background-color: #009688;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+  background-color: #00796b;
+}
+
+.hiddenForAddTreatmentPlan,
+.hiddenForAddMedicalRecord {
+  display: none;
+}
+
+#confirmUpdatePatient,
+#updateAppointmentForm {
+  display: none;
+}
+
+#displayDentistsForAddAppointment,
+#displayDentistsForUpdateAppointment {
+  display: none;
+}
+
+#addPatientMedicalRecordResult {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+#addToothResult,
+#addDrugResult,
+#addDrugContraindicationResult {
+  color: rgb(217, 22, 22);
+}
+
 .modal {
-  display: none; /* Ẩn modal mặc định */
+  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -89,7 +84,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -100,7 +95,6 @@ body {
   width: 80%;
 }
 
-/* Style cho nút đóng modal */
 .close {
   color: #aaa;
   float: right;
@@ -113,4 +107,40 @@ body {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.medical-record {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.treatment-plan {
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.receipt {
+  border: 1px solid #aaa;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.payment-receipt {
+  border: 1px solid #bbb;
+  margin-top: 5px;
+  padding: 5px;
+  background-color: #efefef;
+}
+
+
+.expand-btn {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: larger;
+  padding: 5px;
+  display: inline-block;
+  margin-right: 5px;
 }

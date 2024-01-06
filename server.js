@@ -3,16 +3,16 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*"); 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "*");
   res.header("Access-Control-Allow-Methods", "*");
   next();
 });
-  
-var { conn } = require('./connect'); 
 
-app.post('/getAllPatientsInfo', async function(req, res){
+var { conn } = require('./connect');
+
+app.post('/getAllPatientsInfo', async function (req, res) {
   const pool = await conn;
   const sqlString = "SELECT * FROM Patient";
   try {
@@ -20,9 +20,9 @@ app.post('/getAllPatientsInfo', async function(req, res){
     const result = await request.query(sqlString);
     const patients = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(patients); 
+      res.status(200).json(patients);
     } else {
-      res.status(404).json({ message: 'Không có thông tin bệnh nhân' }); 
+      res.status(404).json({ message: 'Không có thông tin bệnh nhân' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân:', error);
@@ -30,27 +30,27 @@ app.post('/getAllPatientsInfo', async function(req, res){
   }
 });
 
-app.post('/getPatientInfo', async function(req, res) {
-  const {patientPhoneNumber}  = req.body;
+app.post('/getPatientInfo', async function (req, res) {
+  const { patientPhoneNumber } = req.body;
   const pool = await conn;
-  const sqlString = 
-  `SELECT * FROM Patient  WHERE patientPhoneNumber = '${patientPhoneNumber}'`;
+  const sqlString =
+    `SELECT * FROM Patient  WHERE patientPhoneNumber = '${patientPhoneNumber}'`;
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
     const patient = result.recordset[0];
     if (patient) {
-      res.status(200).json(patient); 
+      res.status(200).json(patient);
     } else {
-      res.status(404).json({ message: 'Không tìm thấy thông tin bệnh nhân' }); 
+      res.status(404).json({ message: 'Không tìm thấy thông tin bệnh nhân' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân:', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi lấy thông tin bệnh nhân' });
-  }        
+  }
 });
-  
-app.post('/updatePatientInfo', async function(req, res){
+
+app.post('/updatePatientInfo', async function (req, res) {
   const { patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender } = req.body;
   const patientAgeInt = parseInt(patientAge);
   const pool = await conn;
@@ -65,21 +65,21 @@ app.post('/updatePatientInfo', async function(req, res){
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
-      if (result.rowsAffected[0] === 1) {
-        res.status(200).json({ message: 'Thông tin bệnh nhân đã được cập nhật.' });
-      } else if (result.rowsAffected[0] === 0) {
-        res.status(404).json({ message: 'Không tìm thấy bệnh nhân cần cập nhật' });
-      } else {
-        res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin bệnh nhân' });
-      }
+    if (result.rowsAffected[0] === 1) {
+      res.status(200).json({ message: 'Thông tin bệnh nhân đã được cập nhật.' });
+    } else if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ message: 'Không tìm thấy bệnh nhân cần cập nhật' });
+    } else {
+      res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin bệnh nhân' });
+    }
   } catch (error) {
     console.error('PhoneNumber bệnh nhân đã tồn tại', error);
     res.status(500).json({ message: 'PhoneNumber bệnh nhân đã tồn tại' });
   };
 });
 
-app.post('/addPatientInfo', async function(req, res){
-  const {patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender } = req.body;
+app.post('/addPatientInfo', async function (req, res) {
+  const { patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender } = req.body;
   const patientAgeInt = parseInt(patientAge);
   const pool = await conn;
   const sqlString = `
@@ -99,8 +99,8 @@ app.post('/addPatientInfo', async function(req, res){
   }
 });
 
-app.delete('/deletePatientInfo/:patientPhoneNumber', async function(req, res){
-  const patientPhoneNumber  = req.params.patientPhoneNumber;
+app.delete('/deletePatientInfo/:patientPhoneNumber', async function (req, res) {
+  const patientPhoneNumber = req.params.patientPhoneNumber;
   const pool = await conn;
   const sqlString = `
   DELETE FROM Patient WHERE patientPhoneNumber = '${patientPhoneNumber}'`;
@@ -108,7 +108,7 @@ app.delete('/deletePatientInfo/:patientPhoneNumber', async function(req, res){
     const request = pool.request();
     const result = await request.query(sqlString);
     if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin bệnh nhân đã được xóa.' });  
+      res.status(200).json({ message: 'Thông tin bệnh nhân đã được xóa.' });
     } else {
       res.status(404).json({ message: 'Bệnh nhân không tồn tại.' });
     }
@@ -116,10 +116,10 @@ app.delete('/deletePatientInfo/:patientPhoneNumber', async function(req, res){
     console.error('Có lỗi xảy ra khi xóa thông tin bệnh nhân:', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi xóa thông tin bệnh nhân' });
   }
-  
+
 });
 
-app.post('/getAllStaffsInfo', async function(req, res){
+app.post('/getAllStaffsInfo', async function (req, res) {
   const pool = await conn;
   const sqlString = "SELECT * FROM Staff";
   try {
@@ -127,9 +127,9 @@ app.post('/getAllStaffsInfo', async function(req, res){
     const result = await request.query(sqlString);
     const staffs = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(staffs); 
+      res.status(200).json(staffs);
     } else {
-      res.status(404).json({ message: 'Không có thông tin nhân viên' }); 
+      res.status(404).json({ message: 'Không có thông tin nhân viên' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin nhân viên', error);
@@ -137,28 +137,28 @@ app.post('/getAllStaffsInfo', async function(req, res){
   }
 });
 
-app.post('/getStaffInfo', async function(req, res) {
-  const {staffUserName}  = req.body;
+app.post('/getStaffInfo', async function (req, res) {
+  const { staffUserName } = req.body;
   const pool = await conn;
-  const sqlString = 
-  `SELECT * FROM Staff  WHERE staffUserName = '${staffUserName}'`;
+  const sqlString =
+    `SELECT * FROM Staff  WHERE staffUserName = '${staffUserName}'`;
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
     const staff = result.recordset[0];
     if (staff) {
-      res.status(200).json(staff); 
+      res.status(200).json(staff);
     } else {
-      res.status(404).json({ message: 'Không tìm thấy thông tin nhân viên' }); 
+      res.status(404).json({ message: 'Không tìm thấy thông tin nhân viên' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin nhân viên', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi lấy thông tin nhân viên' });
-  }        
+  }
 });
-  
-app.post('/updateStaffInfo', async function(req, res){
-  const { staffUserName, staffPassword, staffFullName} = req.body;
+
+app.post('/updateStaffInfo', async function (req, res) {
+  const { staffUserName, staffPassword, staffFullName } = req.body;
   const pool = await conn;
   const sqlString = `
   UPDATE Staff 
@@ -168,21 +168,21 @@ app.post('/updateStaffInfo', async function(req, res){
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
-      if (result.rowsAffected[0] === 1) {
-        res.status(200).json({ message: 'Thông tin nhân viên đã được cập nhật.' });
-      } else if (result.rowsAffected[0] === 0) {
-        res.status(404).json({ message: 'Không tìm thấy nhân viên cần cập nhật' });
-      } else {
-        res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin nhân viên' });
-      }
+    if (result.rowsAffected[0] === 1) {
+      res.status(200).json({ message: 'Thông tin nhân viên đã được cập nhật.' });
+    } else if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ message: 'Không tìm thấy nhân viên cần cập nhật' });
+    } else {
+      res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin nhân viên' });
+    }
   } catch (error) {
     console.error('Username nhân viên đã tồn tại', error);
     res.status(500).json({ message: 'Username nhân viên đã tồn tại' });
   };
 });
 
-app.post('/addStaffInfo', async function(req, res){
-  const { staffUserName, staffPassword, staffFullName} = req.body;
+app.post('/addStaffInfo', async function (req, res) {
+  const { staffUserName, staffPassword, staffFullName } = req.body;
   const pool = await conn;
   const sqlString = `
   INSERT INTO Account (username, password, accountType)
@@ -204,8 +204,8 @@ app.post('/addStaffInfo', async function(req, res){
   }
 });
 
-app.delete('/deleteStaffInfo/:staffUserName', async function(req, res){
-  const staffUserName  = req.params.staffUserName;
+app.delete('/deleteStaffInfo/:staffUserName', async function (req, res) {
+  const staffUserName = req.params.staffUserName;
   const pool = await conn;
   const sqlString = `
   DELETE FROM Account WHERE username = '${staffUserName}'
@@ -214,7 +214,7 @@ app.delete('/deleteStaffInfo/:staffUserName', async function(req, res){
     const request = pool.request();
     const result = await request.query(sqlString);
     if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin nhân viên đã được xóa.' });  
+      res.status(200).json({ message: 'Thông tin nhân viên đã được xóa.' });
     } else {
       res.status(404).json({ message: 'Nhân viên không tồn tại.' });
     }
@@ -222,10 +222,10 @@ app.delete('/deleteStaffInfo/:staffUserName', async function(req, res){
     console.error('Có lỗi xảy ra khi xóa thông tin nhân viên', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi xóa thông tin nhân viên' });
   }
-  
+
 });
 
-app.post('/getAllDentistsInfo', async function(req, res){
+app.post('/getAllDentistsInfo', async function (req, res) {
   const pool = await conn;
   const sqlString = "SELECT * FROM Dentist";
   try {
@@ -233,9 +233,9 @@ app.post('/getAllDentistsInfo', async function(req, res){
     const result = await request.query(sqlString);
     const dentists = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(dentists); 
+      res.status(200).json(dentists);
     } else {
-      res.status(404).json({ message: 'Không có thông tin nha sĩ' }); 
+      res.status(404).json({ message: 'Không có thông tin nha sĩ' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin nha sĩ', error);
@@ -243,28 +243,28 @@ app.post('/getAllDentistsInfo', async function(req, res){
   }
 });
 
-app.post('/getDentistInfo', async function(req, res) {
-  const {dentistUserName}  = req.body;
+app.post('/getDentistInfo', async function (req, res) {
+  const { dentistUserName } = req.body;
   const pool = await conn;
-  const sqlString = 
-  `SELECT * FROM Dentist  WHERE dentistUserName = '${dentistUserName}'`;
+  const sqlString =
+    `SELECT * FROM Dentist  WHERE dentistUserName = '${dentistUserName}'`;
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
     const dentist = result.recordset[0];
     if (dentist) {
-      res.status(200).json(dentist); 
+      res.status(200).json(dentist);
     } else {
-      res.status(404).json({ message: 'Không tìm thấy thông tin nha sĩ' }); 
+      res.status(404).json({ message: 'Không tìm thấy thông tin nha sĩ' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin nha sĩ', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi lấy thông tin nha sĩ' });
-  }        
+  }
 });
-  
-app.post('/updateDentistInfo', async function(req, res){
-  const { dentistUserName, dentistPassword, dentistFullName} = req.body;
+
+app.post('/updateDentistInfo', async function (req, res) {
+  const { dentistUserName, dentistPassword, dentistFullName } = req.body;
   const pool = await conn;
   const sqlString = `
   UPDATE Dentist 
@@ -274,21 +274,21 @@ app.post('/updateDentistInfo', async function(req, res){
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
-      if (result.rowsAffected[0] === 1) {
-        res.status(200).json({ message: 'Thông tin nha sĩ đã được cập nhật' });
-      } else if (result.rowsAffected[0] === 0) {
-        res.status(404).json({ message: 'Không tìm thấy nha sĩ cần cập nhật' });
-      } else {
-        res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin nha sĩ' });
-      }
+    if (result.rowsAffected[0] === 1) {
+      res.status(200).json({ message: 'Thông tin nha sĩ đã được cập nhật' });
+    } else if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ message: 'Không tìm thấy nha sĩ cần cập nhật' });
+    } else {
+      res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin nha sĩ' });
+    }
   } catch (error) {
     console.error('Username nha sĩ đã tồn tại', error);
     res.status(500).json({ message: 'Username nha sĩ đã tồn tại' });
   };
 });
 
-app.post('/addDentistInfo', async function(req, res){
-  const {dentistUserName, dentistPassword, dentistFullName} = req.body;
+app.post('/addDentistInfo', async function (req, res) {
+  const { dentistUserName, dentistPassword, dentistFullName } = req.body;
   const pool = await conn;
   const sqlString = `
   INSERT INTO Account (username, password, accountType)
@@ -310,8 +310,8 @@ app.post('/addDentistInfo', async function(req, res){
   }
 });
 
-app.delete('/deleteDentistInfo/:dentistUserName', async function(req, res){
-  const dentistUserName  = req.params.dentistUserName;
+app.delete('/deleteDentistInfo/:dentistUserName', async function (req, res) {
+  const dentistUserName = req.params.dentistUserName;
   const pool = await conn;
   const sqlString = `
   DELETE FROM Account WHERE username = '${dentistUserName}'
@@ -320,7 +320,7 @@ app.delete('/deleteDentistInfo/:dentistUserName', async function(req, res){
     const request = pool.request();
     const result = await request.query(sqlString);
     if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin nha sĩ đã được xóa' });  
+      res.status(200).json({ message: 'Thông tin nha sĩ đã được xóa' });
     } else {
       res.status(404).json({ message: 'Nha sĩ không tồn tại' });
     }
@@ -330,7 +330,7 @@ app.delete('/deleteDentistInfo/:dentistUserName', async function(req, res){
   }
 });
 
-app.post('/getAllDrugsInfo', async function(req, res){
+app.post('/getAllDrugsInfo', async function (req, res) {
   const pool = await conn;
   const sqlString = "SELECT * FROM Drug";
   try {
@@ -338,9 +338,9 @@ app.post('/getAllDrugsInfo', async function(req, res){
     const result = await request.query(sqlString);
     const drugs = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(drugs); 
+      res.status(200).json(drugs);
     } else {
-      res.status(404).json({ message: 'Không có thông tin thuốc' }); 
+      res.status(404).json({ message: 'Không có thông tin thuốc' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin thuốc', error);
@@ -348,28 +348,28 @@ app.post('/getAllDrugsInfo', async function(req, res){
   }
 });
 
-app.post('/getDrugInfo', async function(req, res) {
-  const {drugName}  = req.body;
+app.post('/getDrugInfo', async function (req, res) {
+  const { drugName } = req.body;
   const pool = await conn;
-  const sqlString = 
-  `SELECT * FROM Drug  WHERE drugName = '${drugName}'`;
+  const sqlString =
+    `SELECT * FROM Drug  WHERE drugName = '${drugName}'`;
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
     const drug = result.recordset[0];
     if (drug) {
-      res.status(200).json(drug); 
+      res.status(200).json(drug);
     } else {
-      res.status(404).json({ message: 'Không tìm thấy thông tin thuốc' }); 
+      res.status(404).json({ message: 'Không tìm thấy thông tin thuốc' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin thuốc', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi lấy thông tin thuốc' });
-  }        
+  }
 });
 
-app.post('/updateDrugInfo', async function(req, res){
-  const { enterDrugName, drugName, indication, stockNumber, price} = req.body;
+app.post('/updateDrugInfo', async function (req, res) {
+  const { enterDrugName, drugName, indication, stockNumber, price } = req.body;
   const pool = await conn;
   const sqlString = `
   UPDATE Drug 
@@ -382,21 +382,21 @@ app.post('/updateDrugInfo', async function(req, res){
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
-      if (result.rowsAffected[0] === 1) {
-        res.status(200).json({ message: 'Thông tin thuốc đã được cập nhật' });
-      } else if (result.rowsAffected[0] === 0) {
-        res.status(404).json({ message: 'Không tìm thấy thuốc cần cập nhật' });
-      } else {
-        res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin thuốc' });
-      }
+    if (result.rowsAffected[0] === 1) {
+      res.status(200).json({ message: 'Thông tin thuốc đã được cập nhật' });
+    } else if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ message: 'Không tìm thấy thuốc cần cập nhật' });
+    } else {
+      res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật thông tin thuốc' });
+    }
   } catch (error) {
     console.error('Tên thuốc đã tồn tại', error);
     res.status(500).json({ message: 'Tên thuốc đã tồn tại' });
   };
 });
 
-app.post('/addDrugInfo', async function(req, res){
-  const { drugName, indication, stockNumber, price} = req.body;
+app.post('/addDrugInfo', async function (req, res) {
+  const { drugName, indication, stockNumber, price } = req.body;
   const stockNumberInt = parseInt(stockNumber);
   const priceInt = parseInt(price);
   const pool = await conn;
@@ -417,15 +417,15 @@ app.post('/addDrugInfo', async function(req, res){
   }
 });
 
-app.delete('/deleteDrugInfo/:drugName', async function(req, res){
-  const drugName  = req.params.drugName;
+app.delete('/deleteDrugInfo/:drugName', async function (req, res) {
+  const drugName = req.params.drugName;
   const pool = await conn;
   const sqlString = `DELETE FROM Drug WHERE drugName = '${drugName}'`;
   try {
     const request = pool.request();
     const result = await request.query(sqlString);
     if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin thuốc đã được xóa' });  
+      res.status(200).json({ message: 'Thông tin thuốc đã được xóa' });
     } else {
       res.status(404).json({ message: 'Thuốc không tồn tại' });
     }
@@ -435,38 +435,38 @@ app.delete('/deleteDrugInfo/:drugName', async function(req, res){
   }
 });
 
-app.post('/Login', async function(req, res) {
+app.post('/Login', async function (req, res) {
   const { username, password } = req.body;
   const pool = await conn;
-  const sqlString = 
-  `SELECT accountType FROM Account WHERE username = '${username}' AND password = '${password}'`;
-  
+  const sqlString =
+    `SELECT accountType FROM Account WHERE username = '${username}' AND password = '${password}'`;
+
   if (password !== ' ') {
     try {
       const request = pool.request();
       const result = await request.query(sqlString);
       if (result.recordset[0]) {
         if (result.recordset[0].accountType === 'Admin') {
-            res.status(200).json('Admin');
-        } else if ( result.recordset[0].accountType === 'Staff') {
-            res.status(200).json('Staff');
+          res.status(200).json('Admin');
+        } else if (result.recordset[0].accountType === 'Staff') {
+          res.status(200).json('Staff');
         } else if (result.recordset[0].accountType === 'Dentist') {
-            res.status(200).json('Dentist');
+          res.status(200).json('Dentist');
         }
       } else {
-          res.status(404).json({message: 'Thông tin đăng nhập không chính xác'});
+        res.status(404).json({ message: 'Thông tin đăng nhập không chính xác' });
       }
     } catch (error) {
       console.error('Có lỗi xảy ra khi kiểm tra đăng nhập', error);
       res.status(500).json({ message: 'Có lỗi xảy ra khi kiểm tra đăng nhập' });
     }
   } else {
-    res.status(404).json({message: 'Thông tin đăng nhập không chính xác'});
+    res.status(404).json({ message: 'Thông tin đăng nhập không chính xác' });
   }
 });
 
-app.post('/displayAvailableDentists', async function(req, res) {
-  const {date, time, clinicName} = req.body;
+app.post('/displayAvailableDentists', async function (req, res) {
+  const { date, time, clinicName } = req.body;
   const pool = await conn;
   const sqlString = ` SELECT d.dentistUserName, d.dentistFullName
                       FROM Dentist d JOIN workSchedule ws ON d.dentistUserName = ws.dentistUserName
@@ -480,18 +480,18 @@ app.post('/displayAvailableDentists', async function(req, res) {
     const result = await request.query(sqlString);
     const dentists = result.recordset;
     if (result.rowsAffected[0] > 0) {
-      res.status(200).json(dentists); 
+      res.status(200).json(dentists);
     } else {
-      res.status(404).json({message: 'Không tìm thấy bác sĩ phù hợp'}); 
+      res.status(404).json({ message: 'Không tìm thấy bác sĩ phù hợp' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin bác sĩ', error);
     res.status(500).json({ message: 'Có lỗi xảy ra khi lấy thông tin bác sĩ' });
-  }        
+  }
 });
 
-app.post('/searchTooth', async function(req, res){
-  const {toothId} = req.body;
+app.post('/searchTooth', async function (req, res) {
+  const { toothId } = req.body;
   const pool = await conn;
   const sqlString = `SELECT toothId FROM Tooth WHERE toothId = ${parseInt(toothId)}`;
   try {
@@ -499,9 +499,9 @@ app.post('/searchTooth', async function(req, res){
     const result = await request.query(sqlString);
     const tooth = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(tooth); 
+      res.status(200).json(tooth);
     } else {
-      res.status(404).json({ message: 'Không có thông tin răng' }); 
+      res.status(404).json({ message: 'Không có thông tin răng' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin răng', error);
@@ -509,8 +509,8 @@ app.post('/searchTooth', async function(req, res){
   }
 });
 
-app.post('/searchDrug', async function(req, res){
-  const {drugName} = req.body;
+app.post('/searchDrug', async function (req, res) {
+  const { drugName } = req.body;
   const pool = await conn;
   const sqlString = `SELECT drugId, drugName, stockNumber FROM Drug WHERE drugName = '${drugName}' AND stockNumber > 0`;
   try {
@@ -518,9 +518,9 @@ app.post('/searchDrug', async function(req, res){
     const result = await request.query(sqlString);
     const drug = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(drug); 
+      res.status(200).json(drug);
     } else {
-      res.status(404).json({ message: 'Không có thông tin thuốc hoặc hết hàng' }); 
+      res.status(404).json({ message: 'Không có thông tin thuốc hoặc hết hàng' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin thuốc', error);
@@ -528,76 +528,12 @@ app.post('/searchDrug', async function(req, res){
   }
 });
 
-app.post('/getTreatmentPrice', async function(req, res){
-  const {treatmentId} = req.body;
-  const treatmentIdInt = parseInt(treatmentId);
+app.post('/addPatientMedicalRecord', async function (req, res) {
+  const { patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies,
+    treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistUserName, treatmentPlansTreatmentId, treatmentPlansDescription, treatmentPlansNote,
+    treatmentPlansToothsId, treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId,
+  } = req.body; // totalAmount
   const pool = await conn;
-  const sqlString = `SELECT price FROM Category WHERE treatmentId = '${treatmentIdInt}'`;
-  try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    const treatmentPrice = result.recordset[0].price;
-    if (treatmentPrice) {
-      res.status(200).json(treatmentPrice); 
-    } else {
-      res.status(404).json({ message: 'Không có thông tin giá liệu trình cần tìm ' }); 
-    }
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi lấy giá liệu trình', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi lấy giá liệu trình' });
-  }
-});
-
-app.post('/getToothFacePrice', async function(req, res){
-  const {toothFaceName} = req.body;
-  const pool = await conn;
-  const sqlString = `SELECT price FROM toothFace WHERE toothFaceName = '${toothFaceName}'`;
-  try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    const toothFacePrice = result.recordset[0].price;
-    if (toothFacePrice) {
-      res.status(200).json(toothFacePrice); 
-    } else {
-      res.status(404).json({ message: 'Không có thông tin giá mặt răng cần tìm ' }); 
-    }
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi lấy giá mặt răng', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi lấy giá mặt răng cần tìm' });
-  }
-});
-
-app.post('/getDrugPrice', async function(req, res){
-  const {drugName} = req.body;
-  const pool = await conn;
-  const sqlString = `SELECT price FROM Drug WHERE drugName = '${drugName}'`;
-  try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    const drugPrice = result.recordset[0].price;
-    if (drugPrice) {
-      res.status(200).json(drugPrice); 
-    } else {
-      res.status(404).json({ message: 'Không có thông tin giá thuốc' }); 
-    }
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi lấy giá thuốc', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi lấy giá thuốc' });
-  }
-});
-
-app.post('/addPatientMedicalRecord', async function(req, res) {
-  const {patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies, 
-        treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistUserName, treatmentPlansTreatmentId, treatmentPlansDescription, treatmentPlansNote,
-        treatmentPlansToothsId, treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId, 
-        totalAmount} = req.body;
-  const pool = await conn;
-  console.log('treatment id: ' + treatmentPlansTreatmentId);
-  console.log('tooth: ' + treatmentPlansToothsId);
-  console.log('drug: ' + treatmentPlansDrugsId);
-  console.log('quantity: ' + treatmentPlansDrugsQuantity);
-  console.log('contraindication: ' + treatmentPlansDrugsContraindicationId);
-  console.log('total: ' + totalAmount);
 
   const sqlString = `
   INSERT INTO medicalRecord (patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies)
@@ -613,18 +549,18 @@ app.post('/addPatientMedicalRecord', async function(req, res) {
     const result = await request.query(sqlString);
     const medicalRecordId = result.recordset[0].medicalRecordId;
     if (medicalRecordId) {
-      const totalAmountInt = parseInt(totalAmount);
-      const totalPaidAmount = 0;
-      const changeAmount = 0;
-      const sqlString = `
-      INSERT INTO Receipt (medicalRecordId, totalAmount, totalPaidAmount, changeAmount, paymentStatus)
-      VALUES ('${medicalRecordId}', ${totalAmountInt}, ${totalPaidAmount}, ${changeAmount}, 'Uncomplete')`;
-      await request.query(sqlString);
+      // const totalAmountInt = parseInt(totalAmount);
+      // const totalPaidAmount = 0;
+      // const changeAmount = 0;
+      // const sqlString = `
+      // INSERT INTO Receipt (medicalRecordId, totalAmount, totalPaidAmount, changeAmount, paymentStatus)
+      // VALUES ('${medicalRecordId}', ${totalAmountInt}, ${totalPaidAmount}, ${changeAmount}, 'Uncomplete')`;
+      // await request.query(sqlString);
 
       for (let i = 0; i < treatmentPlansDate.length; i++) {
         const treatmentPlanDate = treatmentPlansDate[i];
         const treatmentPlanTime = treatmentPlansTime[i];
-        const treatmentPlanClinicName = treatmentPlansClinicName[i];        
+        const treatmentPlanClinicName = treatmentPlansClinicName[i];
         const treatmentPlanDentistUserName = treatmentPlansDentistUserName[i];
         const treatmentPlanTreatmentIdInt = parseInt(treatmentPlansTreatmentId[i]);
         const treatmentPlanDescription = treatmentPlansDescription[i];
@@ -645,7 +581,7 @@ app.post('/addPatientMedicalRecord', async function(req, res) {
         AND startTime <= '${treatmentPlanTime}'
         AND endTime > '${treatmentPlanTime}'`;
         await request.query(sqlString);
-      
+
         const sqlString1 = `
         SELECT treatmentPlanId 
         FROM treatmentPlan 
@@ -655,22 +591,22 @@ app.post('/addPatientMedicalRecord', async function(req, res) {
         AND dentistUserName  = '${treatmentPlanDentistUserName}'`;
         const result = await request.query(sqlString1);
         const treatmentPlanId = result.recordset[0].treatmentPlanId;
-        
+
         const sqlString2 = `
         INSERT INTO medicalRecordTreatmentPlans (medicalRecordId, treatmentPlanId)
         VALUES ('${medicalRecordId}', '${treatmentPlanId}')`;
         await request.query(sqlString2);
 
-        for(let j = 0; j < treatmentPlansToothsId[i].length; j++) {
+        for (let j = 0; j < treatmentPlansToothsId[i].length; j++) {
           const toothId = parseInt(treatmentPlansToothsId[i][j]);
           const toothFaceName = treatmentPlansToothsFaceName[i][j];
           const sqlString = `
           INSERT INTO treatmentPlanTooths (treatmentPlanId, toothId, toothFaceName)
           VALUES ('${treatmentPlanId}', ${toothId}, '${toothFaceName}')`;
           await request.query(sqlString);
-        }   
+        }
 
-        for(let j = 0; j < treatmentPlansDrugsId[i].length; j++) {
+        for (let j = 0; j < treatmentPlansDrugsId[i].length; j++) {
           const drugId = parseInt(treatmentPlansDrugsId[i][j]);
           const drugQuantity = parseInt(treatmentPlansDrugsQuantity[i][j]);
           const sqlString = `
@@ -681,15 +617,15 @@ app.post('/addPatientMedicalRecord', async function(req, res) {
           SET stockNumber = stockNumber - ${drugQuantity}
           WHERE drugId = ${drugId}`;
           await request.query(sqlString);
-        }    
+        }
 
-        for(let j = 0; j < treatmentPlansDrugsContraindicationId[i].length; j++) {
+        for (let j = 0; j < treatmentPlansDrugsContraindicationId[i].length; j++) {
           const drugContraindicationId = parseInt(treatmentPlansDrugsContraindicationId[i][j]);
           const sqlString = `
           INSERT INTO treatmentPlanDrugsContraindication (treatmentPlanId, drugContraindicationId)
           VALUES ('${treatmentPlanId}', ${drugContraindicationId})`;
           await request.query(sqlString);
-        }              
+        }
       }
       res.status(200).json({ message: 'Thông tin hồ sơ bệnh nhân đã được thêm' });
     } else {
@@ -701,8 +637,8 @@ app.post('/addPatientMedicalRecord', async function(req, res) {
   }
 });
 
-app.post('/getPatientMedicalRecordInfo', async function(req, res) {
-  const {patientPhoneNumber}  = req.body;
+app.post('/getPatientMedicalRecordInfo', async function (req, res) {
+  const { patientPhoneNumber } = req.body;
   const pool = await conn;
   try {
     // mức 1: Patient
@@ -712,10 +648,10 @@ app.post('/getPatientMedicalRecordInfo', async function(req, res) {
     WHERE patientPhoneNumber = '${patientPhoneNumber}'`;
     const request = pool.request();
     const patientResult = await request.query(sqlString);
-    const patientInfo = patientResult.recordset[0]; 
+    const patientInfo = patientResult.recordset[0];
 
     // mức 2: medicalRecord, receipt
-    if (patientResult.rowsAffected[0] > 0) {
+    if (patientInfo) {
       let medicalRecordsInfo = [];
       const result = await request.query(`
       SELECT medicalRecordId, examinationDate, examinationTime, oralHealth, allergies
@@ -723,13 +659,13 @@ app.post('/getPatientMedicalRecordInfo', async function(req, res) {
       WHERE patientPhoneNumber = '${patientPhoneNumber}'`);
       const medicalRecordsResult = result.recordset;
 
-      if (result.rowsAffected[0] > 0) {
+      if (result.recordset[0]) {
         const medicalRecords = medicalRecordsResult.map(record => ({
-        medicalRecordId: record.medicalRecordId,
-        examinationDate: record.examinationDate,
-        examinationTime: record.examinationTime,
-        oralHealth: record.oralHealth,
-        allergies: record.allergies,
+          medicalRecordId: record.medicalRecordId,
+          examinationDate: record.examinationDate,
+          examinationTime: record.examinationTime,
+          oralHealth: record.oralHealth,
+          allergies: record.allergies,
         }))
         medicalRecordsInfo = medicalRecordsInfo.concat(medicalRecords);
 
@@ -746,34 +682,10 @@ app.post('/getPatientMedicalRecordInfo', async function(req, res) {
           totalPaidAmount: receipt.totalPaidAmount,
           changeAmount: receipt.changeAmount,
           paymentStatus: receipt.paymentStatus,
-          }))
-          receiptsInfo = receiptsInfo.concat(receipts);
+        }))
+        receiptsInfo = receiptsInfo.concat(receipts);
 
-        // mức 3
-        let treatmentPlansId = [];
-        let treatmentPlansDate = [];
-        let treatmentPlansTime = [];
-        let treatmentPlansClinicName = [];
-        let treatmentPlansDentistFullName = [];
-        let treatmentPlansTreatmentName = [];
-        let treatmentPlansDescription = [];
-        let treatmentPlansNote = [];
-        let treatmentPlansStatus = [];
-
-        let paymentReceiptsDate = [];
-        let paymentReceiptsTime  = [];
-        let paymentReceiptsStaffFullName = [];
-        let paymentReceiptsPaidAmount = [];
-        let paymentReceiptsType = [];
-
-        // mức 4
-        let treatmentPlansToothsId = [];
-        let treatmentPlansToothsFaceName = [];
-        let treatmentPlansDrugsName = [];
-        let treatmentPlansDrugsQuantity = [];
-        let treatmentPlansDrugsContraindicationName = [];
-
-        for (const record of medicalRecordsInfo) {
+        for (const record of medicalRecords) {
           const treatmentPlansResult = await request.query(`
             SELECT tp.treatmentPlanId, tp.treatmentPlanDate, tp.treatmentPlanTime, tp.clinicName, d.dentistFullName, c.treatmentName, tp.description, tp.note, tp.treatmentPlanStatus
             FROM medicalRecordTreatmentPlans mrtp 
@@ -781,95 +693,95 @@ app.post('/getPatientMedicalRecordInfo', async function(req, res) {
             JOIN Dentist d ON d.dentistUserName = tp.dentistUserName
             JOIN Category c ON tp.treatmentId = c.treatmentId
             WHERE mrtp.medicalRecordId = '${record.medicalRecordId}'`);
-          const treatmentPlansInfo = treatmentPlansResult.recordset;
 
-          for (const plan of treatmentPlansInfo) {
-            treatmentPlansId.push(plan.treatmentPlanId);
-            treatmentPlansDate.push(plan.treatmentPlanDate);
-            treatmentPlansTime.push(plan.treatmentPlanTime);
-            treatmentPlansClinicName.push(plan.clinicName);
-            treatmentPlansDentistFullName.push(plan.dentistFullName);
-            treatmentPlansTreatmentName.push(plan.treatmentName);
-            treatmentPlansDescription.push(plan.description);
-            treatmentPlansNote.push(plan.note);
-            treatmentPlansStatus.push(plan.treatmentPlanStatus);
+          const treatmentPlansInfo = [];
+          for (const plan of treatmentPlansResult.recordset) {
 
             const toothResult = await request.query(`
               SELECT toothId, toothFaceName
               FROM treatmentPlanTooths
-              WHERE treatmentPlanId = '${plan.treatmentPlanId}'
-            `);
+              WHERE treatmentPlanId = '${plan.treatmentPlanId}'`);
             const teeth = toothResult.recordset;
-            const toothsId = teeth.map(tooth => tooth.toothId);
-            const toothsFaceName = teeth.map(tooth => tooth.toothFaceName);
-
-            treatmentPlansToothsId.push(toothsId);
-            treatmentPlansToothsFaceName.push(toothsFaceName);
 
             const drugResult = await request.query(`
               SELECT d.drugName, tpd.quantity
               FROM treatmentPlanDrugs tpd JOIN Drug d ON tpd.drugId = d.drugId
-              WHERE treatmentPlanId = '${plan.treatmentPlanId}'
-            `);
+              WHERE treatmentPlanId = '${plan.treatmentPlanId}'`);
             const drugs = drugResult.recordset;
-            const drugsName = drugs.map(drug => drug.drugName);
-            const drugsQuantity = drugs.map(drug => drug.quantity);
-
-            treatmentPlansDrugsName.push(drugsName);
-            treatmentPlansDrugsQuantity.push(drugsQuantity);
 
             const drugContraindicationResult = await request.query(`
               SELECT d.drugName
               FROM treatmentPlanDrugsContraindication tpdc JOIN Drug d ON tpdc.drugContraindicationId = d.drugId
-              WHERE treatmentPlanId = '${plan.treatmentPlanId}'
-            `);
-            const drugsContraindication = drugContraindicationResult.recordset.map(drug => drug.drugName);
+              WHERE treatmentPlanId = '${plan.treatmentPlanId}'`);
+            const drugsContraindication = drugContraindicationResult.recordset;
 
-            treatmentPlansDrugsContraindicationName.push(drugsContraindication);
+            const treatmentPlanDetails = {
+              treatmentPlanId: plan.treatmentPlanId,
+              treatmentPlanDate: plan.treatmentPlanDate,
+              treatmentPlanTime: plan.treatmentPlanTime,
+              clinicName: plan.clinicName,
+              dentistFullName: plan.dentistFullName,
+              treatmentName: plan.treatmentName,
+              description: plan.description,
+              note: plan.note,
+              treatmentPlanStatus: plan.treatmentPlanStatus,
+              teeth,
+              drugs,
+              drugsContraindication,
+            };
+            treatmentPlansInfo.push(treatmentPlanDetails); // Push thông tin chi tiết vào mảng kế hoạch điều trị
+          }
+
+          if (!record.hasOwnProperty('treatmentPlans')) {
+            record['treatmentPlans'] = treatmentPlansInfo;
+          } else {
+            // Nếu thuộc tính treatmentPlans đã tồn tại, ta sẽ tiếp tục xử lý với thông tin đã có
+            record['treatmentPlans'] = record['treatmentPlans'].concat(treatmentPlansInfo);
           }
         }
 
-        for (const receipt of receiptsInfo) {
+        for (const receipt of receipts) {
           const paymentReceiptsResult = await request.query(`
           SELECT pr.paymentDate, pr.paymentTime, s.staffFullName, pr.paidAmount, pr.paymentType
           FROM paymentReceipt pr JOIN Staff s ON pr.staffUserName  = s.staffUserName 
           WHERE receiptId = '${receipt.receiptId}'`);
-          const paymentReceiptsInfo = paymentReceiptsResult.recordset;
 
-          for (const payment of paymentReceiptsInfo) {
-            paymentReceiptsDate.push(payment.paymentDate);
-            paymentReceiptsTime.push(payment.paymentTime);
-            paymentReceiptsStaffFullName.push(payment.staffFullName);
-            paymentReceiptsPaidAmount.push(payment.paidAmount);
-            paymentReceiptsType.push(payment.paymentType);
+          let paymentsInfo = [];
+          for (const payment of paymentReceiptsResult.recordset) {
+            const paymentDetails = {
+              paymentDate: payment.paymentDate,
+              paymentTime: payment.paymentTime,
+              staffFullName: payment.staffFullName,
+              paidAmount: payment.paidAmount,
+              paymentType: payment.paymentType
+            };
+            paymentsInfo.push(paymentDetails); 
+          }
+
+          if (!receipt.hasOwnProperty('payments')) {
+            receipt['payments'] = paymentsInfo;
+          } else {
+            receipt['payments'] = receipt['payments'].concat(paymentsInfo);
           }
         }
-        
-        const allInfo = {
-          patientInfo, medicalRecordsInfo, receiptsInfo, treatmentPlansId, treatmentPlansDate, treatmentPlansTime,
-          treatmentPlansClinicName, treatmentPlansDentistFullName, treatmentPlansTreatmentName, 
-          treatmentPlansDescription, treatmentPlansNote, treatmentPlansStatus,
-          paymentReceiptsDate, paymentReceiptsTime, paymentReceiptsStaffFullName, 
-          paymentReceiptsPaidAmount, paymentReceiptsType, treatmentPlansToothsId, 
-          treatmentPlansToothsFaceName, treatmentPlansDrugsName, treatmentPlansDrugsQuantity,
-          treatmentPlansDrugsContraindicationName 
-        };
-        console.log(allInfo);
+        const allInfo = { patientInfo, medicalRecordsInfo, receiptsInfo };
+        // console.log(allInfo);
         res.status(200).json(allInfo);
+
       } else {
-        res.status(404).json({message: 'Chưa có thông tin hồ sơ điều trị bệnh nhân'});
+        res.status(404).json({ message: 'Not found medical record information' });
       }
     } else {
-      res.status(404).json({message: 'Bệnh nhân không tồn tại'});
+      res.status(404).json({ message: 'Not found patient information' });
     }
   } catch (error) {
-    console.error('Có lỗi xảy ra khi lấy thông tin hồ sơ', error);
-    res.status(404).json({message: 'Có lỗi xảy ra khi lấy thông tin hồ sơ'});
+    console.error('Error when get patient medical record', error);
+    res.status(404).json({ message: 'Error when get patient medical record' });
   }
 });
 
-app.post('/getAppointmentsByPatientPhoneNumber', async function(req, res){
-  const {patientPhoneNumber, selectedDatePatientPhoneNumber} = req.body;
+app.post('/getAppointmentsByPatientPhoneNumber', async function (req, res) {
+  const { patientPhoneNumber, selectedDatePatientPhoneNumber } = req.body;
   const pool = await conn;
   const sqlString = `
   SELECT sa.appointmentId, p.patientFullName, sa.patientPhoneNumber, sa.appointmentDate, sa.appointmentTime, sa.clinicName, d.dentistFullName, sa.note, sa.appointmentStatus 
@@ -883,9 +795,9 @@ app.post('/getAppointmentsByPatientPhoneNumber', async function(req, res){
     const result = await request.query(sqlString);
     const appointments = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(appointments); 
+      res.status(200).json(appointments);
     } else {
-      res.status(404).json({ message: 'Không có thông tin cuộc hẹn' }); 
+      res.status(404).json({ message: 'Không có thông tin cuộc hẹn' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin cuộc hẹn', error);
@@ -893,8 +805,8 @@ app.post('/getAppointmentsByPatientPhoneNumber', async function(req, res){
   }
 });
 
-app.post('/getAppointmentsByClinicName', async function(req, res){
-  const {clinicName, selectedDateClinic} = req.body;
+app.post('/getAppointmentsByClinicName', async function (req, res) {
+  const { clinicName, selectedDateClinic } = req.body;
   const pool = await conn;
   const sqlString = `
   SELECT sa.appointmentId, p.patientFullName, sa.patientPhoneNumber, sa.appointmentDate, sa.appointmentTime, sa.clinicName, d.dentistFullName, sa.note, sa.appointmentStatus 
@@ -908,9 +820,9 @@ app.post('/getAppointmentsByClinicName', async function(req, res){
     const result = await request.query(sqlString);
     const appointments = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(appointments); 
+      res.status(200).json(appointments);
     } else {
-      res.status(404).json({ message: 'Không có thông tin cuộc hẹn' }); 
+      res.status(404).json({ message: 'Không có thông tin cuộc hẹn' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin cuộc hẹn', error);
@@ -918,8 +830,8 @@ app.post('/getAppointmentsByClinicName', async function(req, res){
   }
 });
 
-app.post('/getAppointmentsByDentistUserName', async function(req, res){
-  const {dentistUserName, selectedDateDentistUserName} = req.body;
+app.post('/getAppointmentsByDentistUserName', async function (req, res) {
+  const { dentistUserName, selectedDateDentistUserName } = req.body;
   const pool = await conn;
   const sqlString = `
   SELECT sa.appointmentId, p.patientFullName, sa.patientPhoneNumber, sa.appointmentDate, sa.appointmentTime, sa.clinicName, d.dentistFullName, sa.note, sa.appointmentStatus 
@@ -933,9 +845,9 @@ app.post('/getAppointmentsByDentistUserName', async function(req, res){
     const result = await request.query(sqlString);
     const appointments = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(appointments); 
+      res.status(200).json(appointments);
     } else {
-      res.status(404).json({ message: 'Không có thông tin cuộc hẹn' }); 
+      res.status(404).json({ message: 'Không có thông tin cuộc hẹn' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin cuộc hẹn', error);
@@ -943,8 +855,8 @@ app.post('/getAppointmentsByDentistUserName', async function(req, res){
   }
 });
 
-app.post('/getAppointment', async function(req, res){
-  const {getAppointmentPatientPhoneNumber, getAppointmentDate, getAppointmentTime, getAppointmentClinicName} = req.body;
+app.post('/getAppointment', async function (req, res) {
+  const { getAppointmentPatientPhoneNumber, getAppointmentDate, getAppointmentTime, getAppointmentClinicName } = req.body;
   console.log(req.body);
   const pool = await conn;
   const request = pool.request();
@@ -978,23 +890,23 @@ app.post('/getAppointment', async function(req, res){
   const result = await request.query(sqlString);
   const appointment = result.recordset[0];
   if (appointment) {
-    res.status(200).json(appointment); 
+    res.status(200).json(appointment);
   } else {
-    res.status(404).json({ message: 'Không có thông tin cuộc hẹn' }); 
+    res.status(404).json({ message: 'Không có thông tin cuộc hẹn' });
   }
 });
 
 app.post('/addAppointment', async function (req, res) {
-  const { addAppointmentPatientPhoneNumber, addAppointmentPatientFullName, addAppointmentPatientEmail, 
-    addAppointmentPatientAddress, addAppointmentPatientAge, addAppointmentPatientGender, addAppointmentDate, 
-    addAppointmentTime, addAppointmentClinicName, addAppointmentDentistUserName} = req.body;
+  const { addAppointmentPatientPhoneNumber, addAppointmentPatientFullName, addAppointmentPatientEmail,
+    addAppointmentPatientAddress, addAppointmentPatientAge, addAppointmentPatientGender, addAppointmentDate,
+    addAppointmentTime, addAppointmentClinicName, addAppointmentDentistUserName } = req.body;
   const addAppointmentPatientAgeInt = parseInt(addAppointmentPatientAge);
 
 
   const pool = await conn;
   const request = pool.request();
   // check exist patient
-  try { 
+  try {
     const result1 = await request.query(`
     SELECT patientPhoneNumber 
     FROM Patient 
@@ -1002,8 +914,7 @@ app.post('/addAppointment', async function (req, res) {
     const patient = result1.recordset[0];
 
     // new patient
-    if (!patient)
-    {
+    if (!patient) {
       const sqlString_Add_and_Update_Info = `
       INSERT INTO Patient (patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender)
       VALUES ('${addAppointmentPatientPhoneNumber}', '${addAppointmentPatientFullName}', '${addAppointmentPatientEmail}', '${addAppointmentPatientAddress}', ${addAppointmentPatientAgeInt}, '${addAppointmentPatientGender}')
@@ -1029,7 +940,7 @@ app.post('/addAppointment', async function (req, res) {
         console.error('Có lỗi xảy ra khi thêm thông tin bệnh nhân và lịch hẹn', error);
         res.status(500).json({ message: 'Có lỗi xảy ra khi thêm thông tin bệnh nhân và lịch hẹn' });
       }
-    // old patient
+      // old patient
     } else {
       // check duplicate schedule
       const sqlString_Check_Duplicate_Schedule = `
@@ -1052,7 +963,7 @@ app.post('/addAppointment', async function (req, res) {
         // nếu đã có lịch hẹn trong khung giờ này
         if (appointment) {
           res.status(401).json(appointment);
-        } 
+        }
         //nếu chưa có lịch hẹn
         else {
           const sqlString_Add_Appointment = `
@@ -1089,8 +1000,8 @@ app.post('/addAppointment', async function (req, res) {
   }
 });
 
-app.post('/getAppointment', async function(req, res){
-  const {findAppointmentId} = req.body;
+app.post('/getAppointment', async function (req, res) {
+  const { findAppointmentId } = req.body;
   const pool = await conn;
   const request = pool.request();
   const sqlString = `
@@ -1101,14 +1012,14 @@ app.post('/getAppointment', async function(req, res){
   const result = await request.query(sqlString);
   const appointment = result.recordset[0];
   if (appointment) {
-    res.status(200).json(appointment); 
+    res.status(200).json(appointment);
   } else {
-    res.status(404).json({ message: `Not found appointment to update` }); 
+    res.status(404).json({ message: `Not found appointment to update` });
   }
 });
 
-app.post('/updateAppointment', async function(req, res) {
-  const {updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName} = req.body;
+app.post('/updateAppointment', async function (req, res) {
+  const { updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName } = req.body;
   const pool = await conn;
   const request = pool.request();
   try {
@@ -1133,35 +1044,111 @@ app.post('/updateAppointment', async function(req, res) {
       AND workingDate = '${appointment.appointmentDate}'
       AND startTime <= '${appointment.appointmentTime}'
       AND endTime > '${appointment.appointmentTime}'
-
       `);
-      if (result.rowsAffected[0] === 2) {
-        res.status(200).json({ message: 'Success update appointment' });
+      if (result.rowsAffected[0] > 0) {
+        const result = await request.query(`
+        SELECT treatmentPlanId
+        FROM treatmentPlan 
+        WHERE treatmentPlanDate = '${appointment.appointmentDate}'
+        AND treatmentPlanTime = '${appointment.appointmentTime}'
+        AND clinicName = '${appointment.clinicName}'
+        AND dentistUserName = '${appointment.dentistUserName}'
+        `);
+        const treatmentPlanId = result.recordset[0];
+        if (treatmentPlanId) {
+          const formattedDate = updateAppointmentDate.split('-').reverse().join('');
+          const formattedTime = updateAppointmentTime.split(':').join('');
+          const formattedId = `TP${formattedDate}${formattedTime}${updateAppointmentClinicName}${updateAppointmentDentistUserName.toUpperCase()}`;
+          const result = await request.query(`
+          UPDATE medicalRecordTreatmentPlans 
+          SET treatmentPlanId = '${formattedId}'
+          WHERE treatmentPlanId = '${treatmentPlanId}' 
+
+          UPDATE treatmentPlan 
+          SET treatmentPlanId = '${formattedId}',
+          treatmentPlanDate = '${updateAppointmentDate}',
+          treatmentPlanTime = '${updateAppointmentTime}',
+          clinicName = '${updateAppointmentClinicName}',
+          dentistUserName = '${updateAppointmentDentistUserName}'
+          WHERE treatmentPlanId = '${treatmentPlanId}' 
+
+          UPDATE treatmentPlanTooths
+          SET treatmentPlanId = '${formattedId}'
+          WHERE treatmentPlanId = '${treatmentPlanId}' 
+
+          UPDATE treatmentPlanDrugs
+          SET treatmentPlanId = '${formattedId}'
+          WHERE treatmentPlanId = '${treatmentPlanId}' 
+
+          UPDATE treatmentPlanDrugsContraindication
+          SET treatmentPlanId = '${formattedId}'
+          WHERE treatmentPlanId = '${treatmentPlanId}' 
+          `);
+          if (result.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Success update appointment' });
+          } else {
+            res.status(500).json({ message: 'Error when update appointment' });
+          }
+        } else {
+          res.status(200).json({ message: 'Success update appointment' });
+        }
       } else {
         res.status(500).json({ message: 'Error when update appointment' });
       }
     } else {
       res.status(404).json({ message: 'Not found appointment to update' });
-    }  
+    }
   } catch (error) {
     console.error('Error when update appointment', error);
     res.status(500).json({ message: 'Error when update appointment' });
   }
 });
 
-app.delete('/deleteAppointment/:deleteAppointmentId', async function(req, res){
-  const deleteAppointmentId  = req.params.deleteAppointmentId;
+app.delete('/deleteAppointment/:deleteAppointmentId', async function (req, res) {
+  const deleteAppointmentId = req.params.deleteAppointmentId;
   const pool = await conn;
-  const sqlString = `
-  DELETE FROM scheduleAppointment WHERE appointmentId = '${deleteAppointmentId}'
-
-  
-  `; 
   try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Success delete appointment' });  
+    const result = await request.query(`
+    SELECT appointmentDate, appointmentTime, clinicName, dentistUserName
+    FROM scheduleAppointment 
+    WHERE appointmentId = '${deleteAppointmentId}'
+  
+    DELETE FROM scheduleAppointment WHERE appointmentId = '${deleteAppointmentId}'`);
+    const appointment = result.recordset[0];
+    if (appointment) {
+      const result = await request.query(`
+      UPDATE workSchedule 
+      SET busyStatus = 'Free'
+      WHERE dentistUserName = '${appointment.dentistUserName}'
+      AND clinicName = '${appointment.clinicName}'
+      AND workingDate = '${appointment.appointmentDate}'
+      AND startTime <= '${appointment.appointmentTime}'
+      AND endTime > '${appointment.appointmentTime}'
+
+      SELECT treatmentPlanId
+      FROM treatmentPlan 
+      WHERE treatmentPlanDate = '${appointment.appointmentDate}'
+      AND treatmentPlanTime = '${appointment.appointmentTime}'
+      AND clinicName = '${appointment.clinicName}'
+      AND dentistUserName = '${appointment.dentistUserName}'
+      `);
+      const treatmentPlanId = result.recordset[0];
+      if (treatmentPlanId) {
+        const result = await request.query(`
+        DELETE FROM medicalRecordTreatmentPlans WHERE treatmentPlanId = '${treatmentPlanId}'
+        DELETE FROM treatmentPlan WHERE treatmentPlanId = '${treatmentPlanId}'
+        DELETE FROM treatmentPlanTooths WHERE treatmentPlanId = '${treatmentPlanId}'
+        DELETE FROM treatmentPlanDrugs WHERE treatmentPlanId = '${treatmentPlanId}'
+        DELETE FROM treatmentPlanDrugsContraindication WHERE treatmentPlanId = '${treatmentPlanId}'
+        `);
+        if (result.rowsAffected[0] > 0) {
+          res.status(200).json({ message: 'Success delete appointment' });
+        } else {
+          res.status(500).json({ message: 'Error when delete appointment' });
+        }
+      } else {
+        res.status(200).json({ message: 'Success delete appointment' });
+      }
     } else {
       res.status(404).json({ message: 'Not found appointment to delete' });
     }
@@ -1171,55 +1158,201 @@ app.delete('/deleteAppointment/:deleteAppointmentId', async function(req, res){
   }
 });
 
-// app.post('/getUnpaidReceiptInfo', async function(req, res) {
-//   const {patientUserName, }  = req.body;
-//   const pool = await conn;
-  
-//   const sqlString1 = `
-//   SELECT p.patientUserName, r.date, r.time, dt.dentistFullName, r.totalAmount, r.paymentStatus
-//   FROM Patient p 
-//   JOIN scheduleAppointment sa ON p.patientUserName = sa.patientUserName
-//   JOIN Dentist dt ON sa.dentistUserName = dt.dentistUserName
-//   JOIN patientMedicalRecords mr ON mr.patientUserName = p.patientUserName
-//   JOIN Receipt r ON p.patientUserName = r.patientUserName 
-//   WHERE p.patientUserName = '${patientUserName}'
-//   AND sa.appointmentDate = mr.examinationDate 
-//   AND mr.examinationDate = r.date
-//   AND mr.examinationTime = r.time
-//   AND r.paymentStatus = 'Unpaid'`;
+app.post('/getReceiptInfo', async function (req, res) {
+  const { patientPhoneNumber } = req.body;
+  const pool = await conn;
+  const request = pool.request();
+  try {
+    const patientResult = await request.query(`
+    SELECT patientPhoneNumber
+    FROM Patient
+    WHERE patientPhoneNumber = '${patientPhoneNumber}'`);
+    const patientInfo = patientResult.recordset[0];
 
-//   const sqlString2 = `
-//   SELECT p.patientUserName, ps.examinationDate, ps.examinationTime, ps.serviceId
-//   FROM Patient p  JOIN patientServices ps ON p.patientUserName = ps.patientUserName
-//   WHERE p.patientUserName  = '${patientUserName}'`;
-  
-//   const sqlString3 = `
-//   SELECT p.patientUserName , pd.examinationDate, pd.examinationTime, drugName, pd.quantity
-//   FROM Patient p  JOIN patientDrugs pd ON p.patientUserName = pd.patientUserName`;
+    if (patientInfo) {
+      let medicalRecordsInfo = [];
+      const result = await request.query(`
+        (SELECT medicalRecordId
+        FROM medicalRecord 
+        WHERE patientPhoneNumber = '${patientPhoneNumber}')
+        `);
+        // EXCEPT
+        // (SELECT mr.medicalRecordId
+        // FROM medicalRecord mr JOIN Receipt r ON mr.medicalRecordId = r.medicalRecordId
+        // WHERE mr.patientPhoneNumber = '${patientPhoneNumber}'
+        // AND r.paymentStatus = 'Completed')
+      const medicalRecordsResult = result.recordset;
+      const medicalRecords = medicalRecordsResult.map(record => ({ medicalRecordId: record.medicalRecordId }))
+      medicalRecordsInfo = medicalRecordsInfo.concat(medicalRecords);
 
-//   try {
-//     const request = pool.request();
-//     const result = await request.query(sqlString1);
-//     const receipt = result.recordset[0];
-//     console.log(receipt);
-//     if (receipt) {
-//       const request2 = pool.request();
-//       const result2 = await request2.query(sqlString2);
-//       const receipt2 = result2.recordset[0];
-      
+      let receiptsInfo = [];
+      const result1 = await request.query(`
+      SELECT receiptId, totalAmount, totalPaidAmount, changeAmount, paymentStatus
+      FROM Receipt r JOIN medicalRecord mr ON r.medicalRecordId = mr.medicalRecordId
+      WHERE mr.patientPhoneNumber = '${patientPhoneNumber}'`);
+      const receiptsResult = result1.recordset;
+      const receipts = receiptsResult.map(receipt => ({
+        receiptId: receipt.receiptId,
+        totalAmount: receipt.totalAmount,
+        totalPaidAmount: receipt.totalPaidAmount,
+        changeAmount: receipt.changeAmount,
+        paymentStatus: receipt.paymentStatus,
+      }))
+      receiptsInfo = receiptsInfo.concat(receipts);
+
+      if (result.recordset[0]) {
+        for (const record of medicalRecords) {
+          const treatmentPlansResult = await request.query(`
+              SELECT tp.treatmentPlanId, c.treatmentName, c.price
+              FROM medicalRecordTreatmentPlans mrtp 
+              JOIN treatmentPlan tp ON mrtp.treatmentPlanId = tp.treatmentPlanId
+              JOIN Category c ON tp.treatmentId = c.treatmentId
+              WHERE mrtp.medicalRecordId = '${record.medicalRecordId}'`);
+          const treatmentPlansInfo = [];
+          for (const plan of treatmentPlansResult.recordset) {
+            const toothResult = await request.query(`
+                SELECT tpt.toothId, tpt.toothFaceName, tf.price
+                FROM treatmentPlanTooths tpt JOIN toothFace tf ON tpt.toothFaceName = tf.toothFaceName
+                WHERE treatmentPlanId = '${plan.treatmentPlanId}'`);
+            const teeth = toothResult.recordset;
+
+            const drugResult = await request.query(`
+                    SELECT d.drugName, tpd.quantity, d.price
+                    FROM treatmentPlanDrugs tpd JOIN Drug d ON tpd.drugId = d.drugId
+                    WHERE treatmentPlanId = '${plan.treatmentPlanId}'`);
+            const drugs = drugResult.recordset;
+
+            const treatmentPlanDetails = {
+              treatmentPlanId: plan.treatmentPlanId,
+              treatmentName: plan.treatmentName,
+              price: plan.price,
+              teeth,
+              drugs,
+            };
+            treatmentPlansInfo.push(treatmentPlanDetails); // Push thông tin chi tiết vào mảng kế hoạch điều trị
+          }
+
+          if (!record.hasOwnProperty('treatmentPlans')) {
+            record['treatmentPlans'] = treatmentPlansInfo;
+          } else {
+            // Nếu thuộc tính treatmentPlans đã tồn tại, ta sẽ tiếp tục xử lý với thông tin đã có
+            record['treatmentPlans'] = record['treatmentPlans'].concat(treatmentPlansInfo);
+          }
+        }
+
+        for (const receipt of receipts) {
+          const paymentReceiptsResult = await request.query(`
+              SELECT pr.paymentDate, pr.paymentTime, s.staffFullName, pr.paidAmount, pr.paymentType
+              FROM paymentReceipt pr JOIN Staff s ON pr.staffUserName  = s.staffUserName 
+              WHERE receiptId = '${receipt.receiptId}'`);
+
+          let paymentsInfo = [];
+          for (const payment of paymentReceiptsResult.recordset) {
+            console.log(paymentReceiptsResult.recordset);
+            const paymentDetails = {
+              paymentDate: payment.paymentDate,
+              paymentTime: payment.paymentTime,
+              staffFullName: payment.staffFullName,
+              paidAmount: payment.paidAmount,
+              paymentType: payment.paymentType
+            };
+            paymentsInfo.push(paymentDetails); 
+          }
+
+          if (!receipt.hasOwnProperty('payments')) {
+            receipt['payments'] = paymentsInfo;
+          } else {
+            receipt['payments'] = receipt['payments'].concat(paymentsInfo);
+          }
+        }
+
+        const allInfo = { patientInfo, medicalRecordsInfo, receiptsInfo};
+        // console.log('receipt: );
+        res.status(200).json(allInfo);
+      } else {
+        res.status(404).json({ message: 'Not found medical record infomation' });
+      }
+
+    } else {
+      res.status(404).json({ message: 'Not found patient infomation' });
+    }
+  } catch (error) {
+    console.error('Error when get receipt infomation', error);
+    res.status(404).json({ message: 'Error when get receipt infomation' });
+  }
+});
+
+app.post('/payReceipt', async function (req, res) {
+  const { medicalRecordId, totalAmount, formattedDate, formattedTime, staffUserName, paidAmount, paymentType } = req.body;
+  const totalAmountInt = parseInt(totalAmount);
+  const paidAmountInt = parseInt(paidAmount);
+
+  const pool = await conn;
+  const request = pool.request();
+  try {
+    // Kiểm tra xem Receipt có tồn tại cho medicalRecordId không
+    const receiptDetails = await request.query(`
+      SELECT totalAmount, totalPaidAmount, changeAmount, paymentStatus
+      FROM Receipt
+      WHERE medicalRecordId = '${medicalRecordId}'`);
+
+    let totalAmount = totalAmountInt;
+    let totalPaidAmount = paidAmountInt;
+    let changeAmount;
+    let paymentStatus;
+
+    let result;
+    if (receiptDetails.recordset.length > 0) {
+      // Nếu Receipt đã tồn tại, cập nhật thông tin của nó
+      totalPaidAmount += receiptDetails.recordset[0].totalPaidAmount;
+      changeAmount = (totalPaidAmount > totalAmount) ? (totalPaidAmount - totalAmount) : 0;
+      paymentStatus = (totalPaidAmount >= totalAmount) ? 'Completed' : 'Uncomplete';
+
+      // Update thông tin của Receipt
+      result = await request.query(`
+        UPDATE Receipt
+        SET totalPaidAmount = ${totalPaidAmount}, 
+        changeAmount = ${changeAmount}, 
+        paymentStatus = '${paymentStatus}'
+        WHERE medicalRecordId = '${medicalRecordId}'
         
-//         res.status(200).json(patient); 
-//       } else {
-//         res.status(404).json({ message: 'Không tìm thấy thông tin bệnh nhân' }); 
-//       }
-//   } catch (error) {
-//     console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân:', error);
-//     res.status(500).json({ message: 'Có lỗi xảy ra khi lấy thông tin bệnh nhân' });
-//   }        
-// });
+        SELECT receiptId FROM Receipt WHERE medicalRecordId = '${medicalRecordId}' `);
+    } else {
+      // Nếu Receipt chưa tồn tại, tạo một bản ghi mới
+      changeAmount = (totalPaidAmount > totalAmount) ? (totalPaidAmount - totalAmount) : 0;
+      paymentStatus = (totalPaidAmount >= totalAmount) ? 'Completed' : 'Uncomplete';
 
-app.post('/getAllAppointmentsInfo', async function(req, res){
-  const {patientPhoneNumber} = req.body;
+      result = await request.query(`
+        INSERT INTO Receipt (medicalRecordId, totalAmount, totalPaidAmount, changeAmount, paymentStatus)
+        VALUES ('${medicalRecordId}', ${totalAmount}, ${totalPaidAmount}, ${changeAmount}, '${paymentStatus}')
+        
+        SELECT receiptId FROM Receipt WHERE medicalRecordId = '${medicalRecordId}'`);
+    }
+    const receiptId = result.recordset[0].receiptId;
+    // Thêm thông tin thanh toán vào bảng paymentReceipt
+    await request.query(`
+      INSERT INTO paymentReceipt (receiptId, paymentDate, paymentTime, staffUserName, paidAmount, paymentType)
+      VALUES (${receiptId}, '${formattedDate}', '${formattedTime}', '${staffUserName}', ${paidAmount}, '${paymentType}')`);
+
+    // Lấy thông tin cập nhật sau khi thanh toán
+    const updatedReceiptDetails = await request.query(`
+      SELECT receiptId, totalPaidAmount, changeAmount, paymentStatus
+      FROM Receipt
+      WHERE medicalRecordId = '${medicalRecordId}'`);
+
+    // Trả về thông tin cập nhật sau khi thanh toán cho việc hiển thị
+    res.status(200).json(updatedReceiptDetails.recordset[0]);
+    console.log(updatedReceiptDetails);
+  } catch (error) {
+    console.error('Error when processing payment', error);
+    res.status(500).json({ message: 'Error processing payment' });
+  }
+});
+
+
+
+app.post('/getAllAppointmentsInfo', async function (req, res) {
+  const { patientPhoneNumber } = req.body;
   const pool = await conn;
   const sqlString = `
   SELECT sa.appointmentId, sa.patientPhoneNumber, sa.appointmentDate, sa.appointmentTime, sa.clinicName, d.dentistFullName, sa.note, sa.appointmentStatus
@@ -1230,9 +1363,9 @@ app.post('/getAllAppointmentsInfo', async function(req, res){
     const result = await request.query(sqlString);
     const appointments = result.recordset;
     if (result.recordset[0]) {
-      res.status(200).json(appointments); 
+      res.status(200).json(appointments);
     } else {
-      res.status(404).json({ message: 'Không có thông tin lịch hẹn' }); 
+      res.status(404).json({ message: 'Không có thông tin lịch hẹn' });
     }
   } catch (error) {
     console.error('Có lỗi xảy ra khi lấy thông tin lịch hẹn:', error);
@@ -1240,6 +1373,6 @@ app.post('/getAllAppointmentsInfo', async function(req, res){
   }
 });
 
-app.listen(3000, function(){
-    console.log("server listen at port 3000");
+app.listen(3000, function () {
+  console.log("Server listen at port 3000");
 });

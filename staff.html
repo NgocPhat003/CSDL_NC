@@ -93,7 +93,6 @@
     </form>
     <div id="patientDeleteResult"></div>
 
-    
     <h2>Add patient medical record</h2>
     <form id="addPatientMedicalRecordForm">
       <label for="addMedicalPatientPhoneNumber">Patient phone number:</label>
@@ -326,7 +325,7 @@
 
     <h2>Update appointment info</h2>
     <class id="updateAppointmentInfo">
-      <form id="findAppointment"> 
+      <form id="findAppointmentForm"> 
         <label for="findAppointmentId">Appointment Id:</label>
         <input type="text" id="findAppointmentId" name="findAppointmentId" required><br><br> 
         <input type="submit" value="Update">
@@ -360,8 +359,37 @@
       <input type="submit" value="Delete appointment">
     </form>
     <div id="deleteAppointmentResult"></div>
-
     <!-- end of manage appointment -->
+
+
+    <h2>Get receipt info</h2>
+    <form id="getReceiptInfoForm"> 
+      <label for="receiptPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="receiptPatientPhoneNumber" name="receiptPatientPhoneNumber" required><br><br> 
+
+      <input type="submit" value="Get receipt info">
+    </form>
+    <div id="getReceiptInfoResult"></div>
+
+    <!-- <form id="paymentForm"> 
+      <label for="paymentPatientPhoneNumber">Patient phone number:</label>
+      <input type="text" id="paymentPatientPhoneNumber" name="paymentPatientPhoneNumber" required><br><br> 
+
+      <label for="paymentDate">Payment date:</label>
+      <input type="date" id="paymentDate" name="paymentDate" required><br><br> 
+
+      <label for="paymentTime">Payment time:</label>
+      <input type="time" id="paymentTime" name="paymentTime" required><br><br> 
+
+      <label for="paymentAmount">Payment amount:</label>
+      <input type="number" id="paymentAmount" name="paymentAmount" required><br><br> 
+
+      <label for="paymentType">Payment type:</label>
+      <input type="number" id="paymentType" name="paymentType" required><br><br> 
+
+      <input type="submit" value="Paying receipt">
+    </form>
+    <div id="paymentReceiptResult"></div> -->
 
     <script>
         const getPatientInfoForm = document.getElementById('getPatientInfoForm');
@@ -409,9 +437,9 @@
         const examinationTime = document.getElementById('addExaminationTime').value;
         const oralHealth = document.getElementById('addOralHealth').value;
         const allergies = document.getElementById('addAllergies').value;
-        const formattedDate = examinationDate.split('-').reverse().join('');
-        const formattedTime = examinationTime.split(':').join('');
-        const formattedId = `MR${patientPhoneNumber.toUpperCase()}${formattedDate}${formattedTime}`;
+        // const formattedDate = examinationDate.split('-').reverse().join('');
+        // const formattedTime = examinationTime.split(':').join('');
+        // const formattedId = `MR${patientPhoneNumber.toUpperCase()}${formattedDate}${formattedTime}`;
         // const addPatientMedicalRecordResult = document.getElementById('addPatientMedicalRecordResult');
         // addPatientMedicalRecordResult.innerHTML = `
         //   Medical record infomation: <br>
@@ -482,7 +510,6 @@
         searchDrug(drugName);
       });
 
-      
       const searchDrugContraindicationForm = document.getElementById('searchDrugContraindicationForm');
       searchDrugContraindicationForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -684,8 +711,8 @@
         addAppointmentTime, addAppointmentClinicName, addAppointmentDentistUserName);
       });
       
-      const findAppointment = document.getElementById('findAppointment');
-        findAppointment.addEventListener('submit', function(event) {
+      const findAppointmentForm = document.getElementById('findAppointmentForm');
+        findAppointmentForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const findAppointmentId = document.getElementById('findAppointmentId').value;
         findAppointment(findAppointmentId);
@@ -719,6 +746,23 @@
         deleteAppointment(deleteAppointmentId);
       });   
     
+      const getReceiptInfoForm = document.getElementById('getReceiptInfoForm');
+        getReceiptInfoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const patientPhoneNumber = document.getElementById('receiptPatientPhoneNumber').value;
+          getReceiptInfo(patientPhoneNumber);
+      });
+
+      // const paymentForm= document.getElementById('paymentForm');
+      //   paymentForm.addEventListener('submit', function(event) {
+      //     event.preventDefault();
+      //     const patientPhoneNumber = document.getElementById('paymentPatientPhoneNumber').value;
+      //     const staffUserName = sessionStorage.getItem('loggedInUser');
+      //     const paidAmount= document.getElementById('paymentAmount').value;
+      //     const paymentType = document.getElementById('paymentType').value;
+      //     paymentReceipt(patientPhoneNumber, staffUserName, paidAmount, paymentType);
+      //   });
+
     </script>
 
 </body>
