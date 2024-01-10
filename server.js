@@ -1373,6 +1373,25 @@ app.post('/getAllAppointmentsInfo', async function (req, res) {
   }
 });
 
+app.post('/getDentistsWorkScheduleInfo', async function (req, res) {
+  const pool = await conn;
+  const sqlString = `SELECT * FROM workSchedule`;
+  try {
+    const request = pool.request();
+    const result = await request.query(sqlString);
+    const schedules = result.recordset;
+    if (result.recordset[0]) {
+      res.status(200).json(schedules);
+    } else {
+      res.status(404).json({ message: 'Not found dentists work schedule information' });
+    }
+  } catch (error) {
+    console.error('Error when get dentists work schedule information', error);
+    res.status(500).json({ message: 'Error when get dentists work schedule information' });
+  }
+});
+
+
 app.listen(3000, function () {
   console.log("Server listen at port 3000");
 });
