@@ -392,6 +392,9 @@
     <div id="paymentReceiptResult"></div> -->
 
     <script>
+        if ((!sessionStorage.getItem('loggedInUser')) || (sessionStorage.getItem('accountType') !== 'Staff')) {
+      window.location.href = 'login.html'; 
+      }
         const getPatientInfoForm = document.getElementById('getPatientInfoForm');
         getPatientInfoForm.addEventListener('submit', function(event) {
           event.preventDefault();
