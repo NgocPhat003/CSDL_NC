@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>STAFF PAGE</title>
 
-    <script src = "staff.js"> </script>
     <script src = "share.js"> </script>
 
     
@@ -392,6 +391,9 @@
     <div id="paymentReceiptResult"></div> -->
 
     <script>
+        if ((!sessionStorage.getItem('loggedInUser')) || (sessionStorage.getItem('accountType') !== 'Staff')) {
+      window.location.href = 'login.html'; 
+      }
         const getPatientInfoForm = document.getElementById('getPatientInfoForm');
         getPatientInfoForm.addEventListener('submit', function(event) {
           event.preventDefault();

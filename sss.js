@@ -1,10 +1,9 @@
+
 const initialTPDisplayState = {}; 
 const initialMRDisplayState = {}; 
 
 window.onload = function() {
-  if ((!sessionStorage.getItem('loggedInUser')) || (sessionStorage.getItem('accountType') !== 'Staff')) {
-      window.location.href = 'login.html'; 
-  }
+  
 
   const hiddenTPElements = document.querySelectorAll('.hiddenForAddTreatmentPlan');
   hiddenTPElements.forEach(element => {
@@ -17,6 +16,362 @@ window.onload = function() {
   });
 
 };
+
+async function getAllPatientsInfo() {
+  const allPatientsInfo = document.getElementById('allPatientsInfo');
+  try {
+      const response = await fetch('http://localhost:3000/getAllPatientsInfo', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      })
+      const data = await response.json();
+      if (response.status === 200) {            
+          allPatientsInfo.innerHTML = ''; 
+          data.forEach(patient => {
+          const allPatientsDetails = document.createElement('p');
+          allPatientsDetails.textContent = `
+                                          Phone number: ${patient.patientPhoneNumber},
+                                          Full name: ${patient.patientFullName}, 
+                                          Email: ${patient.patientEmail},
+                                          Address: ${patient.patientAddress},
+                                          Age: ${patient.patientAge},
+                                          Gender: ${patient.patientGender}`; 
+
+          allPatientsInfo.appendChild(allPatientsDetails);
+          });
+      } else {
+          
+          allPatientsInfo.innerHTML = data.message;
+      }
+  } catch (error)  {
+      allPatientsInfo.innerHTML = data.message;
+      console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân', error);
+  };
+}
+
+async function getPatientInfo(patientPhoneNumber) {
+  const patientInfo = document.getElementById('getPatientInfo');
+  try {
+      const response = await fetch('http://localhost:3000/getPatientInfo', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ patientPhoneNumber }) 
+      })
+      const data = await response.json();
+      if (response.status === 200) {  
+          patientInfo.innerHTML = `  
+                                      <h3>Patient information</h3>
+                                      <p>Phone number: ${data.patientPhoneNumber}</p>
+                                      <p>Full name: ${data.patientFullName}</p>
+                                      <p>Email: ${data.patientEmail}</p>
+                                      <p>Address: ${data.patientAddress}</p>
+                                      <p>Age: ${data.patientAge}</p>
+                                      <p>Gender: ${data.patientGender}</p> 
+                                      `;
+      } else {
+          patientInfo.innerHTML = data.message;
+      }
+  } catch (error) {
+      patientInfo.innerHTML = data.message;
+      console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân', error);
+  };
+}
+
+async function updatePatientInfo() {
+  
+  const patientUpdateResult = document.getElementById('patientUpdateResult');
+  const patientPhoneNumber = document.getElementById('updatePatientPhoneNumber').value;
+  const patientFullName = document.getElementById('updatePatientFullName').value; 
+  const patientEmail = document.getElementById('updatePatientEmail').value;
+  const patientAddress = document.getElementById('updatePatientAddress').value;
+  const patientAge = document.getElementById('updatePatientAge').value;
+  const patientGender = document.getElementById('updatePatientGender').value;
+
+  try {
+      const response = await fetch('http://localhost:3000/updatePatientInfo', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender })
+      })
+      const data = await response.json();
+      if (response.status === 200) {
+          patientUpdateResult.textContent = data.message;
+      } else if (response.status === 404 ) {
+          patientUpdateResult.textContent = data.message;
+      } else if (response.status === 500) {
+          patientUpdateResult.textContent = data.message;
+      }
+  } catch (error) {
+      console.error('Có lỗi xảy ra:', error);
+  };
+}
+
+async function addPatientInfo(patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender) {
+  const patientAddResult = document.getElementById('patientAddResult');
+  try {
+      const response = await fetch('http://localhost:3000/addPatientInfo', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender})
+      })
+      const data = await response.json();
+      if (response.status === 200) {
+          patientAddResult.textContent = data.message;
+      } else if (response.status === 500) {
+          patientAddResult.textContent = data.message;
+      }    
+  } catch (error) {
+      patientAddResult.textContent = data.message;
+      console.error('Có lỗi xảy ra:', error);
+  }  
+}
+
+async function deletePatientInfo() {
+  const patientDeleteResult = document.getElementById('patientDeleteResult');
+  const patientPhoneNumber = document.getElementById('deletePatientPhoneNumber').value;
+  try {
+    const response = await fetch(`http://localhost:3000/deletePatientInfo/${patientPhoneNumber}`, {
+    method: 'DELETE',
+    })
+    const data = await response.json();
+    if (response.status === 200) {
+      patientDeleteResult.textContent = data.message;
+    } else if (response.status === 404) {
+      patientDeleteResult.textContent = data.message;
+    } else if (response.status === 500) {
+      patientDeleteResult.textContent = data.message;
+    }
+  } catch(error) {
+    console.error('Có lỗi xảy ra:', error);
+  }
+}
+
+function getWeekNumber(date) {
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const numberOfDays = Math.floor((date - startOfYear) / (24 * 60 * 60 * 1000));
+    return Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
+}
+
+async function getDentistsWorkScheduleInfo() {
+    const getDentistsWorkScheduleInfoResult = document.getElementById('getDentistsWorkScheduleInfoResult');
+    const getDentistsWorkScheduleInfoByMonthResult = document.getElementById('getDentistsWorkScheduleInfoByMonthResult');
+    const getDentistsWorkScheduleInfoByWeekResult = document.getElementById('getDentistsWorkScheduleInfoByWeekResult');
+    const getDentistsWorkScheduleInfoByDateResult = document.getElementById('getDentistsWorkScheduleInfoByDateResult');
+    
+
+    try {
+        const response = await fetch('http://localhost:3000/getDentistsWorkScheduleInfo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json();
+        if (response.status === 200) {  
+            getDentistsWorkScheduleInfoResult.innerHTML = '';
+            getDentistsWorkScheduleInfoByMonthResult.innerHTML = '';
+            getDentistsWorkScheduleInfoByWeekResult.innerHTML = '';
+            getDentistsWorkScheduleInfoByDateResult.innerHTML = '';
+                
+            const scheduleMap = {
+                month: {},
+                week: {},
+                date: {}
+            };
+
+            data.forEach((entry) => {
+                const date = new Date(entry.workingDate);
+                const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
+                const weekKey = `${date.getFullYear()}-W${getWeekNumber(date)}`;
+                const dateKey = `${date.toISOString().split('T')[0]}`;
+
+
+                if (!scheduleMap.month[monthKey]) {
+                    scheduleMap.month[monthKey] = {};
+                }
+                // Kiểm tra thông tin về bác sĩ đã được thêm vào chưa
+                if (!scheduleMap.month[monthKey][entry.dentistUserName]) {
+                    scheduleMap.month[monthKey][entry.dentistUserName] = [];
+                }
+                // Thêm thông tin vào mảng của bác sĩ trong ngày
+                scheduleMap.month[monthKey][entry.dentistUserName].push(entry); 
+                ////////
+
+                if (!scheduleMap.week[weekKey]) {
+                    scheduleMap.week[weekKey] = {};
+                }
+                // Kiểm tra thông tin về bác sĩ đã được thêm vào chưa
+                if (!scheduleMap.week[weekKey][entry.dentistUserName]) {
+                    scheduleMap.week[weekKey][entry.dentistUserName] = [];
+                }
+                // Thêm thông tin vào mảng của bác sĩ trong ngày
+                scheduleMap.week[weekKey][entry.dentistUserName].push(entry);
+                ///////////
+
+                if (!scheduleMap.date[dateKey]) {
+                    scheduleMap.date[dateKey] = {};
+                }
+                // Kiểm tra thông tin về bác sĩ đã được thêm vào chưa
+                if (!scheduleMap.date[dateKey][entry.dentistUserName]) {
+                    scheduleMap.date[dateKey][entry.dentistUserName] = [];
+                }
+                // Thêm thông tin vào mảng của bác sĩ trong ngày
+                scheduleMap.date[dateKey][entry.dentistUserName].push(entry);
+            });
+
+            function createScheduleByMonthElement(entry) {
+                const scheduleElement = document.createElement('div');
+                const stime = new Date(entry.startTime);
+                const formattedSTime = `${stime.getUTCHours().toString().padStart(2, '0')}:${stime.getUTCMinutes().toString().padStart(2, '0')}`;
+                const etime = new Date(entry.endTime);
+                const formattedETime = `${etime.getUTCHours().toString().padStart(2, '0')}:${etime.getUTCMinutes().toString().padStart(2, '0')}`;
+                scheduleElement.textContent = `Time: ${formattedSTime} - ${formattedETime}, Clinic: ${entry.clinicName}, Status: ${entry.busyStatus}
+                `;
+                // 
+                return scheduleElement;
+                //
+            }
+
+            function createScheduleByWeekElement(entry) {
+                const scheduleElement = document.createElement('div');
+                const stime = new Date(entry.startTime);
+                const formattedSTime = `${stime.getUTCHours().toString().padStart(2, '0')}:${stime.getUTCMinutes().toString().padStart(2, '0')}`;
+                const etime = new Date(entry.endTime);
+                const formattedETime = `${etime.getUTCHours().toString().padStart(2, '0')}:${etime.getUTCMinutes().toString().padStart(2, '0')}`;
+                scheduleElement.textContent = `Time: ${formattedSTime} - ${formattedETime}, Clinic: ${entry.clinicName}, Status: ${entry.busyStatus}
+                `;
+                // 
+                return scheduleElement;
+                //
+            }
+
+            function createScheduleByDateElement(entry) {
+                const scheduleElement = document.createElement('div');
+                const wdate = new Date(entry.workingDate);
+                const formattedDate = `${wdate.getDate().toString().padStart(2, '0')}/${(wdate.getMonth() + 1).toString().padStart(2, '0')}/${wdate.getFullYear()}`;
+                const stime = new Date(entry.startTime);
+                const formattedSTime = `${stime.getUTCHours().toString().padStart(2, '0')}:${stime.getUTCMinutes().toString().padStart(2, '0')}`;
+                const etime = new Date(entry.endTime);
+                const formattedETime = `${etime.getUTCHours().toString().padStart(2, '0')}:${etime.getUTCMinutes().toString().padStart(2, '0')}`;
+                scheduleElement.textContent = `Time: ${formattedSTime} - ${formattedETime}, Clinic: ${entry.clinicName}, Status: ${entry.busyStatus}`;
+                return scheduleElement;
+            }
+        
+            for (const monthKey in scheduleMap.month) {
+                const monthScheduleElement = document.createElement('div');
+                monthScheduleElement.classList.add('month-schedule'); // Thêm class cho phân cách
+                monthScheduleElement.textContent = `Month: ${monthKey}`;
+                getDentistsWorkScheduleInfoByMonthResult.appendChild(monthScheduleElement);
+        
+                for (const dentist in scheduleMap.month[monthKey]) { 
+                    const dentistScheduleElement = document.createElement('div');
+                    dentistScheduleElement.classList.add('dentist-schedule'); // Thêm class cho phân cách
+                    dentistScheduleElement.textContent = `Dentist: ${dentist}`;
+                    monthScheduleElement.appendChild(dentistScheduleElement);
+
+                    const dates = {}; // Object để lưu trữ thông tin lịch theo từng ngày
+
+                    scheduleMap.month[monthKey][dentist].forEach((entry) => {
+                        const date = entry.workingDate;
+                        if (!dates[date]) {
+                            dates[date] = []; // Tạo mảng nếu chưa có thông tin lịch cho ngày đó
+                        }
+                        dates[date].push(entry);
+                    });
+
+                    // Hiển thị thông tin lịch theo ngày cho từng nha sĩ
+                    for (const date in dates) {
+                        const dateScheduleElement = document.createElement('div');
+                        dateScheduleElement.classList.add('date-schedule'); // Thêm class cho phân cách
+                        const wdate = new Date(date);
+                        const formattedDate = `${wdate.getDate().toString().padStart(2, '0')}`;
+                        dateScheduleElement.textContent = `Day of month: ${formattedDate}`;
+                        dentistScheduleElement.appendChild(dateScheduleElement);
+
+                        dates[date].forEach((entry) => {
+                            const scheduleElement = createScheduleByMonthElement(entry);
+                            dateScheduleElement.appendChild(scheduleElement);
+                        });
+                    }
+                }
+            }
+
+            
+
+            for (const weekKey in scheduleMap.week) {
+                const weekScheduleElement = document.createElement('div');
+                weekScheduleElement.classList.add('week-schedule'); // Thêm class cho phân cách
+                weekScheduleElement.textContent = `Week: ${weekKey}`;
+                getDentistsWorkScheduleInfoByWeekResult.appendChild(weekScheduleElement);
+            
+                for (const dentist in scheduleMap.week[weekKey]) {
+                    const dentistScheduleElement = document.createElement('div');
+                    dentistScheduleElement.classList.add('dentist-schedule'); // Thêm class cho phân cách
+                    dentistScheduleElement.textContent = `Dentist: ${dentist}`;
+                    weekScheduleElement.appendChild(dentistScheduleElement);
+            
+                    const dates = {}; // Object để lưu trữ thông tin lịch theo từng ngày
+            
+                    scheduleMap.week[weekKey][dentist].forEach((entry) => {
+                        const date = new Date(entry.workingDate);
+                        const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }); // Lấy tên của ngày trong tuần
+            
+                        if (!dates[dayOfWeek]) {
+                            dates[dayOfWeek] = []; // Tạo mảng nếu chưa có thông tin lịch cho ngày đó
+                        }
+                        dates[dayOfWeek].push(entry);
+                    });
+            
+                    // Hiển thị thông tin lịch theo ngày cho từng nha sĩ
+                    for (const dayOfWeek in dates) {
+                        const dateScheduleElement = document.createElement('div');
+                        dateScheduleElement.classList.add('date-schedule'); // Thêm class cho phân cách
+                        dateScheduleElement.textContent = `Day of week: ${dayOfWeek}`;
+                        dentistScheduleElement.appendChild(dateScheduleElement);
+            
+                        dates[dayOfWeek].forEach((entry) => {
+                            const scheduleElement = createScheduleByWeekElement(entry);
+                            dateScheduleElement.appendChild(scheduleElement);
+                        });
+                    }
+                }
+            }
+
+            for (const dayKey in scheduleMap.date) {
+                const dayScheduleElement = document.createElement('div');
+                dayScheduleElement.classList.add('date-schedule'); // Thêm class cho phân cách
+                dayScheduleElement.textContent = `Date: ${dayKey}`;
+                getDentistsWorkScheduleInfoByDateResult.appendChild(dayScheduleElement);
+        
+                for (const dentist in scheduleMap.date[dayKey]) {
+                    const dentistScheduleElement = document.createElement('div');
+                    dentistScheduleElement.classList.add('dentist-schedule'); // Thêm class cho phân cách
+                    dentistScheduleElement.textContent = `Dentist: ${dentist}`;
+                    dayScheduleElement.appendChild(dentistScheduleElement);
+        
+                    scheduleMap.date[dayKey][dentist].forEach((entry) => {
+                        const scheduleElement = createScheduleByDateElement(entry);
+                        dentistScheduleElement.appendChild(scheduleElement);
+                    });
+                }
+            }
+
+        } else {
+            
+            getDentistsWorkScheduleInfoResult.innerHTML = data.message;
+        }
+    } catch (error)  {
+        console.error('Error when get dentists work schedule information', error);
+    };
+}
 
 function resetTPForm() {
   const createTreatmentPlanForm = document.getElementById("createTreatmentPlanForm");
@@ -1267,29 +1622,6 @@ async function getReceiptInfo(patientPhoneNumber) {
   };
 }
 
-// async function paymentReceipt(patientPhoneNumber, paymentDate, paymentTime, staffUserName, paidAmount, paymentType) {
-//   const paymentReceiptResult = document.getElementById('paymentReceiptResult');
-//   try {
-//       const response = await fetch('http://localhost:3000/paymentReceipt', {
-//           method: 'POST',
-//           headers: {
-//               'Content-Type': 'application/json'
-//           },
-//           body: JSON.stringify({ patientPhoneNumber, paymentDate, paymentTime, staffUserName, paidAmount, paymentType }) 
-//       })
-//       const data = await response.json();
-//       if (response.status === 200) {
-//         paymentReceiptResult.textContent = data.message;
-//       } else if (response.status === 404 ) {
-//         paymentReceiptResult.textContent = data.message;
-//       } else if (response.status === 500) {
-//         paymentReceiptResult.textContent = data.message;
-//       }
-//   } catch (error) {
-//       console.error('Error when payment receipt', error);
-//   };
-// }
-
 module.exports = { restoreInitialTPDisplayState, restoreInitialMRDisplayState, resetTPForm, resetMRForm };
 module.exports = { displayDentistsForAddAppointment, displayDentistsForUpdateAppointment, displayDentistsForMedical};
 module.exports = { getAppointmentsByPatientPhoneNumber, getAppointmentsByClinicName, getAppointmentsByDentistUserName};
@@ -1302,3 +1634,6 @@ module.exports = { selectedTreatmentPlansDate, selectedTreatmentPlansTime, selec
                   selectedTreatmentPlansToothsId, selectedTreatmentPlansToothsFaceName, selectedTreatmentPlansDrugsId, selectedTreatmentPlansDrugsName, 
                   selectedTreatmentPlansDrugsQuantity, selectedTreatmentPlansDrugsContraindicationId, selectedTreatmentPlansDrugsContraindicationName};
   
+
+module.exports = { getAllPatientsInfo, getPatientInfo, updatePatientInfo, addPatientInfo, deletePatientInfo};
+module.exports = { getDentistsWorkScheduleInfo, getWeekNumber };
