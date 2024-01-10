@@ -167,3 +167,7 @@ button:hover {
 #Table tr:hover {
   background-color: #e0e0e0;
 }
+
+.medical-record {
+  background: #555;
+}
