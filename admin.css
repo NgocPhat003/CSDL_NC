@@ -157,7 +157,7 @@ button:hover {
     background-color: #e0e0e0;
   }
 
-<<<<<<< HEAD
+
   input[type="text"],
   input[type="password"],
   input[type="email"],
@@ -201,7 +201,7 @@ button:hover {
       padding-right: 12px;
       height: 24px;
     }
-=======
+
 .hiddenForAddTreatmentPlan,
 .hiddenForAddMedicalRecord {
   display: none;
@@ -299,4 +299,3 @@ button:hover {
   display: inline-block;
   margin-right: 5px;
 }
->>>>>>> e6f0bad14425e7bbdf11ef1d47ab2478cdd23d74
