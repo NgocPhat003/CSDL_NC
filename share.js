@@ -21,20 +21,45 @@ async function getAllPatientsInfo() {
       const data = await response.json();
       if (response.status === 200) {            
           allPatientsInfo.innerHTML = ''; 
-          const table = `<table>
-          <thead><tr>${['Phone number', 'Full name', 'Email', 'Address', 'Age', 'Gender'].map(h => `<th>${h}</th>`).join('')}</tr></thead>
-          <tbody>${data.map(patient => `<tr>${Object.values(patient).map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
-     </table>`;
+          const patientsTable = document.createElement('table');
+          patientsTable.setAttribute('id', 'Table');
 
-allPatientsInfo.innerHTML = table;
+      // Create table header
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Phone Number</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Gender</th>`;
+
+        patientsTable.appendChild(headerRow);
+        
+        data.forEach(patient => {
+          // Create a new row for each staff
+          const row = document.createElement('tr');
+          row.innerHTML = `
+      <td>${patient.patientPhoneNumber}</td>
+      <td>${patient.patientFullName}</td>
+      <td>${patient.patientEmail}</td>
+      <td>${patient.patientAddress}</td>
+      <td>${patient.patientAge}</td>
+      <td>${patient.patientGender}</td>
+    `;
+  
+          // Append the row to the table
+          patientsTable.appendChild(row);
+        });
+        allPatientsInfo.appendChild(patientsTable)
       } else {
-          
-          allPatientsInfo.innerHTML = data.message;
+  
+        allPatientsInfo.innerHTML = data.message;
       }
-  } catch (error)  {
-      allPatientsInfo.innerHTML = data.message;
-      console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân', error);
-  };
+    } catch (error)  {
+        console.error('Có lỗi xảy ra khi lấy thông tin nhân viên', error);
+        allPatientsInfo.innerHTML = data.message;
+    };
 }
 
 async function getPatientInfo(patientPhoneNumber) {

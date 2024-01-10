@@ -798,6 +798,25 @@ async function getAppointmentsByDentistUserName(dentistUserName, selectedDateDen
     };
 }
 
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+  
+  function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+  }
+
 module.exports = { restoreInitialTPDisplayState, restoreInitialMRDisplayState, resetTPForm, resetMRForm };
 module.exports = { displayDentistsForAddAppointment, displayDentistsForUpdateAppointment, displayDentistsForMedical};
 module.exports = { getAppointmentsByPatientPhoneNumber, getAppointmentsByClinicName, getAppointmentsByDentistUserName};

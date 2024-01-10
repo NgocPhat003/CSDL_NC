@@ -13,163 +13,160 @@
 <body>
     <h1>DENTIST PAGE</h1>
 
-    <h2>Add patient medical record</h2>
-    <form id="addPatientMedicalRecordForm">
-      <label for="addMedicalPatientPhoneNumber">Patient phone number:</label>
-      <input type="text" id="addMedicalPatientPhoneNumber" name="addMedicalPatientPhoneNumber" required><br><br>
-    
-      <label for="addExaminationDate">Examination date:</label>
-      <input type="date" id="addExaminationDate" name="addExaminationDate" required><br><br>
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add patient medical record
+        Info</button><button class="tablinks" onclick="openTab(event, 'getPatientMedicalRecordTab')">Get patient medical record infomation</button>
+      <button class="tablinks" onclick="openTab(event, 'getAppointmentsByPatientPhoneNumberTab')">Get appointments by patient phone number</button>
+      <button class="tablinks" onclick="openTab(event, 'getAppointmentsByClinicNameTab')">Get appointments by clinic name
+      </button>
+      <button class="tablinks" onclick="openTab(event, 'getAppointmentsByDentistUserNameTab')">Get appointments by dentist username</button>
+    </div>
 
-      <label for="addExaminationTime">Examination time:</label>
-      <input type="time" id="addExaminationTime" name="addExaminationTime" required><br><br>
-
-      <label for="addOralHealth">Oral health</label>
-      <input type="text" id="addOralHealth" name="addOralHealth" required><br><br>
-
-      <label for="addAllergies">Allergies:</label>
-      <input type="text" id="addAllergies" name="addAllergies" value="None"><br><br>
-
-      <input type="submit" value="Add treatment plan">
-    </form>
-    
-    <form id="createTreatmentPlanForm" class="hiddenForAddTreatmentPlan">
-      <label for="createTreatmentPlanDate">Treatment plan date:</label>
-      <input type="date" id="createTreatmentPlanDate" name="createTreatmentPlanDate" required><br><br>
-
-      <label for="createTreatmentPlanTime">Treatment plan time:</label>
-      <input type="time" id="createTreatmentPlanTime" name="createTreatmentPlanTime" required><br><br>
-    
-      <label for="createClinicName">Clinic name:</label>
-      <select id="createClinicName" name="createClinicName" required>
-        <option value="A">Clinic A</option>
-        <option value="B">Clinic B</option>
-        <option value="C">Clinic C</option>
-      </select><br><br>
-
-      <label for="createTreatmentId">Treatment category:</label>
-      <select id="createTreatmentId" name="createTreatmentId" required>
-        <optgroup label="Category 1">
-          <option value="1">Treatment A</option>
-          <option value="2">Treatment B</option>
-          <option value="3">Treatment C</option>
-        </optgroup>
-        <optgroup label="Category 2">
-          <option value="4">Treatment D</option>
-          <option value="5">Treatment E</option>
-          <option value="6">Treatment F</option>
-        </optgroup>
-        <optgroup label="Category 3">
-          <option value="7">Treatment G</option>
-          <option value="8">Treatment H</option>
-          <option value="9">Treatment I</option>
-        </optgroup>
-      </select><br><br>
-
-      <label for="createDescription">Description:</label>
-      <input type="text" id="createDescription" name="createDescription" required><br><br>
-
-      <label for="createNote">Note:</label>
-      <input type="text" id="createNote" name="createNote" value="None" ><br><br>
-
-      <input id="checkDentistsForMedical" type="submit" value="Check dentists">
-    </form>
-    <select id="displayDentistsForMedical" name="displayDentistsForMedical" class="hiddenForAddTreatmentPlan" required></select><br><br>
-
-    <button id="createTreatmentPlanAddMoreInfoFormButton">Add details</button>
-
-    <form id="searchToothForm" class="hiddenForAddTreatmentPlan">
-      <label for="toothId">Tooth id:</label>
-      <input type="number" id="toothId" name="toothId" min="1" max="36" required>
-      <input type="submit" value="Tooth">
-    </form> 
-    <div id="searchToothResult"></div>
-    <div id="addToothResult"></div>
-    <div id="toothsList"></div>
-
-    <form id="searchDrugForm" class="hiddenForAddTreatmentPlan">
-      <label for="drugName">Drug name:</label>
-      <input type="text" id="drugName" name="drugName" required>
-      <input type="submit" value="Drug">
-    </form>
-    <div id="searchDrugResult"></div>
-    <div id="addDrugResult"></div>
-    <div id="drugsList"></div>
-
-    <button id="addDrugContraindicationButton" class="hiddenForAddTreatmentPlan">Add drug contraindication</button><br>
-    <form id="searchDrugContraindicationForm" class="hiddenForAddTreatmentPlan">
-      <label for="drugContraindicationName">Drug contraindication name:</label>
-      <input type="text" id="drugContraindicationName" name="drugContraindicationName">
-      <input type="submit" value="Drug contraindication">
-    </form>
-    <div id="searchDrugContraindicationResult"></div>
-    <div id="addDrugContraindicationResult"></div>
-    <div id="drugsContraindicationList"></div>
-
-    <button id="addTreatmentPlanButton">Add treatment plan</button>
-    <div id="treatmentPlanAddResult"></div>
-
-    <button id="checkButton" class="hiddenForAddMedicalRecord">Check</button>
-    <div id="patientMedicalRecordAddResult"></div>
-
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-      <span class="close">&times;</span>
-      <p id="medicalRecordInfo"></p>
-      <button id="confirmAddMedicalRecordButton">Confirm</button>
-      <button id="backButton">Back</button>
+    <div id="addPatientMedicalRecordTab" class="tabcontent">
+      <h2>Add patient medical record</h2>
+      <form id="addPatientMedicalRecordForm">
+        <label for="addMedicalPatientPhoneNumber">Patient phone number:</label>
+        <input type="text" id="addMedicalPatientPhoneNumber" name="addMedicalPatientPhoneNumber" required><br><br>
+      
+        <label for="addExaminationDate">Examination date:</label>
+        <input type="date" id="addExaminationDate" name="addExaminationDate" required><br><br>
+        <label for="addExaminationTime">Examination time:</label>
+        <input type="time" id="addExaminationTime" name="addExaminationTime" required><br><br>
+        <label for="addOralHealth">Oral health</label>
+        <input type="text" id="addOralHealth" name="addOralHealth" required><br><br>
+        <label for="addAllergies">Allergies:</label>
+        <input type="text" id="addAllergies" name="addAllergies" value="None"><br><br>
+        <input type="submit" value="Add treatment plan">
+      </form>
+      
+      <form id="createTreatmentPlanForm" class="hiddenForAddTreatmentPlan">
+        <label for="createTreatmentPlanDate">Treatment plan date:</label>
+        <input type="date" id="createTreatmentPlanDate" name="createTreatmentPlanDate" required><br><br>
+        <label for="createTreatmentPlanTime">Treatment plan time:</label>
+        <input type="time" id="createTreatmentPlanTime" name="createTreatmentPlanTime" required><br><br>
+      
+        <label for="createClinicName">Clinic name:</label>
+        <select id="createClinicName" name="createClinicName" required>
+          <option value="A">Clinic A</option>
+          <option value="B">Clinic B</option>
+          <option value="C">Clinic C</option>
+        </select><br><br>
+        <label for="createTreatmentId">Treatment category:</label>
+        <select id="createTreatmentId" name="createTreatmentId" required>
+          <optgroup label="Category 1">
+            <option value="1">Treatment A</option>
+            <option value="2">Treatment B</option>
+            <option value="3">Treatment C</option>
+          </optgroup>
+          <optgroup label="Category 2">
+            <option value="4">Treatment D</option>
+            <option value="5">Treatment E</option>
+            <option value="6">Treatment F</option>
+          </optgroup>
+          <optgroup label="Category 3">
+            <option value="7">Treatment G</option>
+            <option value="8">Treatment H</option>
+            <option value="9">Treatment I</option>
+          </optgroup>
+        </select><br><br>
+        <label for="createDescription">Description:</label>
+        <input type="text" id="createDescription" name="createDescription" required><br><br>
+        <label for="createNote">Note:</label>
+        <input type="text" id="createNote" name="createNote" value="None" ><br><br>
+        <input id="checkDentistsForMedical" type="submit" value="Check dentists">
+      </form>
+      <select id="displayDentistsForMedical" name="displayDentistsForMedical" class="hiddenForAddTreatmentPlan" required></select><br><br>
+      <button id="createTreatmentPlanAddMoreInfoFormButton">Add details</button>
+      <form id="searchToothForm" class="hiddenForAddTreatmentPlan">
+        <label for="toothId">Tooth id:</label>
+        <input type="number" id="toothId" name="toothId" min="1" max="36" required>
+        <input type="submit" value="Tooth">
+      </form>
+      <div id="searchToothResult"></div>
+      <div id="addToothResult"></div>
+      <div id="toothsList"></div>
+      <form id="searchDrugForm" class="hiddenForAddTreatmentPlan">
+        <label for="drugName">Drug name:</label>
+        <input type="text" id="drugName" name="drugName" required>
+        <input type="submit" value="Drug">
+      </form>
+      <div id="searchDrugResult"></div>
+      <div id="addDrugResult"></div>
+      <div id="drugsList"></div>
+      <button id="addDrugContraindicationButton" class="hiddenForAddTreatmentPlan">Add drug contraindication</button><br>
+      <form id="searchDrugContraindicationForm" class="hiddenForAddTreatmentPlan">
+        <label for="drugContraindicationName">Drug contraindication name:</label>
+        <input type="text" id="drugContraindicationName" name="drugContraindicationName">
+        <input type="submit" value="Drug contraindication">
+      </form>
+      <div id="searchDrugContraindicationResult"></div>
+      <div id="addDrugContraindicationResult"></div>
+      <div id="drugsContraindicationList"></div>
+      <button id="addTreatmentPlanButton">Add treatment plan</button>
+      <div id="treatmentPlanAddResult"></div>
+      <button id="checkButton" class="hiddenForAddMedicalRecord">Check</button>
+      <div id="patientMedicalRecordAddResult"></div>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="medicalRecordInfo"></p>
+        <button id="confirmAddMedicalRecordButton">Confirm</button>
+        <button id="backButton">Back</button>
+        </div>
       </div>
     </div>
 
-    <h2>Get patient medical record infomation</h2>
-    <form id="getPatientMedicalRecordInfoForm">
-      <label for="patientMedicalRecordPhoneNumber">Patient phone number:</label>
-      <input type="text" id="patientMedicalRecordPhoneNumber" name="patientMedicalRecordPhoneNumber" required><br><br>
-      <input type="submit" value="Get patient medical record information">
-    </form>
-    <div id="getPatientMedicalRecordInfoResult"></div>
+    <div id="getPatientMedicalRecordTab" class="tabcontent">
+      <h2>Get patient medical record infomation</h2>
+      <form id="getPatientMedicalRecordInfoForm">
+        <label for="patientMedicalRecordPhoneNumber">Patient phone number:</label>
+        <input type="text" id="patientMedicalRecordPhoneNumber" name="patientMedicalRecordPhoneNumber" required><br><br>
+        <input type="submit" value="Get patient medical record information">
+      </form>
+      <div id="getPatientMedicalRecordInfoResult"></div>
+    </div>
 
 
     <!-- Manage appointments  -->
-    <h2>Get appointments by patient phone number</h2>
-    <form id="getAppointmentsByPatientPhoneNumberForm">
-      <label for="selectedDatePatient">Choose date:</label>
-      <input type="date" id="selectedDatePatient" name="selectedDatePatient" required><br><br> 
+    <div id="getAppointmentsByPatientPhoneNumberTab" class="tabcontent">
+      <h2>Get appointments by patient phone number</h2>
+      <form id="getAppointmentsByPatientPhoneNumberForm">
+        <label for="selectedDatePatient">Choose date:</label>
+        <input type="date" id="selectedDatePatient" name="selectedDatePatient" required><br><br>
+        <label for="getAppointmentsByPatientPhoneNumber">Patient phone number:</label>
+        <input type="text" id="getAppointmentsByPatientPhoneNumber" name="getAppointmentsByPatientPhoneNumber" required><br><br>
+        <input type="submit" value="Get appointments info">
+      </form>
+      <div id="getAppointmentsByPatientPhoneNumberResult"></div>
+    </div>
 
-      <label for="getAppointmentsByPatientPhoneNumber">Patient phone number:</label>
-      <input type="text" id="getAppointmentsByPatientPhoneNumber" name="getAppointmentsByPatientPhoneNumber" required><br><br>
+    <div id="getAppointmentsByClinicNameTab" class="tabcontent">
+      <h2>Get appointments by clinic name</h2>
+      <form id="getAppointmentsByClinicNameForm">
+        <label for="selectedDateClinic">Choose date:</label>
+        <input type="date" id="selectedDateClinic" name="selectedDateClinic" required><br><br>
+        <label for="getAppointmentsByClinicName">Clinic name:</label>
+        <select id="getAppointmentsByClinicName" name="getAppointmentsByClinicName" required><br><br>
+          <option value="A">Clinic A</option>
+          <option value="B">Clinic B</option>
+          <option value="C">Clinic C</option>
+        </select><br><br>
+        <input type="submit" value="Get appointments info">
+      </form>
+      <div id="getAppointmentsByClinicNameResult"></div>
+    </div>
 
-      <input type="submit" value="Get appointments info">
-    </form>
-    <div id="getAppointmentsByPatientPhoneNumberResult"></div>
-
-    <h2>Get appointments by clinic name</h2>
-    <form id="getAppointmentsByClinicNameForm"> 
-      <label for="selectedDateClinic">Choose date:</label>
-      <input type="date" id="selectedDateClinic" name="selectedDateClinic" required><br><br> 
-
-      <label for="getAppointmentsByClinicName">Clinic name:</label>
-      <select id="getAppointmentsByClinicName" name="getAppointmentsByClinicName" required><br><br> 
-        <option value="A">Clinic A</option>
-        <option value="B">Clinic B</option>
-        <option value="C">Clinic C</option>
-      </select><br><br>
-
-      <input type="submit" value="Get appointments info">
-    </form>
-    <div id="getAppointmentsByClinicNameResult"></div>
-
-    <h2>Get appointments by dentist username</h2>
-    <form id="getAppointmentsByDentistUserNameForm"> 
-      <label for="selectedDateDentist">Choose date:</label>
-      <input type="date" id="selectedDateDentist" name="selectedDateDentist" required><br><br> 
-
-      <label for="getAppointmentsByDentistUserName">Dentist username:</label>
-      <input type="text" id="getAppointmentsByDentistUserName" name="getAppointmentsByDentistUserName" required><br><br>
-
-      <input type="submit" value="Get appointments info">
-    </form>
-    <div id="getAppointmentsByDentistUserNameResult"></div>
+    <div id="getAppointmentsByDentistUserNameTab" class="tabcontent">
+      <h2>Get appointments by dentist username</h2>
+      <form id="getAppointmentsByDentistUserNameForm">
+        <label for="selectedDateDentist">Choose date:</label>
+        <input type="date" id="selectedDateDentist" name="selectedDateDentist" required><br><br>
+        <label for="getAppointmentsByDentistUserName">Dentist username:</label>
+        <input type="text" id="getAppointmentsByDentistUserName" name="getAppointmentsByDentistUserName" required><br><br>
+        <input type="submit" value="Get appointments info">
+      </form>
+      <div id="getAppointmentsByDentistUserNameResult"></div>
+    </div>
     <!-- end of manage appointments -->
 
 

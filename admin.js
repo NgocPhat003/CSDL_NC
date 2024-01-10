@@ -17,19 +17,39 @@ async function getAllStaffsInfo() {
         const data = await response.json();
         if (response.status === 200) {            
             allStaffsInfo.innerHTML = ''; 
-            data.forEach(staff => {
-            const allStaffsDetails = document.createElement('p');
-            allStaffsDetails.textContent = `Staff username: ${staff.staffUserName},
-                                            Password: ${staff.staffPassword},
-                                            Staff name: ${staff.staffFullName}`; 
-            allStaffsInfo.appendChild(allStaffsDetails);
-            });
-        } else {
-            allStaffsInfo.innerHTML = data.message;
-        }
-    } catch (error)  {
+
+      const staffsTable = document.createElement('table');
+      staffsTable.setAttribute('id', 'Table')
+
+      // Create table header
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Staff User Name</th>
+        <th>Password</th>
+        <th>Staff Name</th>`;
+
+        staffsTable.appendChild(headerRow);
+        
+        data.forEach(staff => {
+          // Create a new row for each staff
+          const row = document.createElement('tr');
+          row.innerHTML = `
+      <td>${staff.staffUserName}</td>
+      <td>${staff.staffPassword}</td>
+      <td>${staff.staffFullName}</td>
+    `;
+  
+          // Append the row to the table
+          staffsTable.appendChild(row);
+        });
+        allStaffsInfo.appendChild(staffsTable)
+      } else {
+  
         allStaffsInfo.innerHTML = data.message;
+      }
+    } catch (error)  {
         console.error('Có lỗi xảy ra khi lấy thông tin nhân viên', error);
+        allStaffsInfo.innerHTML = data.message;
     };
 }
 
@@ -140,21 +160,40 @@ async function getAllDentistsInfo() {
         const data = await response.json();
         if (response.status === 200) {            
             allDentistsInfo.innerHTML = ''; 
-            data.forEach(dentist => {
-            const allDentistsDetails = document.createElement('p');
-            allDentistsDetails.textContent = `
-                                            Dentist username: ${dentist.dentistUserName},
-                                            Password: ${dentist.dentistPassword},
-                                            Dentist name: ${dentist.dentistFullName}
-                                            `; 
-            allDentistsInfo.appendChild(allDentistsDetails);
-            });
-        } else {
-            allDentistsInfo.innerHTML = data.message;
-        }
-    } catch (error)  {
+             
+
+      const dentistsTable = document.createElement('table');
+      dentistsTable.setAttribute('id', 'Table')
+
+      // Create table header
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Dentist User Name</th>
+        <th>Password</th>
+        <th>Dentist Name</th>`;
+
+        dentistsTable.appendChild(headerRow);
+        
+        data.forEach(staff => {
+          // Create a new row for each dentist
+          const row = document.createElement('tr');
+          row.innerHTML = `
+      <td>${staff.dentistUserName}</td>
+      <td>${staff.dentistPassword}</td>
+      <td>${staff.dentistFullName}</td>
+    `;
+  
+          // Append the row to the table
+          dentistsTable.appendChild(row);
+        });
+        allDentistsInfo.appendChild(dentistsTable)
+      } else {
+  
         allDentistsInfo.innerHTML = data.message;
-        console.error('Có lỗi xảy ra khi lấy thông tin nha sĩ', error);
+      }
+    } catch (error)  {
+        console.error('Có lỗi xảy ra khi lấy thông tin nhân viên', error);
+        allDentistsInfo.innerHTML = data.message;
     };
 }
 
@@ -267,23 +306,43 @@ async function getAllDrugsInfo() {
         const data = await response.json();
         if (response.status === 200) {            
             allDrugsInfo.innerHTML = ''; 
-            data.forEach(drug => {
-            const allDrugsDetails = document.createElement('p');
-            allDrugsDetails.textContent = `
-                                            Drug Id: ${drug.drugId},
-                                            Drug name: ${drug.drugName},
-                                            Indication: ${drug.indication}, 
-                                            Stock number: ${drug.stockNumber},
-                                            Price: ${drug.price}$`; 
-            allDrugsInfo.appendChild(allDrugsDetails);
-            });
-        } else {
-            allDrugsInfo.innerHTML = data.message;
-        }
-    } catch (error)  {
-        allDrugsInfo.innerHTML = data.message;
-        console.error('Có lỗi xảy ra khi lấy thông tin thuốc', error);
-    };
+            const drugsTable = document.createElement('table');
+            drugsTable.setAttribute('id', 'Table')
+      
+            // Create table header
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+              <th>Drug ID</th>
+              <th>Drug Name</th>
+              <th>Indication</th>
+              <th>Stock Number</th>
+              <th>Price</th>`;
+      
+              drugsTable.appendChild(headerRow);
+              
+              data.forEach(staff => {
+                // Create a new row for each staff
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${staff.drugId}</td>
+            <td>${staff.drugName}</td>
+            <td>${staff.indication}</td>
+            <td>${staff.stockNumber}</td>
+            <td>${staff.price + "$"}</td>
+          `;
+        
+                // Append the row to the table
+                drugsTable.appendChild(row);
+              });
+              allDrugsInfo.appendChild(drugsTable)
+            } else {
+        
+              allDrugsInfo.innerHTML = data.message;
+            }
+          } catch (error)  {
+              console.error('Có lỗi xảy ra khi lấy thông tin drug', error);
+              allDrugsInfo.innerHTML = data.message;
+          };
 }
 
 async function getDrugInfo(drugName) {
@@ -383,6 +442,24 @@ async function deleteDrugInfo() {
         console.error('Có lỗi xảy ra', error);
     }
 }
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+  
+  function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+  }
 
 module.exports = { getAllStaffsInfo, getStaffInfo, updateStaffInfo, addStaffInfo, deleteStaffInfo };
 module.exports = { getAllDentistsInfo, getDentistInfo, updateDentistInfo, addDentistInfo, deleteDentistInfo };

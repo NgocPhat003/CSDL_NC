@@ -5,6 +5,11 @@ body {
 	margin: 0;
 	padding: 20px;
 	background-color: #f4f4f4;
+	background-color: #eaedf0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding-top: 100px;
   }
   
   h2 {
@@ -62,3 +67,39 @@ body {
 	color: #dc3545;
   }
 
+  .login {
+	justify-content: center;
+	text-align: center;
+	padding-top: 0;
+	margin-right: 100px;
+	text-align: center;
+	background-color: #f6f7f8;
+    border: 1px solid #d6d9dc;
+	border-radius: 3px;
+	padding: 10px;
+}
+
+
+input[type="submit"]:hover {
+	background-color: #76aeed;;
+  }
+
+  input[type="submit"]:hover{
+	background-color: #407fc7;
+  }
+
+  form {
+	margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+	padding: 8px;
+	margin: 5px;
+	font-size: 14px;
+	background-color: #ffffff;
+    border: 1px solid #d6d9dc;
+    border-radius: 3px;
+	width: 250px;
+    height: initial;
+  }
