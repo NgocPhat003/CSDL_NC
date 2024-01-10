@@ -11,9 +11,18 @@
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    
+  <div class="upperUpper">
+      <div class="tab" id="adminDashboard">
+        <button class="tablinks" onclick="openTab(event, 'managePatient')">Manage Patient</button>
+        <button class="tablinks" onclick="openTab(event, 'manageStaff')">Manage Staff</button>
+        <button class="tablinks" onclick="openTab(event, 'manageDentist')">Manage Dentist</button>
+        <button class="tablinks" onclick="openTab(event, 'manageDrug')">Manage Drug</button>
+        <button class="tablinks" onclick="openTab(event, 'manageApppoitment')">Manage Appoitment</button>
+      </div>
+    </div>
+
   <div class="tabUpper">
-    <div class="tab" id="managePatient">
+    <div class="tab tabcontent" id="managePatient" >
       <button class="tablinks" onclick="openTab(event, 'getAllPatientsInfoTab')">Display Patient's Info</button>
       <button class="tablinks" onclick="openTab(event, 'updatePatientInfoTab')">Update Patient Info</button>
       <button class="tablinks" onclick="openTab(event, 'addPatientInfoTab')">Add Patient Info</button>
@@ -23,7 +32,7 @@
       <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add Patient Medical Record</button>
     </div>
 
-    <div class="tab" id="manageStaff">
+    <div class="tab tabcontent" id="manageStaff">
       <button class="tablinks" onclick="openTab(event, 'getAllStaffsInfoTab')">Display Staff's
         Info</button>
       <button class="tablinks" onclick="openTab(event, 'updateStaffInfoTab')">Update Staff Info</button>
@@ -31,7 +40,7 @@
       <button class="tablinks" onclick="openTab(event, 'deleteStaffInfoTab')">Delete Staff Info</button>
     </div>
 
-    <div class="tab" id="manageDentist">
+    <div class="tab tabcontent" id="manageDentist">
       <button class="tablinks" onclick="openTab(event, 'getAllDentistsInfoTab')">Display Dentist's
         Info</button>
       <button class="tablinks" onclick="openTab(event, 'updateDentistInfoTab')">Update Dentist Info</button>
@@ -39,7 +48,7 @@
       <button class="tablinks" onclick="openTab(event, 'deleteDentistInfoTab')">Delete Dentist Info</button>
     </div>
 
-    <div class="tab" id="manageDrug">
+    <div class="tab tabcontent" id="manageDrug">
       <button class="tablinks" onclick="openTab(event, 'getAllDrugInfoTab')">Display Drug's
         Info</button>
       <button class="tablinks" onclick="openTab(event, 'updateDrugInfoTab')">Update Drug Info</button>
@@ -47,7 +56,7 @@
       <button class="tablinks" onclick="openTab(event, 'deleteDrugInfoTab')">Delete Drug Info</button>
     </div>
 
-    <div class="tab" id="manageApppoitment">
+    <div class="tab tabcontent"  id="manageApppoitment">
       <button class="tablinks" onclick="openTab(event, 'getAppointmentsInfoTab')">Display Appointment Info</button>
       <button class="tablinks" onclick="openTab(event, 'makeAppointmentTab')">Make Appointment</button>
       <button class="tablinks" onclick="openTab(event, 'addAppointmentInfoTab')">Add Appointment Info</button>
@@ -358,17 +367,27 @@
     <!-- end of manage drug -->
     <div id="addPatientMedicalRecordTab" class="tabcontent">
       <form id="addPatientMedicalRecordForm">
-        <label for="addMedicalPatientPhoneNumber">Patient phone number:</label>
-        <input type="text" id="addMedicalPatientPhoneNumber" name="addMedicalPatientPhoneNumber" required><br><br>
+        <div class="form-row">
+          <label for="addMedicalPatientPhoneNumber">Patient phone number:</label>
+          <input type="text" id="addMedicalPatientPhoneNumber" name="addMedicalPatientPhoneNumber" required><br><br>
+        </div>
       
-        <label for="addExaminationDate">Examination date:</label>
-        <input type="date" id="addExaminationDate" name="addExaminationDate" required><br><br>
-        <label for="addExaminationTime">Examination time:</label>
-        <input type="time" id="addExaminationTime" name="addExaminationTime" required><br><br>
-        <label for="addOralHealth">Oral health</label>
-        <input type="text" id="addOralHealth" name="addOralHealth" required><br><br>
-        <label for="addAllergies">Allergies:</label>
-        <input type="text" id="addAllergies" name="addAllergies" value="None"><br><br>
+        <div class="form-row">
+          <label for="addExaminationDate">Examination date:</label>
+          <input type="date" id="addExaminationDate" name="addExaminationDate" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addExaminationTime">Examination time:</label>
+          <input type="time" id="addExaminationTime" name="addExaminationTime" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addOralHealth">Oral health</label>
+          <input type="text" id="addOralHealth" name="addOralHealth" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addAllergies">Allergies:</label>
+          <input type="text" id="addAllergies" name="addAllergies" value="None"><br><br>
+        </div>
         <input type="submit" value="Add treatment plan">
       </form>
       
