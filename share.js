@@ -61,8 +61,8 @@ async function getAllPatientsInfo() {
       <td>${patient.patientPhoneNumber}</td>
       <td>${patient.patientFullName}</td>
       <td>${patient.patientEmail}</td>
-      <td>${patient.patientAddress}</td>
       <td>${patient.patientAge}</td>
+      <td>${patient.patientAddress}</td>
       <td>${patient.patientGender}</td>
     `;
   

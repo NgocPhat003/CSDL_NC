@@ -25,7 +25,6 @@ input[type="date"],
 input[type="time"],
 input[type="email"],
 input[type="number"],
-input[type="password"],
 
 select {
   padding: 8px;
@@ -147,3 +146,63 @@ button:hover {
   display: inline-block;
   margin-right: 5px;
 }
+
+/* Style for the main container */
+#getReceiptInfoResult {
+  font-family: 'Arial', sans-serif;
+  margin: 20px;
+}
+
+/* Style for the patient information */
+.patient-info {
+  background-color: #009688;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #00796b;
+}
+
+/* Style for the medical record */
+.medical-record {
+  margin-top: 15px;
+  border: 1px solid #00796b;
+  padding: 15px;
+}
+
+/* Style for the treatment plan */
+.treatment-plan {
+  margin-top: 10px;
+}
+
+/* Style for the receipt information */
+.receipt {
+  margin-top: 20px;
+  background-color: #00796b;
+  color: #fff;
+  border: 2px solid #004d40;
+  padding: 15px;
+}
+
+.payment-receipt {
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid #004d40;
+  background-color: #e0f2f1; 
+  color: black;
+}
+
+/* Style for the updated receipt information */
+.updated-receipt {
+  margin-top: 10px;
+  padding: 5px;
+  border: 2px solid #43a047;
+  color: #43a047;
+  font-weight: bold;
+}
+
+/* Style for input and select elements in the payment form */
+.payment-amount, .payment-method {
+  margin-right: 10px;
+  padding: 5px;
+}
+
