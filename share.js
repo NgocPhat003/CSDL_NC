@@ -1046,9 +1046,11 @@ async function getPatientMedicalRecordInfo(patientPhoneNumber) {
 
           // Hiển thị thông tin hồ sơ bệnh án và kế hoạch điều trị
           for (let i = 0; i < data.medicalRecordsInfo.length; i++) {
+             const container = document.createElement('div');
+              container.classList.add('container')
               const medicalRecordDiv = document.createElement('div');
               medicalRecordDiv.classList.add('medical-record');
-              
+
               // Thêm nút mở rộng/ thu gọn cho medical record
               const expandMedicalRecordBtn = document.createElement('span');
               expandMedicalRecordBtn.classList.add('expand-btn');
@@ -1081,6 +1083,7 @@ async function getPatientMedicalRecordInfo(patientPhoneNumber) {
 
               // Hiển thị các kế hoạch điều trị trong từng hồ sơ bệnh án
               for (let j = 0; j < data.medicalRecordsInfo[i].treatmentPlans.length; j++) {
+                
                   const treatmentPlanDiv = document.createElement('div');
                   treatmentPlanDiv.classList.add('treatment-plan');
                   treatmentPlanDiv.style.color = getColorByStatus(data.medicalRecordsInfo[i].treatmentPlans[j].treatmentPlanStatus);
@@ -1140,7 +1143,7 @@ async function getPatientMedicalRecordInfo(patientPhoneNumber) {
                   
               }
               medicalRecordDiv.appendChild(treatmentPlansDiv);
-              getPatientMedicalRecordInfoResult.appendChild(medicalRecordDiv);
+              container.appendChild(medicalRecordDiv);
 
               // Hiển thị thông tin thanh toán
               const receiptDiv = document.createElement('div');
@@ -1151,7 +1154,7 @@ async function getPatientMedicalRecordInfo(patientPhoneNumber) {
                   const receiptInfoParagraph = document.createElement('p');
                   receiptInfoParagraph.textContent = `Receipt Id: ${data.receiptsInfo[i].receiptId}  -  Total amount: ${data.receiptsInfo[i].totalAmount}  -  Total paid amount: ${data.receiptsInfo[i].totalPaidAmount}  -  Change amount: ${data.receiptsInfo[i].changeAmount}  -  Status: ${data.receiptsInfo[i].paymentStatus}`;
                   receiptDiv.appendChild(receiptInfoParagraph);
-                  getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
+                  container.appendChild(receiptDiv);
 
                   for (let j = 0; j < data.receiptsInfo[i].payments.length; j++) {
                     const paymentReceiptDiv = document.createElement('div');
@@ -1168,13 +1171,15 @@ async function getPatientMedicalRecordInfo(patientPhoneNumber) {
 
                     paymentReceiptDiv.appendChild(paymentReceiptInfoParagraph);
                     receiptDiv.appendChild(paymentReceiptDiv);
-                    getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
+                    container.appendChild(receiptDiv);
+                    getPatientMedicalRecordInfoResult.appendChild(container);
                   }  
               } else {
                   const receiptInfoParagraph = document.createElement('p');
                   receiptInfoParagraph.textContent = `Payment has not been made`;
                   receiptDiv.appendChild(receiptInfoParagraph);
-                  getPatientMedicalRecordInfoResult.appendChild(receiptDiv);
+                  container.appendChild(receiptDiv);
+                  getPatientMedicalRecordInfoResult.appendChild(container);
               }
           }
       } else {

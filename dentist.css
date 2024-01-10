@@ -168,6 +168,9 @@ button:hover {
   background-color: #e0e0e0;
 }
 
-.medical-record {
-  background: #555;
+.container {
+  background-color: #EEEEEE;
+  padding: 10px;
+  margin: 5px;
+  border-block: 0.5px solid;
 }
