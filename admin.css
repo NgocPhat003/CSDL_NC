@@ -150,3 +150,47 @@ button:hover {
   #Table tr:hover {
     background-color: #e0e0e0;
   }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"] {
+	  padding: 8px;
+	  margin: 5px;
+	  font-size: 14px;
+	  background-color: #ffffff;
+    border: 1px solid #d6d9dc;
+    border-radius: 3px;
+	  width: 250px;
+    height: initial;
+  }
+
+  form {
+    margin-bottom: 20px;
+    }
+  
+    .form-row{
+      display: flex;
+      flex-direction: row;
+        align-items: flex-start; /* avoid stretching */
+        margin-bottom: 20px;
+      }
+    
+      .form-row input[type="text"],
+      .form-row input[type="date"]{
+      width: 250px;
+        height: initial;
+      }
+    
+      .form-row label {
+      text-align: right;
+      width: 120px;
+      margin-top: 7px;
+      padding-right: 20px;
+    }
+    
+    .form-row input[type="date"]{
+      margin-left: 5px;
+      padding-right: 12px;
+      height: 24px;
+    }

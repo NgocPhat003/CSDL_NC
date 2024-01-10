@@ -88,22 +88,34 @@
     <div id="addPatientInfoTab" class="tabcontent">
       <h2>Add patient information</h2>
       <form id="addPatientInfoForm">
-        <label for="addPatientPhoneNumber">Patient phone number:</label>
-        <input type="text" id="addPatientPhoneNumber" name="addPatientPhoneNumber" required><br><br>
+        <div class="form-row">
+          <label for="addPatientPhoneNumber">Patient phone number:</label>
+          <input type="text" id="addPatientPhoneNumber" name="addPatientPhoneNumber" required><br><br>
+        </div>
       
-        <label for="addPatientFullName">Patient full name:</label>
-        <input type="text" id="addPatientFullName" name="addPatientFullName" required><br><br>
-        <label for="addPatientEmail">Patient email:</label>
-        <input type="email" id="addPatientEmail" name="addPatientEmail" required><br><br>
-        <label for="addPatientAddress">Patient address:</label>
-        <input type="text" id="addPatientAddress" name="addPatientAddress" required><br><br>
-        <label for="addPatientAge">Patient age:</label>
-        <input type="number" id="addPatientAge" name="addPatientAge" required><br><br>
-        <label for="addPatientGender">Patient gender:</label>
-        <select id="addPatientGender" name="addPatientGender" required>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select><br><br>
+        <div class="form-row">
+          <label for="addPatientFullName">Patient full name:</label>
+          <input type="text" id="addPatientFullName" name="addPatientFullName" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addPatientEmail">Patient email:</label>
+          <input type="email" id="addPatientEmail" name="addPatientEmail" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addPatientAddress">Patient address:</label>
+          <input type="text" id="addPatientAddress" name="addPatientAddress" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addPatientAge">Patient age:</label>
+          <input type="number" id="addPatientAge" name="addPatientAge" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addPatientGender">Patient gender:</label>
+          <select id="addPatientGender" name="addPatientGender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select><br><br>
+        </div>
       
         <input type="submit" value="Confirm add patient information">
       </form>
@@ -287,15 +299,23 @@
     <div id="addDrugInfoTab" class="tabcontent">
       <h2>Add drug information</h2>
       <form id="addDrugInfoForm">
-        <label for="addDrugName">Drug name:</label>
-        <input type="text" id="addDrugName" name="addDrugName" required><br><br>
-        <label for="addIndication">Drug indication:</label>
-        <input type="text" id="addIndication" name="addIndication" required><br><br>
-        <label for="addStockNumber">Drug stock number:</label>
-        <input type="text" id="addStockNumber" name="addStockNumber" required><br><br>
+        <div class="form-row">
+          <label for="addDrugName">Drug name:</label>
+          <input type="text" id="addDrugName" name="addDrugName" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addIndication">Drug indication:</label>
+          <input type="text" id="addIndication" name="addIndication" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="addStockNumber">Drug stock number:</label>
+          <input type="text" id="addStockNumber" name="addStockNumber" required><br><br>
+        </div>
       
-        <label for="addPrice">Drug price:</label>
-        <input type="text" id="addPrice" name="addPrice" required><br><br>
+        <div class="form-row">
+          <label for="addPrice">Drug price:</label>
+          <input type="text" id="addPrice" name="addPrice" required><br><br>
+        </div>
         <input type="submit" value="Add drug information">
       </form>
       <div id="drugAddResult"></div>
