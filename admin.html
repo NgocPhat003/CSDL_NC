@@ -513,23 +513,31 @@
     <div id="makeAppointmentTab" class="tabcontent">
       <h2>Get appointment info</h2>
       <form id="getAppointmentForm">
-        <label for="getAppointmentPatientPhoneNumber">Patient phone number:</label>
-        <input type="text" id="getAppointmentPatientPhoneNumber" name="getAppointmentPatientPhoneNumber" required><br><br>
-        <label for="getAppointmentDate">Appointment date:</label>
-        <input type="date" id="getAppointmentDate" name="getAppointmentDate" required><br><br>
-        <label for="getAppointmentTime">Appointment time:</label>
-        <select id="getAppointmentTime" name="getAppointmentTime" required><br><br>
-          <option value="06-08">06:00 - 08:00</option>
-          <option value="08-10">08:00 - 10:00</option>
-          <option value="13-15">13:00 - 15:00</option>
-          <option value="15-17">15:00 - 17:00</option>
-        </select><br><br>
-        <label for="getAppointmentClinicName">Clinic name:</label>
-        <select id="getAppointmentClinicName" name="getAppointmentClinicName" required><br><br>
-          <option value="A">Clinic A</option>
-          <option value="B">Clinic B</option>
-          <option value="C">Clinic C</option>
-        </select><br><br>
+        <div class="form-row">
+          <label for="getAppointmentPatientPhoneNumber">Patient phone number:</label>
+          <input type="text" id="getAppointmentPatientPhoneNumber" name="getAppointmentPatientPhoneNumber" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="getAppointmentDate">Appointment date:</label>
+          <input type="date" id="getAppointmentDate" name="getAppointmentDate" required><br><br>
+        </div>
+        <div class="form-row">
+          <label for="getAppointmentTime">Appointment time:</label>
+          <select id="getAppointmentTime" name="getAppointmentTime" required><br><br>
+            <option value="06-08">06:00 - 08:00</option>
+            <option value="08-10">08:00 - 10:00</option>
+            <option value="13-15">13:00 - 15:00</option>
+            <option value="15-17">15:00 - 17:00</option>
+          </select><br><br>
+        </div>
+        <div class="form-row">
+          <label for="getAppointmentClinicName">Clinic name:</label>
+          <select id="getAppointmentClinicName" name="getAppointmentClinicName" required><br><br>
+            <option value="A">Clinic A</option>
+            <option value="B">Clinic B</option>
+            <option value="C">Clinic C</option>
+          </select><br><br>
+        </div>
         <input type="submit" value="Get appointment info">
       </form>
       <div id="getAppointmentResult"></div>
