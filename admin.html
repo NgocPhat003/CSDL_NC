@@ -736,6 +736,313 @@
         deleteDrugInfo();
       });
 
+      const addPatientMedicalRecordForm = document.getElementById('addPatientMedicalRecordForm');
+      addPatientMedicalRecordForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const patientPhoneNumber = document.getElementById('addMedicalPatientPhoneNumber').value;
+        const examinationDate = document.getElementById('addExaminationDate').value;
+        const examinationTime = document.getElementById('addExaminationTime').value;
+        const oralHealth = document.getElementById('addOralHealth').value;
+        const allergies = document.getElementById('addAllergies').value;
+        document.getElementById('createTreatmentPlanForm').style.display = 'block';
+      });
+
+      const createTreatmentPlanForm = document.getElementById('createTreatmentPlanForm');
+      createTreatmentPlanForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const treatmentPlanDate = document.getElementById('createTreatmentPlanDate').value;
+        const treatmentPlanTime = document.getElementById('createTreatmentPlanTime').value;
+        const treatmentPlanClinicName = document.getElementById('createClinicName').value;
+        document.getElementById('displayDentistsForMedical').style.display = 'block';
+        displayDentistsForMedical(treatmentPlanDate, treatmentPlanTime, treatmentPlanClinicName);
+      });
+
+      const createTreatmentPlanAddMoreInfoFormButton = document.getElementById('createTreatmentPlanAddMoreInfoFormButton');
+      createTreatmentPlanAddMoreInfoFormButton.addEventListener('click', function(event) {
+        const treatmentPlanDate = document.getElementById('createTreatmentPlanDate').value;
+        const treatmentPlanTime = document.getElementById('createTreatmentPlanTime').value;
+        const treatmentPlanClinicName = document.getElementById('createClinicName').value;
+        const treatmentPlanDentistUserName = document.getElementById('displayDentistsForMedical').value;
+        const treatmentPlanTreatmentId = document.getElementById('createTreatmentId').value;
+        const treatmentPlanDescription = document.getElementById('createDescription').value;
+        const treatmentPlanNote = document.getElementById('createNote').value;
+        if (treatmentPlanDate && treatmentPlanTime && treatmentPlanClinicName 
+        && treatmentPlanTreatmentId && treatmentPlanDescription 
+        && treatmentPlanNote && treatmentPlanDentistUserName !== '') {
+            event.preventDefault();
+
+            document.getElementById('searchToothForm').style.display = 'block';
+            document.getElementById('searchDrugForm').style.display = 'block';
+            document.getElementById('addDrugContraindicationButton').style.display = 'block';
+
+        } else {
+          alert('Please provide complete info');
+        }
+      });
+
+      const addDrugContraindicationButton = document.getElementById('addDrugContraindicationButton');
+      addDrugContraindicationButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        const confirmation = window.confirm(`Are you sure to add drug contraindication? 
+        (You must add drug contraindication if click 'Ok') `);
+        if (confirmation) {
+          document.getElementById('addDrugContraindicationButton').style.display = 'none';
+          document.getElementById('searchDrugContraindicationForm').style.display = 'block';
+        }
+      });
+
+      const searchToothForm = document.getElementById('searchToothForm');
+      searchToothForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const toothId = document.getElementById('toothId').value;
+        searchTooth(toothId);
+      });
+
+      const searchDrugForm = document.getElementById('searchDrugForm');
+      searchDrugForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const drugName = document.getElementById('drugName').value;
+        searchDrug(drugName);
+      });
+
+      const searchDrugContraindicationForm = document.getElementById('searchDrugContraindicationForm');
+      searchDrugContraindicationForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const drugContraindicationName = document.getElementById('drugContraindicationName').value;
+        searchDrugContraindication(drugContraindicationName);
+      });
+
+      const addTreatmentPlanButton = document.getElementById('addTreatmentPlanButton');
+      addTreatmentPlanButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const treatmentPlanDate = document.getElementById('createTreatmentPlanDate').value;
+        const treatmentPlanTime = document.getElementById('createTreatmentPlanTime').value;
+        const treatmentPlanClinicName = document.getElementById('createClinicName').value;
+        const treatmentPlanDentistUserName = document.getElementById('displayDentistsForMedical').value;
+        const treatmentPlanTreatmentId = document.getElementById('createTreatmentId').value;       
+        const treatmentPlanDescription = document.getElementById('createDescription').value;
+        const treatmentPlanNote = document.getElementById('createNote').value;
+
+        const toothsId = selectedToothsId;
+        const toothsFaceName = selectedToothsFaceName;
+        const drugsId = selectedDrugsId;
+        const drugsName = selectedDrugsName;
+        const drugsQuantity = selectedDrugsQuantity;
+        const drugsContraindicationId = selectedDrugsContraindicationId;
+        const drugsContraindicationName = selectedDrugsContraindicationName;
+
+      
+        if (treatmentPlanDate && treatmentPlanTime && (treatmentPlanDentistUserName !== '')  && treatmentPlanClinicName 
+        && treatmentPlanTreatmentId && treatmentPlanDescription && treatmentPlanNote && selectedToothsId.length !== 0 && selectedToothsFaceName.length !== 0
+        && selectedDrugsId.length !== 0 && selectedDrugsQuantity.length !== 0) {
+          const allDentistFullNames = document.getElementById('displayDentistsForMedical');
+          const indexOfSelectedDentistOption = allDentistFullNames.selectedIndex;
+          const treatmentPlanDentistFullName = allDentistFullNames.options[indexOfSelectedDentistOption].textContent;
+
+          const allTreatmentNames = document.getElementById('createTreatmentId');
+          const indexOfSelectedTreatmentOption = allTreatmentNames.selectedIndex;
+          const treatmentPlanTreatmentName = allTreatmentNames.options[indexOfSelectedTreatmentOption].textContent;
+
+          addTreatmentPlan(treatmentPlanDate, treatmentPlanTime, treatmentPlanClinicName, treatmentPlanDentistUserName, treatmentPlanDentistFullName, 
+          treatmentPlanTreatmentId, treatmentPlanTreatmentName, treatmentPlanDescription, treatmentPlanNote,
+          toothsId, toothsFaceName, drugsId, drugsName, drugsQuantity, drugsContraindicationId, drugsContraindicationName);
+
+          
+
+        } else {
+          alert('Please provide complete info');
+        }
+        
+      });
+
+      const modal = document.getElementById('myModal');
+      const closeButton = document.getElementsByClassName('close')[0];        
+      const backButton = document.getElementById('backButton');
+
+      function showModal() {
+        modal.style.display = 'block';
+      }
+
+      function hideModal() {
+        modal.style.display = 'none';
+      }
+
+      backButton.addEventListener('click', function() {
+        hideModal(); 
+      });
+
+      closeButton.addEventListener('click', function() {
+        hideModal();
+      });
+
+      const checkButton = document.getElementById('checkButton');
+      checkButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const patientPhoneNumber = document.getElementById('addMedicalPatientPhoneNumber').value;
+        const examinationDate = document.getElementById('addExaminationDate').value;
+        const examinationTime = document.getElementById('addExaminationTime').value;
+        const oralHealth = document.getElementById('addOralHealth').value;
+        const allergies = document.getElementById('addAllergies').value;
+        const treatmentPlansDate = selectedTreatmentPlansDate;
+        const treatmentPlansTime = selectedTreatmentPlansTime;
+        const treatmentPlansClinicName = selectedTreatmentPlansClinicName;
+        const treatmentPlansDentistFullName = selectedTreatmentPlansDentistFullName;
+        const treatmentPlansTreatmentName = selectedTreatmentPlansTreatmentName;
+        const treatmentPlansDescription = selectedTreatmentPlansDescription;
+        const treatmentPlansNote = selectedTreatmentPlansNote;
+        
+        const treatmentPlansToothsId = selectedTreatmentPlansToothsId;
+        const treatmentPlansToothsFaceName= selectedTreatmentPlansToothsFaceName;
+        const treatmentPlansDrugsName = selectedTreatmentPlansDrugsName;
+        const treatmentPlansDrugsQuantity = selectedTreatmentPlansDrugsQuantity;
+        const treatmentPlansDrugsContraindicationId = selectedTreatmentPlansDrugsContraindicationId;
+        const treatmentPlansDrugsContraindicationName = selectedTreatmentPlansDrugsContraindicationName;
+      
+        displayMedicalRecordInfo(patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies,
+        treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistFullName, treatmentPlansTreatmentName, 
+        treatmentPlansDescription, treatmentPlansNote, treatmentPlansToothsId, treatmentPlansToothsFaceName, 
+        treatmentPlansDrugsName, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationName);
+
+        showModal(); 
+      });
+       
+      const confirmAddMedicalRecordButton = document.getElementById('confirmAddMedicalRecordButton');
+      confirmAddMedicalRecordButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const patientPhoneNumber = document.getElementById('addMedicalPatientPhoneNumber').value;
+        const examinationDate = document.getElementById('addExaminationDate').value;
+        const examinationTime = document.getElementById('addExaminationTime').value;
+        const oralHealth = document.getElementById('addOralHealth').value;
+        const allergies = document.getElementById('addAllergies').value;
+        const treatmentPlansDate = selectedTreatmentPlansDate;
+        const treatmentPlansTime = selectedTreatmentPlansTime;
+        const treatmentPlansClinicName = selectedTreatmentPlansClinicName;
+        const treatmentPlansDentistUserName = selectedTreatmentPlansDentistUserName;
+        const treatmentPlansTreatmentId = selectedTreatmentPlansTreatmentId;
+        const treatmentPlansDescription = selectedTreatmentPlansDescription;
+        const treatmentPlansNote = selectedTreatmentPlansNote;
+
+        const treatmentPlansToothsId = selectedTreatmentPlansToothsId;
+        const treatmentPlansToothsFaceName = selectedTreatmentPlansToothsFaceName;
+        const treatmentPlansDrugsId = selectedTreatmentPlansDrugsId;
+        const treatmentPlansDrugsName = selectedTreatmentPlansDrugsName;
+        const treatmentPlansDrugsQuantity = selectedTreatmentPlansDrugsQuantity;
+        const treatmentPlansDrugsContraindicationId = selectedTreatmentPlansDrugsContraindicationId;
+        addPatientMedicalRecord(patientPhoneNumber, examinationDate, examinationTime, oralHealth, allergies, 
+        treatmentPlansDate, treatmentPlansTime, treatmentPlansClinicName, treatmentPlansDentistUserName, 
+        treatmentPlansTreatmentId, treatmentPlansDescription, treatmentPlansNote, treatmentPlansToothsId, 
+        treatmentPlansToothsFaceName, treatmentPlansDrugsId, treatmentPlansDrugsName, treatmentPlansDrugsQuantity, treatmentPlansDrugsContraindicationId);
+        hideModal();
+        
+      
+      });
+
+      const getPatientMedicalRecordInfoForm= document.getElementById('getPatientMedicalRecordInfoForm');
+      getPatientMedicalRecordInfoForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const patientMedicalRecordPhoneNumber = document.getElementById('patientMedicalRecordPhoneNumber').value;
+        getPatientMedicalRecordInfo(patientMedicalRecordPhoneNumber);
+      });
+
+      const getAppointmentsByPatientPhoneNumberForm= document.getElementById('getAppointmentsByPatientPhoneNumberForm');
+      getAppointmentsByPatientPhoneNumberForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedDatePatient = document.getElementById('selectedDatePatient').value;
+        const patientPhoneNumber = document.getElementById('getAppointmentsByPatientPhoneNumber').value;
+        getAppointmentsByPatientPhoneNumber(patientPhoneNumber, selectedDatePatient);
+      });
+
+      const getAppointmentsByClinicNameForm= document.getElementById('getAppointmentsByClinicNameForm');
+      getAppointmentsByClinicNameForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedDateClinic = document.getElementById('selectedDateClinic').value;
+        const clinicName = document.getElementById('getAppointmentsByClinicName').value;
+        getAppointmentsByClinicName(clinicName, selectedDateClinic);
+      });
+
+      const getAppointmentsByDentistUserNameForm= document.getElementById('getAppointmentsByDentistUserNameForm');
+      getAppointmentsByDentistUserNameForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedDateDentist = document.getElementById('selectedDateDentist').value;
+        const dentistUserName = document.getElementById('getAppointmentsByDentistUserName').value;
+        getAppointmentsByDentistUserName(dentistUserName, selectedDateDentist);
+      });
+
+      const getAppointmentForm= document.getElementById('getAppointmentForm');
+      getAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const getAppointmentPatientPhoneNumber = document.getElementById('getAppointmentPatientPhoneNumber').value;
+        const getAppointmentDate = document.getElementById('getAppointmentDate').value;
+        const getAppointmentTime = document.getElementById('getAppointmentTime').value;
+        const getAppointmentClinicName = document.getElementById('getAppointmentClinicName').value;
+        getAppointment(getAppointmentPatientPhoneNumber, getAppointmentDate, getAppointmentTime, getAppointmentClinicName );
+      });
+
+      const addAppointmentForm = document.getElementById('addAppointmentForm');
+      addAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('displayDentistsForAddAppointment').style.display = 'block';
+        const addAppointmentDate = document.getElementById('addAppointmentDate').value;
+        const addAppointmentTime = document.getElementById('addAppointmentTime').value;
+        const addAppointmentClinicName = document.getElementById('addAppointmentClinicName').value;
+        displayDentistsForAddAppointment(addAppointmentDate, addAppointmentTime, addAppointmentClinicName);
+      });
+
+      const confirmAddAppointmentButton = document.getElementById('confirmAddAppointmentButton');
+      confirmAddAppointmentButton.addEventListener('click', function() {
+        const addAppointmentPatientPhoneNumber = document.getElementById('addAppointmentPatientPhoneNumber').value;
+        const addAppointmentPatientFullName = document.getElementById('addAppointmentPatientFullName').value;
+        const addAppointmentPatientEmail = document.getElementById('addAppointmentPatientEmail').value;
+        const addAppointmentPatientAddress = document.getElementById('addAppointmentPatientAddress').value;
+        const addAppointmentPatientAge = document.getElementById('addAppointmentPatientAge').value;
+        const addAppointmentPatientGender = document.getElementById('addAppointmentPatientGender').value;
+        const addAppointmentDate = document.getElementById('addAppointmentDate').value;
+        const addAppointmentTime = document.getElementById('addAppointmentTime').value;
+        const addAppointmentClinicName = document.getElementById('addAppointmentClinicName').value;
+        const addAppointmentDentistUserName = document.getElementById('displayDentistsForAddAppointment').value;
+    
+        addAppointment(addAppointmentPatientPhoneNumber, addAppointmentPatientFullName, addAppointmentPatientEmail, 
+        addAppointmentPatientAddress, addAppointmentPatientAge, addAppointmentPatientGender, addAppointmentDate, 
+        addAppointmentTime, addAppointmentClinicName, addAppointmentDentistUserName);
+      });
+      
+      const findAppointmentForm = document.getElementById('findAppointmentForm');
+        findAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const findAppointmentId = document.getElementById('findAppointmentId').value;
+        findAppointment(findAppointmentId);
+      });
+
+      const updateAppointmentForm = document.getElementById('updateAppointmentForm');
+        updateAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('displayDentistsForAddAppointment').style.display = 'block';
+        const updateAppointmentDate = document.getElementById('updateAppointmentDate').value;
+        const updateAppointmentTime = document.getElementById('updateAppointmentTime').value;
+        const updateAppointmentClinicName = document.getElementById('updateAppointmentClinicName').value;
+        displayDentistsForUpdateAppointment(updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName);
+      });
+
+      const confirmUpdateAppointmentButton = document.getElementById('confirmUpdateAppointmentButton');
+        confirmUpdateAppointmentButton.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const updateAppointmentId = document.getElementById('updateAppointmentId').value;
+        const updateAppointmentDate = document.getElementById('updateAppointmentDate').value;
+        const updateAppointmentTime = document.getElementById('updateAppointmentTime').value;
+        const updateAppointmentClinicName = document.getElementById('updateAppointmentClinicName').value;
+        const updateAppointmentDentistUserName = document.getElementById('updateAppointmentDentistUserName').value;
+        updateAppointment(updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName);
+      });
+        
+      const deleteAppointmentForm = document.getElementById('deleteAppointmentForm');
+        deleteAppointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const deleteAppointmentId = document.getElementById('deleteAppointmentId').value;
+        deleteAppointment(deleteAppointmentId);
+      });   
+    
+
+
     </script>
 
 </body>
