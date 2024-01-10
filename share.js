@@ -8,6 +8,24 @@
 //       time: formattedTime 
 //     };
 //   }
+const initialTPDisplayState = {}; 
+const initialMRDisplayState = {}; 
+
+window.onload = function() {
+  
+
+  const hiddenTPElements = document.querySelectorAll('.hiddenForAddTreatmentPlan');
+  hiddenTPElements.forEach(element => {
+    initialTPDisplayState[element.id] = window.getComputedStyle(element).display;
+  });
+
+  const hiddenMRElements = document.querySelectorAll('.hiddenForAddMedicalRecord');
+  hiddenMRElements.forEach(element => {
+    initialMRDisplayState[element.id] = window.getComputedStyle(element).display;
+  });
+
+};
+
 
 async function getAllPatientsInfo() {
   const allPatientsInfo = document.getElementById('allPatientsInfo');
