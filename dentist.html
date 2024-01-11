@@ -12,88 +12,94 @@
 <body>
     <h1>DENTIST PAGE</h1>
 
-    <div class="tab">
-      <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add patient medical record
-        Info</button><button class="tablinks" onclick="openTab(event, 'getPatientMedicalRecordTab')">Get patient medical record infomation</button>
-      <button class="tablinks" onclick="openTab(event, 'getAppointmentsByPatientPhoneNumberTab')">Get appointments by patient phone number</button>
-      <button class="tablinks" onclick="openTab(event, 'getAppointmentsByClinicNameTab')">Get appointments by clinic name
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'getAppointmentsByDentistUserNameTab')">Get appointments by dentist username</button>
+    <div class="tabUpper">
+      <div class="tab" id="managepatient">
+        <button class="tablinks" onclick="openTab(event, 'getAllPatientsInfoTab')">Display Patient's Info</button>
+        <button class="tablinks" onclick="openTab(event, 'updatePatientInfoTab')">Update Patient Info</button>
+        <button class="tablinks" onclick="openTab(event, 'addPatientInfoTab')">Add Patient Info</button>
+        <button class="tablinks" onclick="openTab(event, 'deletePatientInfoTab')">Delete Patient Info</button>
+        <button class="tablinks" onclick="openTab(event, 'getPatientMedicalRecordInfoTab')">Get Patient Medical Record</button>
+        <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add Patient Medical Record</button>    
+        <button class="tablinks" onclick="openTab(event, 'getPatientMedicalRecordInfoTab')">Get Patient Medical Record</button>
+        <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add Patient Medical Record</button>
+        <button class="tablinks" onclick="openTab(event, 'updatePatientOralTab')">Update patient's oral health</button>
+      </div>
+      <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'getAppointmentsByPatientPhoneNumberTab')">Get appointments by patient phone number</button>
+        <button class="tablinks" onclick="openTab(event, 'getAppointmentsByClinicNameTab')">Get appointments by clinic name
+        </button>
+        <button class="tablinks" onclick="openTab(event, 'getAppointmentsByDentistUserNameTab')">Get appointments by dentist username</button>
+      </div>
     </div>
 
 
     <!--  hàm mới -->
     <!-- Manage patient -->
-    <h2>Get, Update, Add, Delete patient information</h2>
-    <button onclick="getAllPatientsInfo()">Get all patients information</button>
-    <div id="allPatientsInfo"></div>
-  
-    <h2>Get patient info</h2>
-    <form id="getPatientInfoForm">
-      <label for="patientPhoneNumber">Patient phone number:</label>
-      <input type="text" id="patientPhoneNumber" name="patientPhoneNumber" required><br><br>
-      <input type="submit" value="Get patient information">
-    </form>
-    <div id="getPatientInfo"></div>    
     
-    <h2>Update patient information</h2>
-    <class id="updatePatientInfo">
-      <form id="updatePatient">
-        <label for="updatePatientPhoneNumber">Enter patient phone number:</label>
-        <input type="text" id="updatePatientPhoneNumber" name="updatePatientPhoneNumber" required><br><br>
-        <input type="submit" value="Update">
+    <div id="getAllPatientsInfoTab" class="tabcontent">
+      <button onclick="getAllPatientsInfo()">Get all patients information</button>
+      <div id="allPatientsInfo"></div>
+      <h2>Get patient info</h2>
+      <form id="getPatientInfoForm">
+        <label for="patientPhoneNumber">Patient phone number:</label>
+        <input type="text" id="patientPhoneNumber" name="patientPhoneNumber" required><br><br>
+        <input type="submit" value="Get patient information">
       </form>
-      <form id="confirmUpdatePatient"> 
-        <label for="updatePatientFullName">New patient full name:</label>
-        <input type="text" id="updatePatientFullName" name="updatePatientFullName" required><br><br>
-
-        <label for="updatePatientEmail">New patient email:</label>
-        <input type="email" id="updatePatientEmail" name="updatePatientEmail" required><br><br>
-
-        <label for="updatePatientAddress">New patient address:</label>
-        <input type="text" id="updatePatientAddress" name="updatePatientAddress" required><br><br>
-
-        <label for="updatePatientAge">New patient age:</label>
-        <input type="number" id="updatePatientAge" name="updatePatientAge" min="1" required><br><br>
-
-        <label for="updatePatientGender">New patient gender:</label>
-        <select id="updatePatientGender" name="updatePatientGender" required>
+      <div id="getPatientInfo"></div>
+    </div>  
+    
+    <div id="updatePatientInfoTab" class="tabcontent">
+      <h2>Update patient information</h2>
+      <class id="updatePatientInfo">
+        <form id="updatePatient">
+          <label for="updatePatientPhoneNumber">Enter patient phone number:</label>
+          <input type="text" id="updatePatientPhoneNumber" name="updatePatientPhoneNumber" required><br><br>
+          <input type="submit" value="Update">
+        </form>
+        <form id="confirmUpdatePatient">
+          <label for="updatePatientFullName">New patient full name:</label>
+          <input type="text" id="updatePatientFullName" name="updatePatientFullName" required><br><br>
+          <label for="updatePatientEmail">New patient email:</label>
+          <input type="email" id="updatePatientEmail" name="updatePatientEmail" required><br><br>
+          <label for="updatePatientAddress">New patient address:</label>
+          <input type="text" id="updatePatientAddress" name="updatePatientAddress" required><br><br>
+          <label for="updatePatientAge">New patient age:</label>
+          <input type="number" id="updatePatientAge" name="updatePatientAge" min="1" required><br><br>
+          <label for="updatePatientGender">New patient gender:</label>
+          <select id="updatePatientGender" name="updatePatientGender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select><br><br>
+          <input type="submit" value="Confirm update patient information">
+        </form>
+      </class>
+      <div id="patientUpdateResult"></div>
+    </div>
+    
+    <div id="addPatientInfoTab" class="tabcontent">
+      <h2>Add patient information</h2>
+      <form id="addPatientInfoForm">
+        <label for="addPatientPhoneNumber">Patient phone number:</label>
+        <input type="text" id="addPatientPhoneNumber" name="addPatientPhoneNumber" required><br><br>
+      
+        <label for="addPatientFullName">Patient full name:</label>
+        <input type="text" id="addPatientFullName" name="addPatientFullName" required><br><br>
+        <label for="addPatientEmail">Patient email:</label>
+        <input type="email" id="addPatientEmail" name="addPatientEmail" required><br><br>
+        <label for="addPatientAddress">Patient address:</label>
+        <input type="text" id="addPatientAddress" name="addPatientAddress" required><br><br>
+        <label for="addPatientAge">Patient age:</label>
+        <input type="number" id="addPatientAge" name="addPatientAge" required><br><br>
+        <label for="addPatientGender">Patient gender:</label>
+        <select id="addPatientGender" name="addPatientGender" required>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select><br><br>
-
-        <input type="submit" value="Confirm update patient information">
+      
+        <input type="submit" value="Confirm add patient information">
       </form>
-
-    </class>
-    <div id="patientUpdateResult"></div>
-    
-    <h2>Add patient information</h2>
-    <form id="addPatientInfoForm">
-      <label for="addPatientPhoneNumber">Patient phone number:</label>
-      <input type="text" id="addPatientPhoneNumber" name="addPatientPhoneNumber" required><br><br>
-          
-      <label for="addPatientFullName">Patient full name:</label>
-      <input type="text" id="addPatientFullName" name="addPatientFullName" required><br><br>
-
-      <label for="addPatientEmail">Patient email:</label>
-      <input type="email" id="addPatientEmail" name="addPatientEmail" required><br><br>
-
-      <label for="addPatientAddress">Patient address:</label>
-      <input type="text" id="addPatientAddress" name="addPatientAddress" required><br><br>
-
-      <label for="addPatientAge">Patient age:</label>
-      <input type="number" id="addPatientAge" name="addPatientAge" required><br><br>
-
-      <label for="addPatientGender">Patient gender:</label>
-      <select id="addPatientGender" name="addPatientGender" required>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select><br><br>
-    
-      <input type="submit" value="Confirm add patient information">   
-    </form>
-    <div id="patientAddResult"></div>
+      <div id="patientAddResult"></div>
+    </div>
 
   
     <div id="addPatientMedicalRecordTab" class="tabcontent">
@@ -200,17 +206,17 @@
       <div id="getPatientMedicalRecordInfoResult"></div>
     </div>
 
-    <h2>Update patient oral health</h2>
-    <form id="updateOralHealthForm"> 
-      <label for="updateMedicalRecordId">Medical record Id:</label>
-      <input type="text" id="updateMedicalRecordId" name="updateMedicalRecordId" required><br><br> 
-
-      <label for="updateOralHealth">New oral health:</label>
-      <input type="text" id="updateOralHealth" name="updateOralHealth" required><br><br>
-
-      <input type="submit" value="Update oral health">
-    </form>
-    <div id="updateOralHealthResult"></div>
+    <div id="updatePatientOralTab" class="tabcontent">
+      <h2>Update patient oral health</h2>
+      <form id="updateOralHealthForm">
+        <label for="updateMedicalRecordId">Medical record Id:</label>
+        <input type="text" id="updateMedicalRecordId" name="updateMedicalRecordId" required><br><br>
+        <label for="updateOralHealth">New oral health:</label>
+        <input type="text" id="updateOralHealth" name="updateOralHealth" required><br><br>
+        <input type="submit" value="Update oral health">
+      </form>
+      <div id="updateOralHealthResult"></div>
+    </div>
 
 
     <!-- Manage appointments  -->
