@@ -26,6 +26,9 @@
         <button class="tablinks" onclick="openTab(event, 'addAppointmentInfoTab')">Add Appointment Info</button>
         <button class="tablinks" onclick="openTab(event, 'updateAppointmentInfoTab')">Update Appointment</button>
         <button class="tablinks" onclick="openTab(event, 'deleteAppointmentInfoTab')">Delete Appointment</button>
+        <button class="tablinks" onclick="openTab(event, 'getDentistScheduleTab')">Get Dentist Schedule</button>
+        <button class="tablinks" onclick="openTab(event, 'getTreatementReportTab')">Get Treatment Report</button>
+        <button class="tablinks" onclick="openTab(event, 'getAppointmentReportTab')">Get Appoitment Report</button>
         <button class="tablinks" onclick="openTab(event, 'getReceiptInfoTab')">Get Receipt</button>
       </div>
     </div>
@@ -372,36 +375,38 @@
       <div id="getReceiptInfoResult"></div>
     </div>
 
-    <h2>Get dentists work schedule info</h2>
-    <button onclick="getDentistsWorkScheduleInfo()">Get work schedule</button>
-    <div id="getDentistsWorkScheduleInfoResult"></div> 
-    <div id="getDentistsWorkScheduleInfoByMonthResult"></div>
-    <div id="getDentistsWorkScheduleInfoByWeekResult"></div>
-    <div id="getDentistsWorkScheduleInfoByDateResult"></div>
+    <div id="getDentistScheduleTab" class="tabcontent">
+      <h2>Get dentists work schedule info</h2>
+      <button onclick="getDentistsWorkScheduleInfo()">Get work schedule</button>
+      <div id="getDentistsWorkScheduleInfoResult"></div>
+      <div id="getDentistsWorkScheduleInfoByMonthResult"></div>
+      <div id="getDentistsWorkScheduleInfoByWeekResult"></div>
+      <div id="getDentistsWorkScheduleInfoByDateResult"></div>
+    </div>
 
-    <h2>Treatment plans report</h2>
-    <form id="reportTreatmentPlansForm">
-      <label for="selectedStartDate">From date:</label>
-      <input type="date" id="selectedStartDate" name="selectedStartDate" required><br><br> 
+    <div id="getTreatementReportTab" class="tabcontent">
+      <h2>Treatment plans report</h2>
+      <form id="reportTreatmentPlansForm">
+        <label for="selectedStartDate">From date:</label>
+        <input type="date" id="selectedStartDate" name="selectedStartDate" required><br><br>
+        <label for="selectedEndDate">To date:</label>
+        <input type="date" id="selectedEndDate" name="selectedEndDate" required><br><br>
+        <input type="submit" value="Report">
+      </form>
+      <div id="reportTreatmentPlansResult"></div>
+    </div>
 
-      <label for="selectedEndDate">To date:</label>
-      <input type="date" id="selectedEndDate" name="selectedEndDate" required><br><br>
-
-      <input type="submit" value="Report">
-    </form>
-    <div id="reportTreatmentPlansResult"></div>
-
-    <h2>Appointments report</h2>
-    <form id="reportAppointmentsForm">
-      <label for="selectedSDate">From date:</label>
-      <input type="date" id="selectedSDate" name="selectedSDate" required><br><br> 
-
-      <label for="selectedEDate">To date:</label>
-      <input type="date" id="selectedEDate" name="selectedEDate" required><br><br>
-
-      <input type="submit" value="Report">
-    </form>
-    <div id="reportAppointmentsResult"></div>
+    <div id="getAppointmentReportTab" class="tabcontent">
+      <h2>Appointments report</h2>
+      <form id="reportAppointmentsForm">
+        <label for="selectedSDate">From date:</label>
+        <input type="date" id="selectedSDate" name="selectedSDate" required><br><br>
+        <label for="selectedEDate">To date:</label>
+        <input type="date" id="selectedEDate" name="selectedEDate" required><br><br>
+        <input type="submit" value="Report">
+      </form>
+      <div id="reportAppointmentsResult"></div>
+    </div>
 
     
     <script>
