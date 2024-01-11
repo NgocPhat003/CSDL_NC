@@ -293,8 +293,8 @@
       <div id="allDrugsInfo"></div>
       <h2>Get drug info</h2>
       <form id="getDrugInfoForm">
-        <label for="drugName">Drug name:</label>
-        <input type="text" id="drugName" name="drugName" required><br><br>
+        <label for="getDrugName">Drug name:</label>
+        <input type="text" id="getDrugName" name=getDrugName" required><br><br>
         <input type="submit" value="Get drug information">
       </form>
       <div id="getDrugInfo"></div>
@@ -823,7 +823,7 @@
       const getDrugInfoForm = document.getElementById('getDrugInfoForm');
       getDrugInfoForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        const drugName = document.getElementById('drugName').value;
+        const drugName = document.getElementById('getDrugName').value;
         getDrugInfo(drugName);
       });
 
