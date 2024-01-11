@@ -92,17 +92,41 @@ async function getPatientInfo(patientPhoneNumber) {
       })
       const data = await response.json();
       if (response.status === 200) {  
-        const table = `<table>
-                            <caption><h3>Patient information</h3></caption>
-                            <tbody>
-                                <tr>${Object.entries(data).map(([key, value]) => `<th>${key}</th>`).join('')}</tr>
-                                <tr>${Object.values(data).map(value => `<td>${value}</td>`).join('')}</tr>
-                            </tbody>
-                       </table>`;
+        patientInfo.innerHTML = ''; 
+          const patientsTable = document.createElement('table');
+          patientsTable.setAttribute('id', 'Table');
 
-        patientInfo.innerHTML = table;
+      // Create table header
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Phone Number</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Gender</th>`;
+
+        patientsTable.appendChild(headerRow);
+        
+        
+          // Create a new row for each staff
+          const row = document.createElement('tr');
+          row.innerHTML = `
+      <td>${data.patientPhoneNumber}</td>
+      <td>${data.patientFullName}</td>
+      <td>${data.patientEmail}</td>
+      <td>${data.patientAge}</td>
+      <td>${data.patientAddress}</td>
+      <td>${data.patientGender}</td>
+    `;
+  
+          // Append the row to the table
+          patientsTable.appendChild(row);
+        
+        patientInfo.appendChild(patientsTable)
       } else {
-          patientInfo.innerHTML = data.message;
+  
+        patientInfo.innerHTML = data.message;
       }
   } catch (error) {
       patientInfo.innerHTML = data.message;

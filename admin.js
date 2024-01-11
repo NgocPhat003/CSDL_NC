@@ -65,16 +65,40 @@ async function getStaffInfo(staffUserName) {
         })
         const data = await response.json();
         if (response.status === 200) {  
-            staffInfo.innerHTML = ` <h3>Staff information</h3>
-                                    <p>Staff username: ${data.staffUserName}</p>
-                                    <p>Staff password: ${data.staffPassword}</p>
-                                    <p>Staff name: ${data.staffFullName}</p>`;
-        } else {
-            staffInfo.innerHTML = data.message;
-        }
+            staffInfo.innerHTML = ''; 
+
+            const staffsTable = document.createElement('table');
+            staffsTable.setAttribute('id', 'Table')
+      
+            // Create table header
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+              <th>Staff User Name</th>
+              <th>Password</th>
+              <th>Staff Name</th>`;
+      
+              staffsTable.appendChild(headerRow);
+              
+                // Create a new row for each staff
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${data.staffUserName}</td>
+                <td>${data.staffPassword}</td>
+                <td>${data.staffFullName}</td>
+            `;
+        
+                // Append the row to the table
+                staffsTable.appendChild(row);
+              
+              staffInfo.appendChild(staffsTable)
+            } else {
+        
+              staffInfo.innerHTML = data.message;
+            }
     } catch (error) {
-        staffInfo.innerHTML = data.message;
+        
         console.error('Có lỗi xảy ra khi lấy thông tin nhân viên', error);
+        staffInfo.innerHTML = data.message;
     };
 }
   
@@ -209,15 +233,38 @@ async function getDentistInfo(dentistUserName) {
         })
         const data = await response.json();
         if (response.status === 200) {  
-            dentistInfo.innerHTML = `  
-                                    <h3>Dentist information</h3>
-                                    <p>Dentist username: ${data.dentistUserName}</p>
-                                    <p>Dentist password: ${data.dentistPassword}</p>
-                                    <p>Dentist name: ${data.dentistFullName}</p>
-                                    `;
-        } else {
-            dentistInfo.innerHTML = data.message;
-        }
+            dentistInfo.innerHTML = ''; 
+             
+
+      const dentistsTable = document.createElement('table');
+      dentistsTable.setAttribute('id', 'Table')
+
+      // Create table header
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Dentist User Name</th>
+        <th>Password</th>
+        <th>Dentist Name</th>`;
+
+        dentistsTable.appendChild(headerRow);
+        
+        
+          // Create a new row for each dentist
+          const row = document.createElement('tr');
+          row.innerHTML = `
+      <td>${data.dentistUserName}</td>
+      <td>${data.dentistPassword}</td>
+      <td>${data.dentistFullName}</td>
+    `;
+  
+          // Append the row to the table
+          dentistsTable.appendChild(row);
+        
+        dentistInfo.appendChild(dentistsTable)
+      } else {
+  
+        dentistInfo.innerHTML = data.message;
+      }
     } catch (error) {
         dentistInfo.innerHTML = data.message;
         console.error('Có lỗi xảy ra khi lấy thông tin nha sĩ', error);
