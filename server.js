@@ -943,7 +943,7 @@ app.post('/addAppointment', async function (req, res) {
   }
 });
 
-app.post('/getAppointment', async function (req, res) {
+app.post('/findAppointment', async function (req, res) {
   const { findAppointmentId } = req.body;
   const pool = await conn;
   const request = pool.request();
@@ -955,7 +955,7 @@ app.post('/getAppointment', async function (req, res) {
   const result = await request.query(sqlString);
   const appointment = result.recordset[0];
   if (appointment) {
-    res.status(200).json(appointment);
+    res.status(200);
   } else {
     res.status(404).json({ message: `Not found appointment to update` });
   }
