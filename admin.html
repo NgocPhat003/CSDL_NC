@@ -28,7 +28,8 @@
       <button class="tablinks" onclick="openTab(event, 'addPatientInfoTab')">Add Patient Info</button>
       <button class="tablinks" onclick="openTab(event, 'deletePatientInfoTab')">Delete Patient Info</button>
       <button class="tablinks" onclick="openTab(event, 'getPatientMedicalRecordInfoTab')">Get Patient Medical Record</button>
-      <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add Patient Medical Record</button>    
+      <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add Patient Medical Record</button>  
+      <button class="tablinks" onclick="openTab(event, 'updateOralTab')">Update Oral Health</button>      
     </div>
 
     <div class="tab tabcontent" id="manageStaff">
@@ -480,17 +481,17 @@
     </div>
 
 
-    <h2>Update patient oral health</h2>
-    <form id="updateOralHealthForm"> 
-      <label for="updateMedicalRecordId">Medical record Id:</label>
-      <input type="text" id="updateMedicalRecordId" name="updateMedicalRecordId" required><br><br> 
-
-      <label for="updateOralHealth">New oral health:</label>
-      <input type="text" id="updateOralHealth" name="updateOralHealth" required><br><br>
-
-      <input type="submit" value="Update oral health">
-    </form>
-    <div id="updateOralHealthResult"></div>
+    <div id="updateOralTab" class="tabcontent">
+      <h2>Update patient oral health</h2>
+      <form id="updateOralHealthForm">
+        <label for="updateMedicalRecordId">Medical record Id:</label>
+        <input type="text" id="updateMedicalRecordId" name="updateMedicalRecordId" required><br><br>
+        <label for="updateOralHealth">New oral health:</label>
+        <input type="text" id="updateOralHealth" name="updateOralHealth" required><br><br>
+        <input type="submit" value="Update oral health">
+      </form>
+      <div id="updateOralHealthResult"></div>
+    </div>
     <!-- end of manage patient -->
 
     <!-- Manage appointments  -->
