@@ -757,15 +757,25 @@
           getReceiptInfo(patientPhoneNumber);
       });
 
-      // const paymentForm= document.getElementById('paymentForm');
-      //   paymentForm.addEventListener('submit', function(event) {
-      //     event.preventDefault();
-      //     const patientPhoneNumber = document.getElementById('paymentPatientPhoneNumber').value;
-      //     const staffUserName = sessionStorage.getItem('loggedInUser');
-      //     const paidAmount= document.getElementById('paymentAmount').value;
-      //     const paymentType = document.getElementById('paymentType').value;
-      //     paymentReceipt(patientPhoneNumber, staffUserName, paidAmount, paymentType);
-      //   });
+        //////// hàm mới 
+        const reportTreatmentPlansForm = document.getElementById('reportTreatmentPlansForm');
+        reportTreatmentPlansForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const selectedStartDate= document.getElementById('selectedStartDate').value;
+          const selectedEndDate= document.getElementById('selectedEndDate').value;
+          reportTreatmentPlans(selectedStartDate, selectedEndDate);
+      });
+
+      const reportAppointmentsForm = document.getElementById('reportAppointmentsForm');
+        reportAppointmentsForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const selectedStartDate= document.getElementById('selectedSDate').value;
+          const selectedEndDate= document.getElementById('selectedEDate').value;
+          reportAppointments(selectedStartDate, selectedEndDate);
+      });
+        /////////
+
+        
       function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
