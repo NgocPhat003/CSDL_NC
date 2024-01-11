@@ -1396,22 +1396,38 @@ async function getAppointment(getAppointmentPatientPhoneNumber, getAppointmentDa
     const data = await response.json();
     if (response.status === 200) {            
       getAppointmentResult.innerHTML = ''; 
+      const appointmentDetails = document.createElement('table');
+      appointmentDetails.setAttribute('id','Table');
+
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+      <th>Appointment Id</th>
+      <th>Phone number</th>
+      <th>Full name</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Clinic</th>
+      <th>Dentist</th>
+      <th>Note</th>
+      <th>Status</th>`;
+
+      appointmentDetails.appendChild(headerRow);
       const date = new Date(data.appointmentDate);
       const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
       const time = new Date(data.appointmentTime); 
       const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
-      getAppointmentResult.innerHTML = `
-                                      <p>APPOINTMENT INFO:</p>
-                                      <p>Appointment Id: ${data.appointmentId}</p>
-                                      <p>Phone number: ${data.patientPhoneNumber}</p>
-                                      <p>Full name: ${data.patientFullName}</p> 
-                                      <p>Date: ${formattedDate}</p>
-                                      <p>Time: ${formattedTime}</p>
-                                      <p>Clinic: ${data.clinicName}</p>
-                                      <p>Dentist: ${data.dentistFullName}</p>
-                                      <p>Note: ${data.note}</p>
-                                      <p>Status: ${data.appointmentStatus}</p>
-                                      `; 
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${data.appointmentId}</td>
+                          <td> ${data.patientPhoneNumber} </td>
+                          <td> ${data.patientFullName} </td>
+                          <td> ${formattedDate} </td>
+                          <td> ${formattedTime} </td>
+                          <td> ${data.clinicName}</td>
+                          <td> ${data.dentistFullName} </td>
+                          <td> ${data.note}</td>
+                          <td> ${data.appointmentStatus}</td>`;
+                          appointmentDetails.appendChild(row);
+                          getAppointmentResult.appendChild(appointmentDetails);
     } else {
       getAppointmentResult.innerHTML = data.message;
     }
@@ -1761,24 +1777,41 @@ async function reportTreatmentPlans(selectedStartDate, selectedEndDate) {
               const dentistElement = document.createElement('div');
               dentistElement.innerHTML = `<h3>Dentist: ${dentist}</h3>`;
               reportTreatmentPlansResult.appendChild(dentistElement);
-          
+              const table = document.createElement('Table');
+              table.setAttribute('id', 'Table')
+
+              const headerRow = document.createElement('tr');
+              
+             headerRow.innerHTML = `
+            <th>Date</th>
+            <th>Treatment plan ID</th>
+            <th>Time</th>
+            <th>Clinic</th>
+            <th>Treatment Id</th>
+            <th>Description</th>
+            <th>Note</th>
+            <th>Status</th>`;
+              table.appendChild(headerRow);
               const plans = plansByDentist[dentist];
               plans.forEach((plan) => {
                 const planElement = document.createElement('div');
+                const row = document.createElement('tr');
                 const date = new Date(plan.treatmentPlanDate);
                 const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
                 const time = new Date(plan.treatmentPlanTime);
                 const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
-                planElement.innerHTML = `
-                                        Date: ${formattedDate}, 
-                                        Treatment plan Id: ${plan.treatmentPlanId},
-                                        Time: ${formattedTime},
-                                        Clinic: ${plan.clinicName},
-                                        Treatment Id: ${plan.treatmentId},
-                                        Description: ${plan.description},
-                                        Note: ${plan.note},
-                                        Status: ${plan.treatmentPlanStatus}`;
-                dentistElement.appendChild(planElement);
+                row.innerHTML = `
+                                        <td>${formattedDate}</td> 
+                                        <td>${plan.treatmentPlanId}</td>
+                                        <td>${formattedTime}</td>
+                                        <td>${plan.clinicName}</td>
+                                        <td>${plan.treatmentId}</td>
+                                        <td>${plan.description}</td>
+                                        <td>${plan.note}</td>
+                                        <td>${plan.treatmentPlanStatus}</td>`;
+                  table.appendChild(row);
+                  reportTreatmentPlansResult.appendChild(table);
+
               });
             }
       } else if (response.status === 400) { 
@@ -1809,23 +1842,38 @@ async function reportAppointments(selectedStartDate, selectedEndDate) {
               const dentistElement = document.createElement('div');
               dentistElement.innerHTML = `<h3>Dentist: ${dentist}</h3>`;
               reportAppointmentsResult.appendChild(dentistElement);
-          
+              const table = document.createElement('Table');
+              table.setAttribute('id', 'Table')
+
+              const headerRow = document.createElement('tr');
+              
+             headerRow.innerHTML = `
+            <th>Date</th>
+            <th>Appointment ID</th>
+            <th>Patient phone number</th>
+            <th>Time</th>
+            <th>Clinic</th>
+            <th>Note</th>
+            <th>Status</th>`;
+              table.appendChild(headerRow);
               const appointments = appointmentsByDentist[dentist];
               appointments.forEach((appointment) => {
+                const row = document.createElement('tr');
                 const appointmentElement = document.createElement('div');
                 const date = new Date(appointment.appointmentDate);
                 const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
                 const time = new Date(appointment.appointmentTime);
                 const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
-                appointmentElement.innerHTML = `
-                                        Date: ${formattedDate}, 
-                                        Appointment Id: ${appointment.appointmentId},
-                                        Patient phone number: ${appointment.patientPhoneNumber},
-                                        Time: ${formattedTime},
-                                        Clinic: ${appointment.clinicName},
-                                        Note: ${appointment.note},
-                                        Status: ${appointment.appointmentStatus}`;
-                dentistElement.appendChild(appointmentElement);
+                row.innerHTML = `
+                                        <td>${formattedDate}</td>
+                                        <td>${appointment.appointmentId}</td>
+                                        <td>${appointment.patientPhoneNumber}</td>
+                                        <td>${formattedTime}</td>
+                                        <td>${appointment.clinicName}</td>
+                                        <td>${appointment.note}</td>
+                                        <td>${appointment.appointmentStatus}</td>`;
+                                        table.appendChild(row);                
+                                        reportAppointmentsResult.appendChild(table);
               });
             }
       } else if (response.status === 400) { 

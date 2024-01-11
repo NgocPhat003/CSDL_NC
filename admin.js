@@ -402,16 +402,40 @@ async function getDrugInfo(drugName) {
         })
         const data = await response.json();
         if (response.status === 200) {  
-            drugInfo.innerHTML = `  
-                                    <h3>Drug information</h3>
-                                    <p>Drug Id: ${data.drugId}</p>
-                                    <p>Drug name: ${data.drugName}</p>
-                                    <p>Indication: ${data.indication}</p>
-                                    <p>Stock number: ${data.stockNumber}</p>
-                                    <p>Price: ${data.price}$</p>`;
-        } else {
-            drugInfo.innerHTML = data.message;
-        }
+            drugInfo.innerHTML = ''; 
+            const drugsTable = document.createElement('table');
+            drugsTable.setAttribute('id', 'Table')
+      
+            // Create table header
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+              <th>Drug ID</th>
+              <th>Drug Name</th>
+              <th>Indication</th>
+              <th>Stock Number</th>
+              <th>Price</th>`;
+      
+              drugsTable.appendChild(headerRow);
+              
+              
+                // Create a new row for each staff
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${data.drugId}</td>
+            <td>${data.drugName}</td>
+            <td>${data.indication}</td>
+            <td>${data.stockNumber}</td>
+            <td>${data.price + "$"}</td>
+          `;
+        
+                // Append the row to the table
+                drugsTable.appendChild(row);
+              
+              drugInfo.appendChild(drugsTable)
+            } else {
+        
+                drugInfo.innerHTML = data.message;
+            }
     } catch (error) {
         drugInfo.innerHTML = data.message;
         console.error('Có lỗi xảy ra khi lấy thông tin thuốc', error);
@@ -501,11 +525,14 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
   }
+
+
   
   function closeModal() {
     document.getElementById("myModal").style.display = "none";
   }
-
+  
+  
 module.exports = { getAllStaffsInfo, getStaffInfo, updateStaffInfo, addStaffInfo, deleteStaffInfo };
 module.exports = { getAllDentistsInfo, getDentistInfo, updateDentistInfo, addDentistInfo, deleteDentistInfo };
 module.exports = { getAllDrugsInfo, getDrugInfo, updateDrugInfo, addDrugInfo, deleteDrugInfo };
