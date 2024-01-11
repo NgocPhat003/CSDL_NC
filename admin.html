@@ -1118,10 +1118,14 @@
         const addAppointmentTime = document.getElementById('addAppointmentTime').value;
         const addAppointmentClinicName = document.getElementById('addAppointmentClinicName').value;
         const addAppointmentDentistUserName = document.getElementById('displayDentistsForAddAppointment').value;
-    
+
+        if ( addAppointmentDentistUserName !== '') {
         addAppointment(addAppointmentPatientPhoneNumber, addAppointmentPatientFullName, addAppointmentPatientEmail, 
         addAppointmentPatientAddress, addAppointmentPatientAge, addAppointmentPatientGender, addAppointmentDate, 
         addAppointmentTime, addAppointmentClinicName, addAppointmentDentistUserName);
+        } else {
+          alert('Please provide complete information!');
+        }
       });
       
       const findAppointmentForm = document.getElementById('findAppointmentForm');
@@ -1148,8 +1152,13 @@
         const updateAppointmentDate = document.getElementById('updateAppointmentDate').value;
         const updateAppointmentTime = document.getElementById('updateAppointmentTime').value;
         const updateAppointmentClinicName = document.getElementById('updateAppointmentClinicName').value;
-        const updateAppointmentDentistUserName = document.getElementById('updateAppointmentDentistUserName').value;
-        updateAppointment(updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName);
+        const updateAppointmentDentistUserName = document.getElementById('displayDentistsForUpdateAppointment').value;
+
+        if ( updateAppointmentDentistUserName !== '') { 
+          updateAppointment(updateAppointmentId, updateAppointmentDate, updateAppointmentTime, updateAppointmentClinicName, updateAppointmentDentistUserName);
+        } else {
+          alert('Please provide complete information!');
+        }
       });
         
       const deleteAppointmentForm = document.getElementById('deleteAppointmentForm');
