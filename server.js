@@ -99,25 +99,6 @@ app.post('/addPatientInfo', async function (req, res) {
   }
 });
 
-app.delete('/deletePatientInfo/:patientPhoneNumber', async function (req, res) {
-  const patientPhoneNumber = req.params.patientPhoneNumber;
-  const pool = await conn;
-  const sqlString = `
-  DELETE FROM Patient WHERE patientPhoneNumber = '${patientPhoneNumber}'`;
-  try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin bệnh nhân đã được xóa.' });
-    } else {
-      res.status(404).json({ message: 'Bệnh nhân không tồn tại.' });
-    }
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi xóa thông tin bệnh nhân:', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi xóa thông tin bệnh nhân' });
-  }
-
-});
 
 app.post('/getAllStaffsInfo', async function (req, res) {
   const pool = await conn;
@@ -204,26 +185,6 @@ app.post('/addStaffInfo', async function (req, res) {
   }
 });
 
-app.delete('/deleteStaffInfo/:staffUserName', async function (req, res) {
-  const staffUserName = req.params.staffUserName;
-  const pool = await conn;
-  const sqlString = `
-  DELETE FROM Account WHERE username = '${staffUserName}'
-  DELETE FROM Staff WHERE staffUserName = '${staffUserName}'`;
-  try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin nhân viên đã được xóa.' });
-    } else {
-      res.status(404).json({ message: 'Nhân viên không tồn tại.' });
-    }
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi xóa thông tin nhân viên', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi xóa thông tin nhân viên' });
-  }
-
-});
 
 app.post('/getAllDentistsInfo', async function (req, res) {
   const pool = await conn;
@@ -310,25 +271,7 @@ app.post('/addDentistInfo', async function (req, res) {
   }
 });
 
-app.delete('/deleteDentistInfo/:dentistUserName', async function (req, res) {
-  const dentistUserName = req.params.dentistUserName;
-  const pool = await conn;
-  const sqlString = `
-  DELETE FROM Account WHERE username = '${dentistUserName}'
-  DELETE FROM Dentist WHERE dentistUserName = '${dentistUserName}'`;
-  try {
-    const request = pool.request();
-    const result = await request.query(sqlString);
-    if (result.rowsAffected[0] === 1) {
-      res.status(200).json({ message: 'Thông tin nha sĩ đã được xóa' });
-    } else {
-      res.status(404).json({ message: 'Nha sĩ không tồn tại' });
-    }
-  } catch (error) {
-    console.error('Có lỗi xảy ra khi xóa thông tin nha sĩ', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi xóa thông tin nha sĩ' });
-  }
-});
+
 
 app.post('/getAllDrugsInfo', async function (req, res) {
   const pool = await conn;
@@ -1389,6 +1332,70 @@ app.post('/getDentistsWorkScheduleInfo', async function (req, res) {
     console.error('Error when get dentists work schedule information', error);
     res.status(500).json({ message: 'Error when get dentists work schedule information' });
   }
+});
+
+app.post('/reportTreatmentPlans', async function (req, res) {
+  const { selectedStartDate, selectedEndDate } = req.body;
+  const pool = await conn;
+  const sqlString = `
+  select * from treatmentPlan
+  where treatmentPlanDate between '${selectedStartDate}' and '${selectedEndDate}'
+  order by treatmentPlanDate, dentistUserName`;
+  try {
+    const request = pool.request();
+    const result = await request.query(sqlString);
+    const treatmentPlans = result.recordset;
+    if (result.recordset[0]) {
+      res.status(200).json(treatmentPlans);
+    } else {
+      res.status(404).json({ message: 'Not found treatment plan information' });
+    }
+  } catch (error) {
+    console.error('Error when report treatment plans', error);
+    res.status(500).json({ message: 'Error when report treatment plans' });
+  }
+});
+
+app.post('/reportAppointments', async function (req, res) {
+  const { selectedStartDate, selectedEndDate } = req.body;
+  const pool = await conn;
+  const sqlString = `
+  select * from scheduleAppointment
+  where appointmentDate between '${selectedStartDate}' and '${selectedEndDate}'
+  order by appointmentDate, dentistUserName`;
+  try {
+    const request = pool.request();
+    const result = await request.query(sqlString);
+    const appointments = result.recordset;
+    if (result.recordset[0]) {
+      res.status(200).json(appointments);
+    } else {
+      res.status(404).json({ message: 'Not found appointment information' });
+    }
+  } catch (error) {
+    console.error('Error when report appointments', error);
+    res.status(500).json({ message: 'Error when report appointments' });
+  }
+});
+
+app.post('/updateOralHealth', async function (req, res) {
+  const { medicalRecordId, oralHealth } = req.body;
+  const pool = await conn;
+  const sqlString = `
+  UPDATE medicalRecord 
+  SET oralHealth = '${oralHealth}'  
+  WHERE medicalRecordId = '${medicalRecordId}'`;
+  try {
+    const request = pool.request();
+    const result = await request.query(sqlString);
+    if (result.rowsAffected[0] === 1) {
+      res.status(200).json({ message: 'Success update oral health' });
+    } else if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ message: 'Not found medical record to update' });
+    } 
+  } catch (error) {
+    console.error('Error when update oral health', error);
+  };
 });
 
 
