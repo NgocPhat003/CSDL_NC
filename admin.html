@@ -1174,6 +1174,14 @@
           reportAppointments(selectedStartDate, selectedEndDate);
       });
 
+      const updateOralHealthForm= document.getElementById('updateOralHealthForm');
+      updateOralHealthForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const medicalRecordId = document.getElementById('updateMedicalRecordId').value;
+        const oralHealth = document.getElementById('updateOralHealth').value;
+        updateOralHealth(medicalRecordId, oralHealth);
+      });
+
 
     </script>
 
