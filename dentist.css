@@ -109,6 +109,41 @@ button:hover {
   cursor: pointer;
 }
 
+.medical-record {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.treatment-plan {
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.receipt {
+  border: 1px solid #aaa;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.payment-receipt {
+  border: 1px solid #bbb;
+  margin-top: 5px;
+  padding: 5px;
+  background-color: #efefef;
+}
+
+.expand-btn {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: larger;
+  padding: 5px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
 .tab {
   overflow: hidden;
   background-color: #f1f1f1;
