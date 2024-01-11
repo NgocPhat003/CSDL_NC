@@ -1705,6 +1705,139 @@ async function getReceiptInfo(patientPhoneNumber) {
   };
 }
 
+
+
+//////// hàm mới 
+function groupBy(arr, key) {
+  return arr.reduce((acc, item) => {
+    const groupKey = item[key];
+    if (!acc[groupKey]) {
+      acc[groupKey] = [];
+    }
+    acc[groupKey].push(item);
+    return acc;
+  }, {});
+}
+
+async function reportTreatmentPlans(selectedStartDate, selectedEndDate) {
+  const reportTreatmentPlansResult = document.getElementById('reportTreatmentPlansResult');
+  try {
+      const response = await fetch('http://localhost:3000/reportTreatmentPlans', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ selectedStartDate, selectedEndDate })       
+        })
+      const data = await response.json();
+      reportTreatmentPlansResult.innerHTML = ''; 
+      if (response.status === 200) { 
+          const plansByDentist = groupBy(data, 'dentistUserName');           
+          for (const dentist in plansByDentist) {
+              const dentistElement = document.createElement('div');
+              dentistElement.innerHTML = `<h3>Dentist: ${dentist}</h3>`;
+              reportTreatmentPlansResult.appendChild(dentistElement);
+          
+              const plans = plansByDentist[dentist];
+              plans.forEach((plan) => {
+                const planElement = document.createElement('div');
+                const date = new Date(plan.treatmentPlanDate);
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+                const time = new Date(plan.treatmentPlanTime);
+                const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
+                planElement.innerHTML = `
+                                        Date: ${formattedDate}, 
+                                        Treatment plan Id: ${plan.treatmentPlanId},
+                                        Time: ${formattedTime},
+                                        Clinic: ${plan.clinicName},
+                                        Treatment Id: ${plan.treatmentId},
+                                        Description: ${plan.description},
+                                        Note: ${plan.note},
+                                        Status: ${plan.treatmentPlanStatus}`;
+                dentistElement.appendChild(planElement);
+              });
+            }
+      } else if (response.status === 400) { 
+        reportTreatmentPlansResult.innerHTML = data.message;
+      } else {
+        reportTreatmentPlansResult.innerHTML = data.message;
+      }
+  } catch (error)  {
+      console.error('Error when report treatment plans', error);
+  };
+}
+
+async function reportAppointments(selectedStartDate, selectedEndDate) {
+  const reportAppointmentsResult = document.getElementById('reportAppointmentsResult');
+  try {
+      const response = await fetch('http://localhost:3000/reportAppointments', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ selectedStartDate, selectedEndDate })       
+        })
+      const data = await response.json();
+      reportAppointmentsResult.innerHTML = ''; 
+      if (response.status === 200) { 
+          const appointmentsByDentist = groupBy(data, 'dentistUserName');           
+          for (const dentist in appointmentsByDentist) {
+              const dentistElement = document.createElement('div');
+              dentistElement.innerHTML = `<h3>Dentist: ${dentist}</h3>`;
+              reportAppointmentsResult.appendChild(dentistElement);
+          
+              const appointments = appointmentsByDentist[dentist];
+              appointments.forEach((appointment) => {
+                const appointmentElement = document.createElement('div');
+                const date = new Date(appointment.appointmentDate);
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+                const time = new Date(appointment.appointmentTime);
+                const formattedTime = `${time.getUTCHours().toString().padStart(2, '0')}:${time.getUTCMinutes().toString().padStart(2, '0')}`;
+                appointmentElement.innerHTML = `
+                                        Date: ${formattedDate}, 
+                                        Appointment Id: ${appointment.appointmentId},
+                                        Patient phone number: ${appointment.patientPhoneNumber},
+                                        Time: ${formattedTime},
+                                        Clinic: ${appointment.clinicName},
+                                        Note: ${appointment.note},
+                                        Status: ${appointment.appointmentStatus}`;
+                dentistElement.appendChild(appointmentElement);
+              });
+            }
+      } else if (response.status === 400) { 
+        reportAppointmentsResult.innerHTML = data.message;
+      } else {
+        reportAppointmentsResult.innerHTML = data.message;
+      }
+  } catch (error)  {
+      console.error('Có lỗi xảy ra khi lấy thông tin bệnh nhân', error);
+  };
+}
+
+async function updateOralHealth(medicalRecordId, oralHealth ) {
+  const updateOralHealthResult = document.getElementById('updateOralHealthResult');
+  try {
+      const response = await fetch('http://localhost:3000/updateOralHealth', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ medicalRecordId, oralHealth})
+      })
+      const data = await response.json();
+      if (response.status === 200) {
+          updateOralHealthResult.textContent = data.message;
+      } else  {
+          updateOralHealthResult.textContent = data.message;
+      } 
+  } catch (error) {
+      console.error('Error when update oral health', error);
+  };
+}
+
+
+/////////////
+
 function openTab(evt, tabName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
