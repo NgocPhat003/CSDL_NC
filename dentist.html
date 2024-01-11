@@ -264,6 +264,38 @@
       if ((!sessionStorage.getItem('loggedInUser')) || (sessionStorage.getItem('accountType') !== 'Dentist')) {
         window.location.href = 'login.html';
     }
+
+    const getPatientInfoForm = document.getElementById('getPatientInfoForm');
+        getPatientInfoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const patientPhoneNumber = document.getElementById('patientPhoneNumber').value;
+          getPatientInfo(patientPhoneNumber);
+        });
+  
+        const updatePatient = document.getElementById('updatePatient');
+        updatePatient.addEventListener('submit', function(event) {
+          event.preventDefault();
+          confirmUpdatePatient.style.display = 'block';
+        });
+  
+        const confirmUpdatePatient = document.getElementById('confirmUpdatePatient');
+        confirmUpdatePatient.addEventListener('submit', function(event) {
+          event.preventDefault();
+          updatePatientInfo();
+        });
+  
+        const addPatientInfoForm = document.getElementById('addPatientInfoForm');
+        addPatientInfoForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const patientPhoneNumber = document.getElementById('addPatientPhoneNumber').value;
+          const patientFullName = document.getElementById('addPatientFullName').value;
+          const patientEmail = document.getElementById('addPatientEmail').value;
+          const patientAddress = document.getElementById('addPatientAddress').value;
+          const patientAge= document.getElementById('addPatientAge').value;
+          const patientGender = document.getElementById('addPatientGender').value;
+          addPatientInfo(patientPhoneNumber, patientFullName, patientEmail, patientAddress, patientAge, patientGender);
+        });
+      
     const addPatientMedicalRecordForm = document.getElementById('addPatientMedicalRecordForm');
       addPatientMedicalRecordForm.addEventListener('submit', function (event) {
         event.preventDefault();
