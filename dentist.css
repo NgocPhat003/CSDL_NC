@@ -109,6 +109,27 @@ button:hover {
   cursor: pointer;
 }
 
+.medical-record {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.treatment-plan {
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.expand-btn {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: larger;
+  padding: 5px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
 .tab {
   overflow: hidden;
   background-color: #f1f1f1;
