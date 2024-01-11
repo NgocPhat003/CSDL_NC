@@ -664,6 +664,30 @@
       <div id="getDentistsWorkScheduleInfoByDateResult"></div>
     </div>
 
+    <h2>Treatment plans report</h2>
+    <form id="reportTreatmentPlansForm">
+      <label for="selectedStartDate">From date:</label>
+      <input type="date" id="selectedStartDate" name="selectedStartDate" required><br><br> 
+
+      <label for="selectedEndDate">To date:</label>
+      <input type="date" id="selectedEndDate" name="selectedEndDate" required><br><br>
+
+      <input type="submit" value="Report">
+    </form>
+    <div id="reportTreatmentPlansResult"></div>
+
+    <h2>Appointments report</h2>
+    <form id="reportAppointmentsForm">
+      <label for="selectedSDate">From date:</label>
+      <input type="date" id="selectedSDate" name="selectedSDate" required><br><br> 
+
+      <label for="selectedEDate">To date:</label>
+      <input type="date" id="selectedEDate" name="selectedEDate" required><br><br>
+
+      <input type="submit" value="Report">
+    </form>
+    <div id="reportAppointmentsResult"></div>
+  
     <script>
       // patient
       const getPatientInfoForm = document.getElementById('getPatientInfoForm');
@@ -1116,7 +1140,22 @@
         const deleteAppointmentId = document.getElementById('deleteAppointmentId').value;
         deleteAppointment(deleteAppointmentId);
       });   
-    
+
+      const reportTreatmentPlansForm = document.getElementById('reportTreatmentPlansForm');
+        reportTreatmentPlansForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const selectedStartDate= document.getElementById('selectedStartDate').value;
+          const selectedEndDate= document.getElementById('selectedEndDate').value;
+          reportTreatmentPlans(selectedStartDate, selectedEndDate);
+      });
+
+      const reportAppointmentsForm = document.getElementById('reportAppointmentsForm');
+        reportAppointmentsForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const selectedStartDate= document.getElementById('selectedSDate').value;
+          const selectedEndDate= document.getElementById('selectedEDate').value;
+          reportAppointments(selectedStartDate, selectedEndDate);
+      });
 
 
     </script>
