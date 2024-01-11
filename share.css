@@ -1,0 +1,22 @@
+/* Phân cách giữa các dạng hiển thị */
+.month-schedule,
+.week-schedule,
+.date-schedule {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+}
+
+/* Phân cách giữa từng bác sĩ */
+.dentist-schedule {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Định dạng thông tin lịch */
+.dentist-schedule div {
+  margin-left: 20px;
+  padding: 5px;
+  border-left: 3px solid #666;
+}
