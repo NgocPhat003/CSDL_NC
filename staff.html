@@ -372,26 +372,38 @@
       <div id="getReceiptInfoResult"></div>
     </div>
 
-    <!-- <form id="paymentForm"> 
-      <label for="paymentPatientPhoneNumber">Patient phone number:</label>
-      <input type="text" id="paymentPatientPhoneNumber" name="paymentPatientPhoneNumber" required><br><br> 
+    <h2>Get dentists work schedule info</h2>
+    <button onclick="getDentistsWorkScheduleInfo()">Get work schedule</button>
+    <div id="getDentistsWorkScheduleInfoResult"></div> 
+    <div id="getDentistsWorkScheduleInfoByMonthResult"></div>
+    <div id="getDentistsWorkScheduleInfoByWeekResult"></div>
+    <div id="getDentistsWorkScheduleInfoByDateResult"></div>
 
-      <label for="paymentDate">Payment date:</label>
-      <input type="date" id="paymentDate" name="paymentDate" required><br><br> 
+    <h2>Treatment plans report</h2>
+    <form id="reportTreatmentPlansForm">
+      <label for="selectedStartDate">From date:</label>
+      <input type="date" id="selectedStartDate" name="selectedStartDate" required><br><br> 
 
-      <label for="paymentTime">Payment time:</label>
-      <input type="time" id="paymentTime" name="paymentTime" required><br><br> 
+      <label for="selectedEndDate">To date:</label>
+      <input type="date" id="selectedEndDate" name="selectedEndDate" required><br><br>
 
-      <label for="paymentAmount">Payment amount:</label>
-      <input type="number" id="paymentAmount" name="paymentAmount" required><br><br> 
-
-      <label for="paymentType">Payment type:</label>
-      <input type="number" id="paymentType" name="paymentType" required><br><br> 
-
-      <input type="submit" value="Paying receipt">
+      <input type="submit" value="Report">
     </form>
-    <div id="paymentReceiptResult"></div> -->
+    <div id="reportTreatmentPlansResult"></div>
 
+    <h2>Appointments report</h2>
+    <form id="reportAppointmentsForm">
+      <label for="selectedSDate">From date:</label>
+      <input type="date" id="selectedSDate" name="selectedSDate" required><br><br> 
+
+      <label for="selectedEDate">To date:</label>
+      <input type="date" id="selectedEDate" name="selectedEDate" required><br><br>
+
+      <input type="submit" value="Report">
+    </form>
+    <div id="reportAppointmentsResult"></div>
+
+    
     <script>
         if ((!sessionStorage.getItem('loggedInUser')) || (sessionStorage.getItem('accountType') !== 'Staff')) {
       window.location.href = 'login.html'; 
