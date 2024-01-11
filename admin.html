@@ -18,6 +18,7 @@
         <button class="tablinks" onclick="openTab(event, 'manageDentist')">Manage Dentist</button>
         <button class="tablinks" onclick="openTab(event, 'manageDrug')">Manage Drug</button>
         <button class="tablinks" onclick="openTab(event, 'manageAppointment')">Manage Appointment</button>
+        <button class="tablinks" onclick="openTab(event, 'report')">Report</button>
       </div>
     </div>
 
@@ -26,7 +27,6 @@
       <button class="tablinks" onclick="openTab(event, 'getAllPatientsInfoTab')">Display Patient's Info</button>
       <button class="tablinks" onclick="openTab(event, 'updatePatientInfoTab')">Update Patient Info</button>
       <button class="tablinks" onclick="openTab(event, 'addPatientInfoTab')">Add Patient Info</button>
-      <button class="tablinks" onclick="openTab(event, 'deletePatientInfoTab')">Delete Patient Info</button>
       <button class="tablinks" onclick="openTab(event, 'getPatientMedicalRecordInfoTab')">Get Patient Medical Record</button>
       <button class="tablinks" onclick="openTab(event, 'addPatientMedicalRecordTab')">Add Patient Medical Record</button>  
       <button class="tablinks" onclick="openTab(event, 'updateOralTab')">Update Oral Health</button>      
@@ -37,7 +37,6 @@
         Info</button>
       <button class="tablinks" onclick="openTab(event, 'updateStaffInfoTab')">Update Staff Info</button>
       <button class="tablinks" onclick="openTab(event, 'addStaffInfoTab')">Add Staff Info</button>
-      <button class="tablinks" onclick="openTab(event, 'deleteStaffInfoTab')">Delete Staff Info</button>
     </div>
 
     <div class="tab tabcontent" id="manageDentist">
@@ -45,7 +44,6 @@
         Info</button>
       <button class="tablinks" onclick="openTab(event, 'updateDentistInfoTab')">Update Dentist Info</button>
       <button class="tablinks" onclick="openTab(event, 'addDentistInfoTab')">Add Dentist Info</button>
-      <button class="tablinks" onclick="openTab(event, 'deleteDentistInfoTab')">Delete Dentist Info</button>
     </div>
 
     <div class="tab tabcontent" id="manageDrug">
@@ -63,6 +61,9 @@
       <button class="tablinks" onclick="openTab(event, 'updateAppointmentInfoTab')">Update Appointment</button>
       <button class="tablinks" onclick="openTab(event, 'deleteAppointmentInfoTab')">Delete Appointment</button>
       <button class="tablinks" onclick="openTab(event, 'getDentistScheduleTab')">Get Dentist Schedule</button>
+      
+    </div>
+    <div class="tab tabcontent" id="report">
       <button class="tablinks" onclick="openTab(event, 'appointmentsReportTab')">Appointment Report</button>
       <button class="tablinks" onclick="openTab(event, 'treatmentPlansReportTab')">Treatment Plans Report</button>
     </div>
