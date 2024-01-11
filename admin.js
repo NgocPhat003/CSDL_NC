@@ -104,8 +104,7 @@ async function getStaffInfo(staffUserName) {
   
 async function updateStaffInfo() {
     const staffUpdateResult = document.getElementById('staffUpdateResult');
-    const enterStaffUserName = document.getElementById('enterStaffUserName').value;
-    const updateStaffUserName = document.getElementById('updateStaffUserName').value;
+    const staffUserName = document.getElementById('updateStaffUserName').value;
     const staffPassword = document.getElementById('updateStaffPassword').value;
     const staffFullName = document.getElementById('updateStaffFullName').value;
     try {
@@ -114,7 +113,7 @@ async function updateStaffInfo() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ enterStaffUserName, updateStaffUserName, staffPassword, staffFullName })
+            body: JSON.stringify({ staffUserName, staffPassword, staffFullName })
         })
         const data = await response.json();
         if (response.status === 200) {
@@ -273,8 +272,7 @@ async function getDentistInfo(dentistUserName) {
   
 async function updateDentistInfo() {
     const dentistUpdateResult = document.getElementById('dentistUpdateResult');
-    const enterDentistUserName = document.getElementById('enterDentistUserName').value;
-    const updateDentistUserName = document.getElementById('updateDentistUserName').value;
+    const dentistUserName = document.getElementById('updateDentistUserName').value;
     const dentistPassword = document.getElementById('updateDentistPassword').value;    
     const dentistFullName = document.getElementById('updateDentistFullName').value;
     try {
@@ -283,7 +281,7 @@ async function updateDentistInfo() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ enterDentistUserName, updateDentistUserName, dentistPassword, dentistFullName })
+            body: JSON.stringify({ dentistUserName, dentistPassword, dentistFullName })
         })
         const data = await response.json();
         if (response.status === 200) {
