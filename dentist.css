@@ -121,6 +121,20 @@ button:hover {
   padding: 10px;
 }
 
+.receipt {
+  border: 1px solid #aaa;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.payment-receipt {
+  border: 1px solid #bbb;
+  margin-top: 5px;
+  padding: 5px;
+  background-color: #efefef;
+}
+
 .expand-btn {
   cursor: pointer;
   font-weight: bold;
