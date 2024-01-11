@@ -373,8 +373,8 @@ app.delete('/deleteDrugInfo/:drugName', async function (req, res) {
       res.status(404).json({ message: 'Thuốc không tồn tại' });
     }
   } catch (error) {
-    console.error('Có lỗi xảy ra khi xóa thông tin thuốc', error);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi xóa thông tin thuốc' });
+    console.error('Thuốc đã được thêm vào treatment plan', error);
+    res.status(500).json({ message: 'Thuốc đã được thêm vào treatment plan' });
   }
 });
 
