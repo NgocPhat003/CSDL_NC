@@ -1490,7 +1490,7 @@ async function findAppointment(findAppointmentId) {
     })
     const data = await response.json();
     if (response.status === 200) {            
-      updateAppointmentResult.innerHTML = data.message; 
+      document.getElementById('updateAppointmentForm').style.display = 'block';
     } else {
       updateAppointmentResult.innerHTML = data.message;
     }
