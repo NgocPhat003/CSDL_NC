@@ -479,6 +479,19 @@
       </form>
       <div id="getPatientMedicalRecordInfoResult"></div>
     </div>
+
+
+    <h2>Update patient oral health</h2>
+    <form id="updateOralHealthForm"> 
+      <label for="updateMedicalRecordId">Medical record Id:</label>
+      <input type="text" id="updateMedicalRecordId" name="updateMedicalRecordId" required><br><br> 
+
+      <label for="updateOralHealth">New oral health:</label>
+      <input type="text" id="updateOralHealth" name="updateOralHealth" required><br><br>
+
+      <input type="submit" value="Update oral health">
+    </form>
+    <div id="updateOralHealthResult"></div>
     <!-- end of manage patient -->
 
     <!-- Manage appointments  -->
@@ -689,6 +702,8 @@
       </form>
       <div id="reportAppointmentsResult"></div>
     </div>
+
+    
   
     <script>
       // patient
